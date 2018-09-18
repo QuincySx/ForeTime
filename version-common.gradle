@@ -8,6 +8,7 @@ def addRepository(RepositoryHandler handler) {
     handler.maven() { url "http://maven.smallraw.com/repository/maven-proxy/" }
     handler.google()
     handler.jcenter()
+    handler.maven { url 'https://jitpack.io' }
 }
 
 ext.addRepository = this.&addRepository
