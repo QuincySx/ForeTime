@@ -36,27 +36,27 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    testImplementation this.libs.junit
+    androidTestImplementation this.libs.runner
+    androidTestImplementation this.libs.espressoCore
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${this.gradlePluginVerion.kotlinVersion}"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:${this.gradlePluginVerion.kotlinVersion}"
+//    implementation this.libs.kotlinStdlibJdk7
+    implementation this.libs.kotlinStdlib
 
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation "com.android.support:design:27.1.1"
-    implementation "com.android.support:cardview-v7:27.1.1"
-    implementation "com.android.support:recyclerview-v7:27.1.1"
+    implementation this.libs.constraintLayout
+    implementation this.libs.appcompatV7
+    implementation this.libs.design
+    implementation this.libs.cardviewV7
+    implementation this.libs.recyclerviewV7
 
-    implementation "android.arch.persistence.room:runtime:1.1.1"
-    kapt "android.arch.persistence.room:compiler:1.1.1"
+    implementation this.libs.roomRuntime
+    kapt this.libs.roomCompiler
 
-    implementation 'me.jessyan:autosize:0.9.5'
+    implementation this.libs.autosize
 
-    implementation('com.github.niorgai:StatusBarCompat:2.1.4', {
+    implementation(this.libs.StatusBarCompat, {
         exclude group: 'com.android.support'
     })
 
-    api project(":lib-core")
+    implementation project(":lib-core")
 }

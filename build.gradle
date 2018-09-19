@@ -1,6 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     apply from: 'version-common.gradle'
+    apply from: 'version-library.gradle'
 
     repositories {
         addRepository(it)

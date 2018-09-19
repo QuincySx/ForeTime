@@ -1,5 +1,5 @@
 /**
- * 添加仓库
+ * 添加远程仓库
  * @param handler
  * @return
  */
