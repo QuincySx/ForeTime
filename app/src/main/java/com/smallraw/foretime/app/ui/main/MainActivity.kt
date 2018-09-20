@@ -32,20 +32,20 @@ class MainActivity : BaseActivity() {
         viewPagerAdapter.addFragment(tomatoBellFragment)
         viewPagerAdapter.addFragment(calendarFragment)
         viewPager.adapter = viewPagerAdapter
-        iv_tomato_bell.isChecked = true
+        ivTomatoBell.isChecked = true
     }
 
     fun onCreate(view: View) {
         when (view.id) {
-            R.id.iv_tomato_bell -> {
+            R.id.ivTomatoBell -> {
                 viewPager.currentItem = 0
-                iv_tomato_bell.isChecked = true
-                iv_calendar.isChecked = false
+                ivTomatoBell.isChecked = true
+                ivCalendar.isChecked = false
             }
-            R.id.iv_calendar -> {
+            R.id.ivCalendar -> {
                 viewPager.currentItem = 1
-                iv_tomato_bell.isChecked = false
-                iv_calendar.isChecked = true
+                ivTomatoBell.isChecked = false
+                ivCalendar.isChecked = true
             }
         }
     }
