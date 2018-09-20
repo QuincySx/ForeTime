@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.MainActivity">
+
+    <com.smallraw.foretime.app.common.widget.NoSlideViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@null"
+        app:layout_constraintBottom_toTopOf="@+id/view_spacing"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view_spacing"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginBottom="6.5dp"
+        android:background="#F8F8F8"
+        app:layout_constraintBottom_toTopOf="@+id/iv_calendar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_suspension"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="25dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:srcCompat="@drawable/ic_tab_suspension" />
+
+    <RadioButton
+        android:id="@+id/iv_tomato_bell"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginBottom="9dp"
+        android:background="@drawable/selector_tab_tomato_bell"
+        android:button="@null"
+        android:onClick="onCreate"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/iv_calendar"
+        app:layout_constraintHeight_default="spread"
+        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <RadioButton
+        android:id="@+id/iv_calendar"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginBottom="9dp"
+        android:background="@drawable/selector_tab_calendar"
+        android:button="@null"
+        android:onClick="onCreate"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.75"
+        app:layout_constraintStart_toStartOf="@id/iv_tomato_bell" />
+</android.support.constraint.ConstraintLayout>

@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.tomatoBell.TomatoBellActivity">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/iv_setting"
@@ -43,6 +41,7 @@
     </LinearLayout>
 
     <com.smallraw.foretime.app.common.widget.TimeScheduleView
+        android:id="@+id/view_time_schedule"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -50,46 +49,21 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/iv_tomato_bell"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginBottom="9dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/iv_calendar_bell"
-        app:layout_constraintHeight_default="spread"
-        app:layout_constraintHorizontal_bias="0.25"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_tab_tomato_bell_select" />
-
-    <View
-        android:id="@+id/view_spacing"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginBottom="6.5dp"
-        android:background="#F8F8F8"
-        app:layout_constraintBottom_toTopOf="@+id/iv_calendar_bell"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
-
-    <ImageView
-        android:id="@+id/iv_suspension"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_marginBottom="25dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <TextView
+        style="@style/TextVice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="26dp"
+        android:text="轻触休息 长按跳过"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@drawable/ic_tab_suspension" />
+        app:layout_constraintTop_toBottomOf="@+id/view_time_schedule" />
 
-    <ImageView
-        android:id="@+id/iv_calendar_bell"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginBottom="9dp"
+    <com.smallraw.foretime.app.common.widget.TimeProgressView
+        android:layout_width="88dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.75"
-        app:layout_constraintStart_toStartOf="@id/iv_tomato_bell"
-        app:srcCompat="@drawable/ic_tab_calendar_normal" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 </android.support.constraint.ConstraintLayout>
