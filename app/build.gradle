@@ -53,6 +53,7 @@ dependencies {
     kapt this.libs.roomCompiler
 
     implementation this.libs.autosize
+    implementation this.libs.fastjson
 
     implementation(this.libs.StatusBarCompat, {
         exclude group: 'com.android.support'

@@ -20,6 +20,7 @@ ext {
             roomRuntime     : "android.arch.persistence.room:runtime:${this.libVersion.roomVersion}",
             roomCompiler    : "android.arch.persistence.room:compiler:${this.libVersion.roomVersion}",
             autosize        : "me.jessyan:autosize:0.9.5",
-            StatusBarCompat : "com.github.niorgai:StatusBarCompat:2.1.4"
+            StatusBarCompat : "com.github.niorgai:StatusBarCompat:2.1.4",
+            fastjson        : 'com.alibaba:fastjson:1.1.68.android'
     ]
 }
