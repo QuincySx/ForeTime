@@ -1,7 +1,10 @@
 package com.smallraw.foretime.app.ui.main
 
+import android.graphics.Rect
 import android.os.Bundle
+import android.view.TouchDelegate
 import android.view.View
+import android.view.ViewGroup
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.common.adapter.ViewPagerAdapter
 import com.smallraw.foretime.app.ui.calendar.CalendarFragment
@@ -33,6 +36,8 @@ class MainActivity : BaseActivity() {
         viewPagerAdapter.addFragment(calendarFragment)
         viewPager.adapter = viewPagerAdapter
         ivTomatoBell.isChecked = true
+
+        setTouchDelegate(ivCalendar, 100)
     }
 
     fun onCreate(view: View) {
@@ -41,13 +46,27 @@ class MainActivity : BaseActivity() {
                 viewPager.currentItem = 0
                 ivTomatoBell.isChecked = true
                 ivCalendar.isChecked = false
+                setTouchDelegate(ivCalendar, 100)
             }
             R.id.ivCalendar -> {
                 viewPager.currentItem = 1
                 ivTomatoBell.isChecked = false
                 ivCalendar.isChecked = true
+                setTouchDelegate(ivTomatoBell, 100)
             }
         }
     }
 
+    private fun setTouchDelegate(view: View, expandTouchWidth: Int) {
+        val parentView = view.getParent() as ViewGroup
+        view.post {
+            val rect = Rect()
+            view.getHitRect(rect)
+            rect.top -= expandTouchWidth
+            rect.bottom += expandTouchWidth
+            rect.left -= expandTouchWidth
+            rect.right += expandTouchWidth
+            parentView.touchDelegate = TouchDelegate(rect, view)
+        }
+    }
 }
