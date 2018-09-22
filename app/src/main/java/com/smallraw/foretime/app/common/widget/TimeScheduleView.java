@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import me.jessyan.autosize.utils.AutoSizeUtils;
@@ -31,7 +32,7 @@ public class TimeScheduleView extends View {
   private int mWidth;
   private int mHeight;
 
-  private float mProgress = 0.4F;
+  private float mProgress = 0.0F;
 
   private Path mPath = new Path();
   private Path mPathDraw = new Path();
@@ -90,8 +91,10 @@ public class TimeScheduleView extends View {
   protected void onDraw(Canvas canvas) {
     canvas.drawCircle(mWidth / 2, mHeight / 2, mProgressCircleRadius, mPaintCircleLower);
 
+    Log.e("====e==",mProgress+"  sss "+mProgress * mPathMeasure.getLength());
     canvas.save();
     canvas.rotate(-90, mWidth / 2, mHeight / 2);
+    mPathDraw.reset();
     mPathMeasure.getSegment(0, mProgress * mPathMeasure.getLength(), mPathDraw, true);
     canvas.drawPath(mPathDraw, mPaintCircle);
     canvas.restore();
@@ -154,7 +157,6 @@ public class TimeScheduleView extends View {
    */
   public void setProgress(float progress) {
     mProgress = progress;
-    postInvalidate();
   }
 
   /**
@@ -164,7 +166,6 @@ public class TimeScheduleView extends View {
    */
   public void setProgressColor(@ColorInt int color) {
     mProgressColor = color;
-    postInvalidate();
   }
 
   /**
@@ -174,6 +175,5 @@ public class TimeScheduleView extends View {
    */
   public void setText(String text) {
     mTextContent = text;
-    postInvalidate();
   }
 }

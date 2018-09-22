@@ -1,8 +1,10 @@
 package com.smallraw.time.utils
 
+import java.lang.StringBuilder
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.min
 
 private val df = object : ThreadLocal<DateFormat>() {
     override fun initialValue(): DateFormat {
@@ -57,4 +59,21 @@ fun differentDays(date1: Date, date2: Date): Int {
         //不同年
         return day2 - day1
     }
+}
+
+fun ms2Minutes(ms: Long): String {
+    val second = ms / 1000
+    val minutes = second / 60
+    val unSecond = second % 60
+    val str=StringBuilder()
+    if (minutes < 10) {
+        str.append("0")
+    }
+    str.append(minutes)
+    str.append(":")
+    if (unSecond < 10) {
+        str.append("0")
+    }
+    str.append(unSecond)
+    return str.toString()
 }

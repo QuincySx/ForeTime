@@ -6,4 +6,6 @@
     <color name="colorWhite">#FFFFFF</color>
     <color name="TextColorNormal">#333333</color>
     <color name="TextColorVice">#909090</color>
+    <color name="WorkingProgessColor">#5165FF</color>
+    <color name="RestProgessColor">#3DCF7A</color>
 </resources>

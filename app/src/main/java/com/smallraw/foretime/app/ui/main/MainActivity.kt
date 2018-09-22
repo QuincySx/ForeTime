@@ -24,6 +24,7 @@ class MainActivity : BaseActivity() {
         viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
         initFragment()
         initView()
+        initLongClickListener()
     }
 
     private fun initFragment() {
@@ -54,6 +55,21 @@ class MainActivity : BaseActivity() {
                 ivCalendar.isChecked = true
                 setTouchDelegate(ivTomatoBell, 100)
             }
+            R.id.ivSuspension -> {
+                if (viewPager.currentItem == 0) {
+                    tomatoBellFragment.onClickListener()
+                } else {
+
+                }
+            }
+        }
+    }
+
+    fun initLongClickListener() {
+        if (viewPager.currentItem == 0) {
+            tomatoBellFragment.onLongClickListener()
+        } else {
+
         }
     }
 
