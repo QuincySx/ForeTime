@@ -69,7 +69,7 @@ public abstract class AppDatabase extends RoomDatabase {
                     try {
                       ContentValues contentValues = new ContentValues();
                       contentValues.put("name", "孵化日");
-                      contentValues.put("description", "第一次遇到[记得]开心吗？");
+                      contentValues.put("description", "第一次遇到[ForeTime]开心吗？");
                       contentValues.put("type", 0);
                       contentValues.put("color", "#139EED");
                       contentValues.put("beginTime", new Date().getTime());
