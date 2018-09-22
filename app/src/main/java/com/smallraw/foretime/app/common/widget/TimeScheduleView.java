@@ -91,7 +91,6 @@ public class TimeScheduleView extends View {
   protected void onDraw(Canvas canvas) {
     canvas.drawCircle(mWidth / 2, mHeight / 2, mProgressCircleRadius, mPaintCircleLower);
 
-    Log.e("====e==",mProgress+"  sss "+mProgress * mPathMeasure.getLength());
     canvas.save();
     canvas.rotate(-90, mWidth / 2, mHeight / 2);
     mPathDraw.reset();
@@ -166,6 +165,7 @@ public class TimeScheduleView extends View {
    */
   public void setProgressColor(@ColorInt int color) {
     mProgressColor = color;
+    mPaintCircle.setColor(mProgressColor);
   }
 
   /**
