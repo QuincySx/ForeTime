@@ -20,6 +20,7 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        mApp = this
         AppUtils.init(this)
         mAppExecutors = AppExecutors()
     }

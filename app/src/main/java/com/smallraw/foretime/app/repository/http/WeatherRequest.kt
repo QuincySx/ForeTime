@@ -13,7 +13,7 @@ class WeatherRequest {
         @JvmStatic
         fun getWeatherNow(location: String): Weather? {
             try {
-                val url = URL("http://140.143.142.72/weather/now?location=$location")
+                val url = URL("http://weather.smallraw.com/weather/now?location=$location")
 
                 Log.e("==net request==", url.toURI().toString())
                 val connection = url.openConnection() as HttpURLConnection

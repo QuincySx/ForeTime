@@ -6,13 +6,13 @@ import java.util.*
 
 private val df = object : ThreadLocal<DateFormat>() {
     override fun initialValue(): DateFormat {
-        return SimpleDateFormat("yyyy-MM-dd")
+        return SimpleDateFormat("yyyy-MM-dd", Locale.CHINA)
     }
 }
 
 private val df1 = object : ThreadLocal<DateFormat>() {
     override fun initialValue(): DateFormat {
-        return SimpleDateFormat("MM月dd日")
+        return SimpleDateFormat("MM月dd日", Locale.CHINA)
     }
 }
 
