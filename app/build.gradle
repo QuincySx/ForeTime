@@ -40,7 +40,6 @@ dependencies {
     androidTestImplementation this.libs.runner
     androidTestImplementation this.libs.espressoCore
 
-//    implementation this.libs.kotlinStdlibJdk7
     implementation this.libs.kotlinStdlib
 
     implementation this.libs.constraintLayout
