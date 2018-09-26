@@ -4,7 +4,8 @@
  * @return
  */
 def addRepository(RepositoryHandler handler) {
-    handler.google() 
+    handler.maven() { url "https://repo.huaweicloud.com/repository/maven/" }
+    handler.google()
     handler.jcenter()
     handler.maven() { url "http://maven.smallraw.com/repository/maven/" }
 }
@@ -31,7 +32,7 @@ ext {
 
     gradlePluginVerion = [
             gradleVersion: '3.2.0',
-            kotlinVersion: '1.2.70'
+            kotlinVersion: '1.2.71'
     ]
 
     gradlePlugins = [
