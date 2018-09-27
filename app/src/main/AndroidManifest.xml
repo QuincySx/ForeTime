@@ -12,7 +12,6 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
         <meta-data
@@ -22,6 +21,9 @@
             android:name="design_height_in_dp"
             android:value="640" />
 
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.1" />
         <activity
             android:name=".ui.main.MainActivity"
             android:screenOrientation="portrait">

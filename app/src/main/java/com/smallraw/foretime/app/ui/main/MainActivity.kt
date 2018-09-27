@@ -85,4 +85,9 @@ class MainActivity : BaseActivity() {
             parentView.touchDelegate = TouchDelegate(rect, view)
         }
     }
+
+    override fun onDestroy() {
+        viewPagerAdapter.clear()
+        super.onDestroy()
+    }
 }

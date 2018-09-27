@@ -14,15 +14,19 @@ import com.smallraw.time.base.BaseFragment
 import com.smallraw.time.utils.ms2Minutes
 import kotlinx.android.synthetic.main.fragment_tomato_bell.*
 
+
 class TomatoBellFragment : BaseFragment() {
     val countDownModel = CountDownModel.getInstance()
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_tomato_bell, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun onStart() {
+        super.onStart()
         viewTimeSchedule.setOnClickListener {
             onClickListener()
         }
