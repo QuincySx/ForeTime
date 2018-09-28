@@ -24,7 +24,6 @@ class MainActivity : BaseActivity() {
         viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
         initFragment()
         initView()
-        initLongClickListener()
     }
 
     private fun initFragment() {
@@ -62,14 +61,6 @@ class MainActivity : BaseActivity() {
 
                 }
             }
-        }
-    }
-
-    fun initLongClickListener() {
-        if (viewPager.currentItem == 0) {
-            tomatoBellFragment.onLongClickListener()
-        } else {
-
         }
     }
 

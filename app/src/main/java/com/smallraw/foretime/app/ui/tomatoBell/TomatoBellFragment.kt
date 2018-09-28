@@ -3,12 +3,15 @@ package com.smallraw.foretime.app.ui.tomatoBell
 import android.os.Bundle
 import android.support.annotation.ColorInt
 import android.support.v4.content.res.ResourcesCompat
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.common.timer.CountDownManager
+import com.smallraw.foretime.app.common.widget.OnClickProgressListener
 import com.smallraw.foretime.app.model.CountDownModel
 import com.smallraw.time.base.BaseFragment
 import com.smallraw.time.utils.ms2Minutes
@@ -30,10 +33,7 @@ class TomatoBellFragment : BaseFragment() {
         viewTimeSchedule.setOnClickListener {
             onClickListener()
         }
-        viewTimeSchedule.setOnLongClickListener {
-            onLongClickListener()
-            return@setOnLongClickListener true
-        }
+        onLongClickListener()
         countDownModel.addOnCountDownListener { state, countdownState, totalTime, lastTime ->
             if (!isAdded) {
                 return@addOnCountDownListener
@@ -165,6 +165,23 @@ class TomatoBellFragment : BaseFragment() {
     }
 
     fun onLongClickListener() {
+        viewTimeSchedule.setOnTouchListener(object : OnClickProgressListener() {
+            override fun onStart() {
+                viewTimeProgress.visibility = View.VISIBLE
+            }
+
+            override fun onProgress(progress: Double) {
+                viewTimeProgress.setProgress(progress.toFloat())
+            }
+
+            override fun onSuccess() {
+                viewTimeProgress.visibility = View.GONE
+            }
+
+            override fun onCancel() {
+                viewTimeProgress.visibility = View.GONE
+            }
+        })
         when (countDownModel.curretStatus) {
             CountDownModel.WORKING -> {
                 when (countDownModel.countDownStatus) {

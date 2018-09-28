@@ -30,7 +30,7 @@ public class TimeProgressView extends View {
     private int mWidth;
     private int mHeight;
 
-    private float mProgress = 0.4F;
+    private float mProgress = 0.0F;
 
     @ColorInt
     private int mProgressLowerColor = Color.parseColor("#D9D9D9");
