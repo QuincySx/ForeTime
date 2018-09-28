@@ -14,16 +14,12 @@ public class CountDownModel implements CountDownManager.OnCountDownListener {
    */
   public final static int WORKING = 1;
   /**
-   * 自动模式的间隔
-   */
-  public final static int INTERVAL = 2;
-  /**
    * 休息状态
    */
-  public final static int REPOSE = 3;
+  public final static int REPOSE = 2;
 
 
-  @IntDef({WORKING, INTERVAL, REPOSE})
+  @IntDef({WORKING, REPOSE})
   public @interface Status {
   }
 
@@ -53,9 +49,6 @@ public class CountDownModel implements CountDownManager.OnCountDownListener {
       default:
       case WORKING:
         time = (long) (1000 * 60 * 0.3);
-        break;
-      case INTERVAL:
-        time = 1000 * 10;
         break;
       case REPOSE:
         time = (long) (1000 * 60 * 0.2);

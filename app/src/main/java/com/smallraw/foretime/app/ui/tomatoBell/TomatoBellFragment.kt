@@ -35,6 +35,9 @@ class TomatoBellFragment : BaseFragment() {
             return@setOnLongClickListener true
         }
         countDownModel.addOnCountDownListener { state, countdownState, totalTime, lastTime ->
+            if (!isAdded) {
+                return@addOnCountDownListener
+            }
             when (countdownState) {
                 CountDownManager.STATE_INIT -> {
                     stateInit(state, totalTime, lastTime)
@@ -60,11 +63,6 @@ class TomatoBellFragment : BaseFragment() {
                 refreshTimeSchedule(color, totalTime, lastTime)
                 setHint("轻触开始专注")
             }
-            CountDownModel.INTERVAL -> {
-                val color = ResourcesCompat.getColor(resources, R.color.RestProgessColor, null)
-                refreshTimeSchedule(color, totalTime, lastTime)
-                setHint("长按取消休息")
-            }
             CountDownModel.REPOSE -> {
                 val color = ResourcesCompat.getColor(resources, R.color.RestProgessColor, null)
                 refreshTimeSchedule(color, totalTime, lastTime)
@@ -79,11 +77,6 @@ class TomatoBellFragment : BaseFragment() {
                 val color = ResourcesCompat.getColor(resources, R.color.WorkingProgessColor, null)
                 refreshTimeSchedule(color, totalTime, lastTime)
                 setHint("持续专注中")
-            }
-            CountDownModel.INTERVAL -> {
-                val color = ResourcesCompat.getColor(resources, R.color.RestProgessColor, null)
-                refreshTimeSchedule(color, totalTime, lastTime)
-                setHint("稍后进入休息")
             }
             CountDownModel.REPOSE -> {
                 val color = ResourcesCompat.getColor(resources, R.color.RestProgessColor, null)
@@ -109,13 +102,6 @@ class TomatoBellFragment : BaseFragment() {
                 val color = ResourcesCompat.getColor(resources, R.color.WorkingProgessColor, null)
                 refreshTimeSchedule(color, totalTime, lastTime)
                 setHint("稍后进入休息")
-                countDownModel.init(CountDownModel.INTERVAL)
-                countDownModel.start()
-            }
-            CountDownModel.INTERVAL -> {
-                val color = ResourcesCompat.getColor(resources, R.color.RestProgessColor, null)
-                refreshTimeSchedule(color, totalTime, lastTime)
-                setHint("长按取消休息")
                 countDownModel.init(CountDownModel.REPOSE)
                 countDownModel.start()
             }
@@ -159,22 +145,6 @@ class TomatoBellFragment : BaseFragment() {
                     }
                 }
             }
-            CountDownModel.INTERVAL -> {
-                when (countDownModel.countDownStatus) {
-                    CountDownManager.STATE_INIT -> {
-                        countDownModel.start()
-                    }
-                    CountDownManager.STATE_RUNNING -> {
-                        countDownModel.pause()
-                    }
-                    CountDownManager.STATE_RUNNING_PAUSE -> {
-                        countDownModel.resume()
-                    }
-                    CountDownManager.STATE_RUNNING_FINISH -> {
-
-                    }
-                }
-            }
             CountDownModel.REPOSE -> {
                 when (countDownModel.countDownStatus) {
                     CountDownManager.STATE_INIT -> {
@@ -197,22 +167,6 @@ class TomatoBellFragment : BaseFragment() {
     fun onLongClickListener() {
         when (countDownModel.curretStatus) {
             CountDownModel.WORKING -> {
-                when (countDownModel.countDownStatus) {
-                    CountDownManager.STATE_INIT -> {
-
-                    }
-                    CountDownManager.STATE_RUNNING -> {
-
-                    }
-                    CountDownManager.STATE_RUNNING_PAUSE -> {
-
-                    }
-                    CountDownManager.STATE_RUNNING_FINISH -> {
-
-                    }
-                }
-            }
-            CountDownModel.INTERVAL -> {
                 when (countDownModel.countDownStatus) {
                     CountDownManager.STATE_INIT -> {
 
