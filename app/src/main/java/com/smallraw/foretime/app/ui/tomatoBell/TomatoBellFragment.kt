@@ -134,24 +134,12 @@ class TomatoBellFragment : BaseFragment() {
                     CountDownManager.STATE_RUNNING_PAUSE -> {
                         countDownModel.resume()
                     }
-                    CountDownManager.STATE_RUNNING_FINISH -> {
-
-                    }
                 }
             }
             CountDownModel.REPOSE -> {
                 when (countDownModel.countDownStatus) {
                     CountDownManager.STATE_INIT -> {
                         countDownModel.start()
-                    }
-                    CountDownManager.STATE_RUNNING -> {
-                        countDownModel.pause()
-                    }
-                    CountDownManager.STATE_RUNNING_PAUSE -> {
-                        countDownModel.resume()
-                    }
-                    CountDownManager.STATE_RUNNING_FINISH -> {
-
                     }
                 }
             }
