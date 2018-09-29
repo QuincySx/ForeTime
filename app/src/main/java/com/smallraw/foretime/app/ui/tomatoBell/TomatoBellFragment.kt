@@ -165,8 +165,27 @@ class TomatoBellFragment : BaseFragment() {
     fun onLongClickListener() {
         viewTimeSchedule.setOnTouchListener(object : OnClickProgressListener() {
             override fun onStart() {
-                viewTimeProgress.setProgress(0F)
-                viewTimeProgress.visibility = View.VISIBLE
+                var isLongClick = false
+                when (countDownModel.curretStatus) {
+                    CountDownModel.WORKING -> {
+                        when (countDownModel.countDownStatus) {
+                            CountDownManager.STATE_RUNNING_PAUSE -> {
+                                isLongClick = true
+                            }
+                        }
+                    }
+                    CountDownModel.REPOSE -> {
+                        when (countDownModel.countDownStatus) {
+                            CountDownManager.STATE_RUNNING -> {
+                                isLongClick = true
+                            }
+                        }
+                    }
+                }
+                if (isLongClick) {
+                    viewTimeProgress.setProgress(0F)
+                    viewTimeProgress.visibility = View.VISIBLE
+                }
             }
 
             override fun onProgress(progress: Double) {
@@ -175,42 +194,31 @@ class TomatoBellFragment : BaseFragment() {
 
             override fun onSuccess() {
                 viewTimeProgress.visibility = View.GONE
+                responseEvent()
             }
 
             override fun onCancel() {
                 viewTimeProgress.visibility = View.GONE
             }
         })
+    }
+
+    private fun responseEvent() {
         when (countDownModel.curretStatus) {
             CountDownModel.WORKING -> {
                 when (countDownModel.countDownStatus) {
-                    CountDownManager.STATE_INIT -> {
-
-                    }
-                    CountDownManager.STATE_RUNNING -> {
-
-                    }
                     CountDownManager.STATE_RUNNING_PAUSE -> {
-
-                    }
-                    CountDownManager.STATE_RUNNING_FINISH -> {
-
+                        countDownModel.stop()
+                        countDownModel.init(CountDownModel.REPOSE)
+                        countDownModel.start()
                     }
                 }
             }
             CountDownModel.REPOSE -> {
                 when (countDownModel.countDownStatus) {
-                    CountDownManager.STATE_INIT -> {
-
-                    }
                     CountDownManager.STATE_RUNNING -> {
-
-                    }
-                    CountDownManager.STATE_RUNNING_PAUSE -> {
-
-                    }
-                    CountDownManager.STATE_RUNNING_FINISH -> {
-
+                        countDownModel.stop()
+                        countDownModel.init(CountDownModel.WORKING)
                     }
                 }
             }
