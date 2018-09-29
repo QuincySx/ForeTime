@@ -72,11 +72,13 @@ class TomatoBellFragment : BaseFragment() {
                 val color = ResourcesCompat.getColor(resources, R.color.WorkingProgessColor, null)
                 refreshTimeSchedule(color, totalTime, lastTime)
                 setHint("轻触开始专注")
+                onMainActivityCallback?.onChangeIvSuspension(R.drawable.ic_tab_suspension_start)
             }
             CountDownModel.REPOSE -> {
                 val color = ResourcesCompat.getColor(resources, R.color.RestProgessColor, null)
                 refreshTimeSchedule(color, totalTime, lastTime)
                 setHint("长按取消休息")
+                onMainActivityCallback?.onChangeIvSuspension(R.drawable.ic_tab_suspension_rest)
             }
         }
     }
@@ -87,11 +89,13 @@ class TomatoBellFragment : BaseFragment() {
                 val color = ResourcesCompat.getColor(resources, R.color.WorkingProgessColor, null)
                 refreshTimeSchedule(color, totalTime, lastTime)
                 setHint("持续专注中")
+                onMainActivityCallback?.onChangeIvSuspension(R.drawable.ic_tab_suspension_pause)
             }
             CountDownModel.REPOSE -> {
                 val color = ResourcesCompat.getColor(resources, R.color.RestProgessColor, null)
                 refreshTimeSchedule(color, totalTime, lastTime)
                 setHint("站起来走一走")
+                onMainActivityCallback?.onChangeIvSuspension(R.drawable.ic_tab_suspension_rest)
             }
         }
     }
@@ -102,6 +106,7 @@ class TomatoBellFragment : BaseFragment() {
                 val color = ResourcesCompat.getColor(resources, R.color.WorkingProgessColor, null)
                 refreshTimeSchedule(color, totalTime, lastTime)
                 setHint("轻触继续 长按终止")
+                onMainActivityCallback?.onChangeIvSuspension(R.drawable.ic_tab_suspension_start)
             }
         }
     }
@@ -177,6 +182,9 @@ class TomatoBellFragment : BaseFragment() {
                             CountDownManager.STATE_RUNNING_PAUSE -> {
                                 isLongClick = true
                             }
+                            CountDownManager.STATE_RUNNING -> {
+                                isLongClick = true
+                            }
                         }
                     }
                     CountDownModel.REPOSE -> {
@@ -212,7 +220,7 @@ class TomatoBellFragment : BaseFragment() {
         when (countDownModel.curretStatus) {
             CountDownModel.WORKING -> {
                 when (countDownModel.countDownStatus) {
-                    CountDownManager.STATE_RUNNING_PAUSE -> {
+                    CountDownManager.STATE_RUNNING_PAUSE, CountDownManager.STATE_RUNNING -> {
                         countDownModel.stop()
                         countDownModel.init(CountDownModel.REPOSE)
                         countDownModel.start()
