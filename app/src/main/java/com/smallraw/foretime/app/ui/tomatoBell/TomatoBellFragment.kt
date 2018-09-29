@@ -24,10 +24,6 @@ class TomatoBellFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-    }
-
-    override fun onStart() {
-        super.onStart()
         viewTimeSchedule.setOnClickListener {
             onClickListener()
         }
