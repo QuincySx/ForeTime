@@ -11,12 +11,23 @@ import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.common.timer.CountDownManager
 import com.smallraw.foretime.app.common.widget.OnClickProgressListener
 import com.smallraw.foretime.app.model.CountDownModel
+import com.smallraw.foretime.app.ui.main.OnMainActivityCallback
 import com.smallraw.time.base.BaseFragment
 import com.smallraw.time.utils.ms2Minutes
 import kotlinx.android.synthetic.main.fragment_tomato_bell.*
 
 
 class TomatoBellFragment : BaseFragment() {
+    companion object {
+        @JvmStatic
+        fun newInstance(onMainActivityCallback: OnMainActivityCallback): TomatoBellFragment {
+            val fragment = TomatoBellFragment()
+            fragment.onMainActivityCallback = onMainActivityCallback
+            return fragment
+        }
+    }
+
+    var onMainActivityCallback: OnMainActivityCallback? = null
     val countDownModel = CountDownModel.getInstance()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_tomato_bell, container, false)
@@ -24,9 +35,6 @@ class TomatoBellFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewTimeSchedule.setOnClickListener {
-            onClickListener()
-        }
         onLongClickListener()
         countDownModel.addOnCountDownListener { state, countdownState, totalTime, lastTime ->
             if (!isAdded) {
@@ -48,6 +56,15 @@ class TomatoBellFragment : BaseFragment() {
             }
         }
         countDownModel.init(CountDownModel.WORKING)
+    }
+
+    fun showViewAction() {
+        onLongClickListener()
+        onMainActivityCallback?.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                onClickListener()
+            }
+        })
     }
 
     private fun stateInit(state: Int, totalTime: Long, lastTime: Long) {
@@ -147,7 +164,12 @@ class TomatoBellFragment : BaseFragment() {
     }
 
     fun onLongClickListener() {
-        viewTimeSchedule.setOnTouchListener(object : OnClickProgressListener() {
+        onMainActivityCallback?.setOnLongClickListener(object : View.OnLongClickListener {
+            override fun onLongClick(v: View?): Boolean {
+                return true
+            }
+        })
+        onMainActivityCallback?.setOnTouchEventListener(object : OnClickProgressListener() {
             override fun onStart() {
                 var isLongClick = false
                 when (countDownModel.curretStatus) {

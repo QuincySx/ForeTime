@@ -14,6 +14,8 @@ import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.entity.Weather
 import com.smallraw.foretime.app.repository.db.entity.MemorialEntity
+import com.smallraw.foretime.app.ui.main.OnMainActivityCallback
+import com.smallraw.foretime.app.ui.tomatoBell.TomatoBellFragment
 import com.smallraw.time.base.BaseFragment
 import com.smallraw.time.model.BaseCallback
 import com.smallraw.time.model.WeatherModel
@@ -23,6 +25,16 @@ import kotlinx.android.synthetic.main.fragment_calendar.*
 import java.util.*
 
 class CalendarFragment : BaseFragment() {
+    companion object {
+        @JvmStatic
+        fun newInstance(onMainActivityCallback: OnMainActivityCallback): CalendarFragment {
+            val fragment = CalendarFragment()
+            fragment.onMainActivityCallback = onMainActivityCallback
+            return fragment
+        }
+    }
+
+    var onMainActivityCallback: OnMainActivityCallback? = null
     private val mCalendarList = ArrayList<MemorialEntity>()
     private val mCalendarAdapter = CalendarAdapter(mCalendarList)
 
@@ -68,6 +80,11 @@ class CalendarFragment : BaseFragment() {
             mCalendarList.clear()
             mCalendarList.addAll(memorialList.distinct())
         }
+    }
+
+    fun showViewAction() {
+        onMainActivityCallback?.setOnLongClickListener(null)
+        onMainActivityCallback?.setOnClickListener(null)
     }
 
     private fun initWeatherNow() {

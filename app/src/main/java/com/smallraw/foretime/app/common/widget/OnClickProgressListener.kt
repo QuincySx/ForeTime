@@ -70,9 +70,6 @@ abstract class OnClickProgressListener : Handler.Callback, View.OnTouchListener 
     }
 
     override fun onTouch(v: View?, event: MotionEvent): Boolean {
-        v?.setOnLongClickListener {
-            true
-        }
         onTouchEvent(event)
         return false
     }
