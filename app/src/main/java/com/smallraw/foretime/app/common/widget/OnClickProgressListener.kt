@@ -7,9 +7,10 @@ import android.os.SystemClock
 import android.view.MotionEvent
 import android.view.View
 
-abstract class OnClickProgressListener() : Handler.Callback, View.OnTouchListener {
+abstract class OnClickProgressListener : Handler.Callback, View.OnTouchListener {
     companion object {
         private val DELAY_CLICK = 1
+        private val DELAY_CLICK_START = 2
     }
 
     private var isClick = false
@@ -22,8 +23,6 @@ abstract class OnClickProgressListener() : Handler.Callback, View.OnTouchListene
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
                 mHandler.removeCallbacksAndMessages(null)
-                mStartClickTime = System.currentTimeMillis()
-                isClick = true
                 performLongClick()
             }
             MotionEvent.ACTION_MOVE -> {
@@ -31,19 +30,15 @@ abstract class OnClickProgressListener() : Handler.Callback, View.OnTouchListene
             }
             MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_UP -> {
                 isClick = false
+                mHandler.removeCallbacksAndMessages(null)
+                onCancel()
             }
         }
     }
 
-    fun onDestroy() {
-        isClick = false
-        mHandler.removeCallbacksAndMessages(null)
-    }
-
     private fun performLongClick() {
-        onStart()
-        val message = Message.obtain(mHandler, DELAY_CLICK)
-        mHandler.sendMessage(message)
+        val message = Message.obtain(mHandler, DELAY_CLICK_START)
+        mHandler.sendMessageDelayed(message, 230)
     }
 
     override fun handleMessage(msg: Message?): Boolean {
@@ -62,6 +57,13 @@ abstract class OnClickProgressListener() : Handler.Callback, View.OnTouchListene
                 } else {
                     onCancel()
                 }
+            }
+            DELAY_CLICK_START -> {
+                mStartClickTime = System.currentTimeMillis()
+                isClick = true
+                onStart()
+                val message = Message.obtain(mHandler, DELAY_CLICK)
+                mHandler.sendMessageDelayed(message, 10)
             }
         }
         return false

@@ -3,9 +3,7 @@ package com.smallraw.foretime.app.ui.tomatoBell
 import android.os.Bundle
 import android.support.annotation.ColorInt
 import android.support.v4.content.res.ResourcesCompat
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 
@@ -167,6 +165,7 @@ class TomatoBellFragment : BaseFragment() {
     fun onLongClickListener() {
         viewTimeSchedule.setOnTouchListener(object : OnClickProgressListener() {
             override fun onStart() {
+                viewTimeProgress.setProgress(0F)
                 viewTimeProgress.visibility = View.VISIBLE
             }
 
