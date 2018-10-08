@@ -35,7 +35,7 @@ public class TriangleView extends View {
     mHeight = AutoSizeUtils.dp2px(getContext(), 14);
     mWidth = AutoSizeUtils.dp2px(getContext(), 10);
 
-    mPaint.setColor(Color.parseColor("#FFFFFF"));
+    mPaint.setColor(Color.parseColor("#000000"));
     mPaint.setStyle(Paint.Style.FILL);
 
     mPath.moveTo(0, mHeight);
