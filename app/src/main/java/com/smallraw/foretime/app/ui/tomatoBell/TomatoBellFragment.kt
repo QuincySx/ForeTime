@@ -1,6 +1,7 @@
 package com.smallraw.foretime.app.ui.tomatoBell
 
 import android.os.Bundle
+import android.os.SystemClock
 import android.support.annotation.ColorInt
 import android.support.v4.content.res.ResourcesCompat
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.smallraw.foretime.app.R
+import com.smallraw.foretime.app.base.BaseDialogView
 import com.smallraw.foretime.app.common.timer.CountDownManager
 import com.smallraw.foretime.app.common.widget.OnClickProgressListener
 import com.smallraw.foretime.app.model.CountDownModel
@@ -15,7 +17,6 @@ import com.smallraw.foretime.app.ui.main.OnMainActivityCallback
 import com.smallraw.time.base.BaseFragment
 import com.smallraw.time.utils.ms2Minutes
 import kotlinx.android.synthetic.main.fragment_tomato_bell.*
-
 
 class TomatoBellFragment : BaseFragment() {
     companion object {
@@ -55,6 +56,9 @@ class TomatoBellFragment : BaseFragment() {
             }
         }
         countDownModel.init(CountDownModel.WORKING)
+        ivSetting.setOnClickListener {
+            BaseDialogView(context).showAtViewDown(it)
+        }
     }
 
     fun showViewAction() {
@@ -224,6 +228,7 @@ class TomatoBellFragment : BaseFragment() {
                         countDownModel.stop()
                         countDownModel.init(CountDownModel.REPOSE)
                         countDownModel.start()
+                        SystemClock.sleep(2000)
                     }
                 }
             }
