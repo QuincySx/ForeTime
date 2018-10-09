@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import com.smallraw.foretime.app.App
 
 import com.smallraw.foretime.app.R
+import com.smallraw.foretime.app.base.BaseDialogView
 import com.smallraw.foretime.app.entity.Weather
 import com.smallraw.foretime.app.repository.db.entity.MemorialEntity
 import com.smallraw.foretime.app.ui.main.OnMainActivityCallback
@@ -22,6 +23,7 @@ import com.smallraw.time.model.WeatherModel
 import com.smallraw.time.utils.getWeekOfDate
 import com.smallraw.time.utils.monthDayFormat
 import kotlinx.android.synthetic.main.fragment_calendar.*
+import me.jessyan.autosize.utils.AutoSizeUtils
 import java.util.*
 
 class CalendarFragment : BaseFragment() {
@@ -84,7 +86,11 @@ class CalendarFragment : BaseFragment() {
 
     fun showViewAction() {
         onMainActivityCallback?.setOnLongClickListener(null)
-        onMainActivityCallback?.setOnClickListener(null)
+        onMainActivityCallback?.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                BaseDialogView(context).showAtViewUp(v, AutoSizeUtils.dp2px(context, 10F))
+            }
+        })
     }
 
     private fun initWeatherNow() {

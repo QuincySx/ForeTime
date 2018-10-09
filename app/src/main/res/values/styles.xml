@@ -29,4 +29,11 @@
         <item name="android:textSize">14sp</item>
         <item name="android:color">@color/TextColorVice</item>
     </style>
+
+    <style name="baseDialogWindowAnim" mce_bogus="1" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/base_dialog_enter_anim</item>
+        <item name="android:windowExitAnimation">@anim/base_dialog_exit_anim</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
 </resources>
