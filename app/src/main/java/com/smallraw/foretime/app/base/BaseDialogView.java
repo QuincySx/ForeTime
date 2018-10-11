@@ -1,24 +1,22 @@
 package com.smallraw.foretime.app.base;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Rect;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
+import android.widget.FrameLayout;
 
 import com.smallraw.foretime.app.R;
-import com.smallraw.foretime.app.common.widget.TriangleView;
 
 import me.jessyan.autosize.utils.ScreenUtils;
 
-public class BaseDialogView extends Dialog {
+public abstract class BaseDialogView extends Dialog {
+  private WindowManager mWindowManager;
+
   public BaseDialogView(Context context) {
     super(context);
     init();
@@ -35,8 +33,18 @@ public class BaseDialogView extends Dialog {
   }
 
   private void init() {
+    mWindowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
     setContentView(R.layout.base_dialog);
+    FrameLayout rootView = findViewById(R.id.root_view);
+    rootView.addView(setRootView());
   }
+
+  /**
+   * 设置显示的主视图
+   *
+   * @return
+   */
+  protected abstract View setRootView();
 
   public void showAtViewDown(View view) {
     showAtView(view, 0, false);
@@ -55,11 +63,23 @@ public class BaseDialogView extends Dialog {
   }
 
   public void showAtViewAuto(View view) {
-    showAtView(view, 0, true);
+    showAtViewAuto(view, 0);
   }
 
   public void showAtViewAuto(View view, int padding) {
-    showAtView(view, padding, true);
+    DisplayMetrics dm = new DisplayMetrics();
+    mWindowManager.getDefaultDisplay().getMetrics(dm);
+    int screenHeight = dm.heightPixels;
+
+    int location[] = new int[2];
+    view.getLocationOnScreen(location);
+    int viewY = location[1];
+
+    boolean isUp = false;
+    if (viewY > screenHeight / 2) {
+      isUp = true;
+    }
+    showAtView(view, padding, isUp);
   }
 
   public void showAtView(View view, int padding, boolean isUp) {
@@ -93,9 +113,9 @@ public class BaseDialogView extends Dialog {
           marginParams = new ViewGroup.MarginLayoutParams(layoutParams);
         }
 
-        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+
         DisplayMetrics dm = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(dm);
+        mWindowManager.getDefaultDisplay().getMetrics(dm);
         int screenWidth = dm.widthPixels;
 
         int windowViewX = (screenWidth - parentView.getMeasuredWidth()) / 2;

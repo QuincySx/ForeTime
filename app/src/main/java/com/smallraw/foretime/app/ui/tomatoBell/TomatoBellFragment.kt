@@ -13,6 +13,7 @@ import com.smallraw.foretime.app.base.BaseDialogView
 import com.smallraw.foretime.app.common.timer.CountDownManager
 import com.smallraw.foretime.app.common.widget.OnClickProgressListener
 import com.smallraw.foretime.app.model.CountDownModel
+import com.smallraw.foretime.app.ui.dialog.TimerSetDialog
 import com.smallraw.foretime.app.ui.main.OnMainActivityCallback
 import com.smallraw.time.base.BaseFragment
 import com.smallraw.time.utils.ms2Minutes
@@ -57,7 +58,7 @@ class TomatoBellFragment : BaseFragment() {
         }
         countDownModel.init(CountDownModel.WORKING)
         ivSetting.setOnClickListener {
-            BaseDialogView(context).showAtViewDown(it)
+            TimerSetDialog(context).showAtViewAuto(it)
         }
     }
 

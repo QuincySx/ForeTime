@@ -88,7 +88,7 @@ class CalendarFragment : BaseFragment() {
         onMainActivityCallback?.setOnLongClickListener(null)
         onMainActivityCallback?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                BaseDialogView(context).showAtViewUp(v, AutoSizeUtils.dp2px(context, 10F))
+//                BaseDialogView(context).showAtViewAuto(v, AutoSizeUtils.dp2px(context, 10F))
             }
         })
     }

@@ -19,12 +19,6 @@
         android:layout_height="wrap_content"
         android:background="@drawable/shape_base_dialog_background">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="sssssss"
-            android:textColor="@android:color/holo_red_dark"
-            android:textSize="100sp" />
     </FrameLayout>
 
     <com.smallraw.foretime.app.common.widget.TriangleView

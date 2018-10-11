@@ -40,8 +40,8 @@ public class TriangleView extends View {
   }
 
   private void init() {
-    mHeight = AutoSizeUtils.dp2px(getContext(), 14);
-    mWidth = AutoSizeUtils.dp2px(getContext(), 11);
+    mHeight = AutoSizeUtils.dp2px(getContext(), 12);
+    mWidth = AutoSizeUtils.dp2px(getContext(), 10);
 
     mPaint.setColor(Color.parseColor("#FFFFFF"));
     mPaint.setStyle(Paint.Style.FILL);
