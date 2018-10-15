@@ -2,7 +2,7 @@ ext {
     libVersion = [
             junitVersion           : '4.12',
             constraintLayoutVersion: '1.1.3',
-            supportLayoutVersion   : '27.1.1',
+            supportLayoutVersion   : '28.0.0',
             roomVersion            : '1.1.1'
     ]
 

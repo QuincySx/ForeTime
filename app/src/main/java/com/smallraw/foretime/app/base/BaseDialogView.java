@@ -37,7 +37,10 @@ public abstract class BaseDialogView extends Dialog {
     setContentView(R.layout.base_dialog);
     FrameLayout rootView = findViewById(R.id.root_view);
     rootView.addView(setRootView());
+    initView();
   }
+
+  protected abstract void initView();
 
   /**
    * 设置显示的主视图
