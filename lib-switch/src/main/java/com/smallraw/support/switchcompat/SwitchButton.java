@@ -29,14 +29,6 @@ import android.view.ViewParent;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.CompoundButton;
 
-
-/**
- * SwitchButton
- *
- * @author kyleduo
- * @since 2014-09-24
- */
-
 @SuppressWarnings("unused")
 public class SwitchButton extends CompoundButton {
     public static final float DEFAULT_THUMB_RANGE_RATIO = 1.8f;
