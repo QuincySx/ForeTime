@@ -9,15 +9,15 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/layout_title_bar"
         android:layout_width="match_parent"
-        android:layout_height="73pt"
+        android:layout_height="73dp"
         android:background="#FFFFFF"
         android:paddingTop="23dp">
         <ImageView
             android:id="@+id/img_title_bar_left"
-            android:layout_width="35pt"
-            android:layout_height="35pt"
-            android:layout_marginBottom="9pt"
-            android:layout_marginLeft="8pt"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginBottom="9dp"
+            android:layout_marginLeft="8dp"
             app:srcCompat="@drawable/ic_back_black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"/>
@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#333333"
-            android:textSize="18pt"
+            android:textSize="18dp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -37,9 +37,9 @@
             android:id="@+id/layout_title_bar_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="9pt"
-            android:layout_marginRight="8pt"
-            android:layout_marginTop="6pt"
+            android:layout_marginBottom="9dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="6dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"/>

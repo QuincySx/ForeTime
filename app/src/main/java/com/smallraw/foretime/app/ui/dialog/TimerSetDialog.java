@@ -1,6 +1,7 @@
 package com.smallraw.foretime.app.ui.dialog;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.DividerItemDecoration;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import com.smallraw.foretime.app.R;
 import com.smallraw.foretime.app.base.BaseDialogView;
 import com.smallraw.foretime.app.ui.decoration.SpacesItemDecoration;
+import com.smallraw.foretime.app.ui.setting.SettingActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +30,7 @@ public class TimerSetDialog extends BaseDialogView {
   private TextView mTvTimeHint;
   private ImageView mIvTimeArrow;
   private RecyclerView mRvTime;
+  private View mLayoutMoreSetting;
   private List<Integer> mTimeList;
   private MyAdapter mMyAdapter;
 
@@ -56,6 +59,7 @@ public class TimerSetDialog extends BaseDialogView {
     mTvTimeText = findViewById(R.id.tv_time_text);
     mTvTimeHint = findViewById(R.id.tv_time_hint);
     mIvTimeArrow = findViewById(R.id.iv_time_arrow);
+    mLayoutMoreSetting = findViewById(R.id.layout_more_setting);
     mRvTime = findViewById(R.id.recycler_view_time);
     mRvTime.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
     mRvTime.addItemDecoration(new SpacesItemDecoration(AutoSizeUtils.dp2px(getContext(), 27)));
@@ -82,6 +86,15 @@ public class TimerSetDialog extends BaseDialogView {
         mIvTimeArrow.setVisibility(View.GONE);
         mRvTime.setVisibility(View.VISIBLE);
         isShowTime = true;
+      }
+    });
+
+    mLayoutMoreSetting.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent intent = new Intent(getContext(), SettingActivity.class);
+        getContext().startActivity(intent);
+        dismiss();
       }
     });
   }
