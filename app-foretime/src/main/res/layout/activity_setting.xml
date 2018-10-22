@@ -109,7 +109,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:paddingLeft="30dp"
+                android:paddingLeft="24dp"
                 android:paddingRight="24dp"
                 android:text="无限"
                 app:layout_constraintRight_toRightOf="parent" />
@@ -141,7 +141,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:paddingLeft="30dp"
+                android:paddingLeft="24dp"
                 android:paddingRight="24dp"
                 android:text="25 分钟"
                 app:layout_constraintRight_toRightOf="parent" />
@@ -171,7 +171,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:paddingLeft="30dp"
+                android:paddingLeft="24dp"
                 android:paddingRight="24dp"
                 android:text="5 分钟"
                 app:layout_constraintRight_toRightOf="parent" />
@@ -201,7 +201,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:paddingLeft="30dp"
+                android:paddingLeft="24dp"
                 android:paddingRight="24dp"
                 android:text="4 个专注"
                 app:layout_constraintRight_toRightOf="parent" />
@@ -231,7 +231,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:paddingLeft="30dp"
+                android:paddingLeft="24dp"
                 android:paddingRight="24dp"
                 android:text="15 分钟"
                 app:layout_constraintRight_toRightOf="parent" />

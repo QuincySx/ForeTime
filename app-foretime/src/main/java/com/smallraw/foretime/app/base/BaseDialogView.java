@@ -90,7 +90,7 @@ public abstract class BaseDialogView extends Dialog {
     view.getLocationOnScreen(location);
     int viewX = location[0];
     int viewY = location[1];
-    int viewWidthHalf = view.getWidth() / 2 + view.getPaddingLeft();
+    int viewWidthHalf = view.getMeasuredWidth() / 2 ;
     int viewHeight = view.getMeasuredHeight();
     getWindow().setDimAmount(0.3f);
     show();
