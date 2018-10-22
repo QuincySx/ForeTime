@@ -1,0 +1,65 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion this.compile.compileSdkVersion
+
+    defaultConfig {
+        applicationId "com.smallraw.foretime.app"
+        minSdkVersion this.defaultConfigVersion.minSdkVersion
+        targetSdkVersion this.defaultConfigVersion.targetSdkVersion
+        versionCode this.defaultConfigVersion.versionCode
+        versionName this.defaultConfigVersion.versionName
+
+        testInstrumentationRunner this.defaultConfigVersion.testInstrumentationRunner
+
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    testImplementation this.libs.junit
+    androidTestImplementation this.libs.runner
+    androidTestImplementation this.libs.espressoCore
+
+    implementation this.libs.kotlinStdlib
+
+    implementation this.libs.constraintLayout
+    implementation this.libs.appcompatV7
+    implementation this.libs.design
+    implementation this.libs.cardviewV7
+    implementation this.libs.recyclerviewV7
+
+    implementation this.libs.roomRuntime
+    kapt this.libs.roomCompiler
+
+    implementation this.libs.autosize
+    implementation this.libs.fastjson
+
+    implementation(this.libs.StatusBarCompat, {
+        exclude group: 'com.android.support'
+    })
+
+    implementation project(":lib-core")
+    implementation project(":lib-switch")
+    implementation project(":lib-wheel")
+}
