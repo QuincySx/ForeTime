@@ -133,6 +133,7 @@
         android:background="#EDEDED" />
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/layoutShare"
         android:layout_width="wrap_content"
         android:layout_height="32dp"
         android:layout_gravity="center"

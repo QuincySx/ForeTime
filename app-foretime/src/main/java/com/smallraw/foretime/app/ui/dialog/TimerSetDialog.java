@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.smallraw.foretime.app.R;
 import com.smallraw.foretime.app.base.BaseDialogView;
 import com.smallraw.foretime.app.ui.decoration.SpacesItemDecoration;
+import com.smallraw.foretime.app.ui.harvestToday.HarvestTodayActivity;
 import com.smallraw.foretime.app.ui.setting.SettingActivity;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class TimerSetDialog extends BaseDialogView {
   private ImageView mIvTimeArrow;
   private RecyclerView mRvTime;
   private View mLayoutMoreSetting;
+  private View mLayoutShare;
   private List<Integer> mTimeList;
   private MyAdapter mMyAdapter;
 
@@ -55,6 +57,7 @@ public class TimerSetDialog extends BaseDialogView {
     mTimeList.add(40);
     mTimeList.add(50);
 
+    mLayoutShare = findViewById(R.id.layoutShare);
     mLayoutTime = findViewById(R.id.layout_time);
     mTvTimeText = findViewById(R.id.tv_time_text);
     mTvTimeHint = findViewById(R.id.tv_time_hint);
@@ -97,6 +100,16 @@ public class TimerSetDialog extends BaseDialogView {
         dismiss();
       }
     });
+
+    mLayoutShare.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent intent = new Intent(getContext(), HarvestTodayActivity.class);
+        getContext().startActivity(intent);
+        dismiss();
+      }
+    });
+
   }
 
   public static class MyAdapter extends RecyclerView.Adapter<ViewHolder> {
