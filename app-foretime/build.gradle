@@ -54,6 +54,8 @@ dependencies {
 
     implementation this.libs.autosize
     implementation this.libs.fastjson
+    implementation this.libs.glide
+    implementation this.libs.glideTransformations
 
     implementation(this.libs.StatusBarCompat, {
         exclude group: 'com.android.support'

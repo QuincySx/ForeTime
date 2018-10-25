@@ -33,7 +33,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.setting.SettingActivity" />
-        <activity android:name=".ui.harvestToday.HarvestTodayActivity"></activity>
+        <activity android:name=".ui.harvestToday.HarvestTodayActivity" />
+        <activity android:name=".ui.shape.ShapeActivity"></activity>
     </application>
 
 </manifest>

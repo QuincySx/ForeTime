@@ -7,20 +7,22 @@ ext {
     ]
 
     libs = [
-            junit           : "junit:junit:${libVersion.junitVersion}",
-            runner          : "com.android.support.test:runner:1.0.2",
-            espressoCore    : "com.android.support.test.espresso:espresso-core:3.0.2",
-            kotlinStdlib    : "org.jetbrains.kotlin:kotlin-stdlib:${this.gradlePluginVerion.kotlinVersion}",
-            kotlinStdlibJdk7: "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${this.gradlePluginVerion.kotlinVersion}",
-            constraintLayout: "com.android.support.constraint:constraint-layout:${this.libVersion.constraintLayoutVersion}",
-            appcompatV7     : "com.android.support:appcompat-v7:${this.libVersion.supportLayoutVersion}",
-            design          : "com.android.support:design:${this.libVersion.supportLayoutVersion}",
-            cardviewV7      : "com.android.support:cardview-v7:${this.libVersion.supportLayoutVersion}",
-            recyclerviewV7  : "com.android.support:recyclerview-v7:${this.libVersion.supportLayoutVersion}",
-            roomRuntime     : "android.arch.persistence.room:runtime:${this.libVersion.roomVersion}",
-            roomCompiler    : "android.arch.persistence.room:compiler:${this.libVersion.roomVersion}",
-            autosize        : "me.jessyan:autosize:0.9.5",
-            StatusBarCompat : "com.github.niorgai:StatusBarCompat:2.1.4",
-            fastjson        : 'com.alibaba:fastjson:1.1.68.android'
+            junit               : "junit:junit:${libVersion.junitVersion}",
+            runner              : "com.android.support.test:runner:1.0.2",
+            espressoCore        : "com.android.support.test.espresso:espresso-core:3.0.2",
+            kotlinStdlib        : "org.jetbrains.kotlin:kotlin-stdlib:${this.gradlePluginVerion.kotlinVersion}",
+            kotlinStdlibJdk7    : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${this.gradlePluginVerion.kotlinVersion}",
+            constraintLayout    : "com.android.support.constraint:constraint-layout:${this.libVersion.constraintLayoutVersion}",
+            appcompatV7         : "com.android.support:appcompat-v7:${this.libVersion.supportLayoutVersion}",
+            design              : "com.android.support:design:${this.libVersion.supportLayoutVersion}",
+            cardviewV7          : "com.android.support:cardview-v7:${this.libVersion.supportLayoutVersion}",
+            recyclerviewV7      : "com.android.support:recyclerview-v7:${this.libVersion.supportLayoutVersion}",
+            roomRuntime         : "android.arch.persistence.room:runtime:${this.libVersion.roomVersion}",
+            roomCompiler        : "android.arch.persistence.room:compiler:${this.libVersion.roomVersion}",
+            autosize            : "me.jessyan:autosize:0.9.5",
+            StatusBarCompat     : "com.github.niorgai:StatusBarCompat:2.1.4",
+            fastjson            : 'com.alibaba:fastjson:1.1.68.android',
+            glide               : 'com.github.bumptech.glide:glide:4.8.0',
+            glideTransformations: "jp.wasabeef:glide-transformations:3.3.0"
     ]
 }

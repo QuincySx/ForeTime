@@ -1,15 +1,16 @@
 package com.smallraw.foretime.app.ui.harvestToday
 
-import android.support.v7.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.entity.Weather
+import com.smallraw.foretime.app.ui.shape.ShapeActivity
 import com.smallraw.time.base.BaseTitleBarActivity
 import com.smallraw.time.model.BaseCallback
 import com.smallraw.time.model.WeatherModel
 import com.smallraw.time.utils.getWeekOfDate
 import com.smallraw.time.utils.monthDayFormat
-import kotlinx.android.synthetic.main.fragment_calendar.*
+import kotlinx.android.synthetic.main.activity_harvest_today.*
 import java.util.*
 
 class HarvestTodayActivity : BaseTitleBarActivity() {
@@ -18,7 +19,13 @@ class HarvestTodayActivity : BaseTitleBarActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_harvest_today)
         setTitleBarLeftImage(R.drawable.ic_back_black)
+        setDateTime()
         initWeatherNow()
+
+        ivSuspensionShare.setOnClickListener {
+            val intent = Intent(this, ShapeActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun initWeatherNow() {
