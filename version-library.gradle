@@ -9,6 +9,7 @@ ext {
     libs = [
             junit               : "junit:junit:${libVersion.junitVersion}",
             runner              : "com.android.support.test:runner:1.0.2",
+            lifecycleExtensions : "android.arch.lifecycle:extensions:1.1.1",
             espressoCore        : "com.android.support.test.espresso:espresso-core:3.0.2",
             kotlinStdlib        : "org.jetbrains.kotlin:kotlin-stdlib:${this.gradlePluginVerion.kotlinVersion}",
             kotlinStdlibJdk7    : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${this.gradlePluginVerion.kotlinVersion}",

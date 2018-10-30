@@ -2,6 +2,8 @@ package com.smallraw.foretime.app.ui.calendar
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.util.LongSparseArray
 import android.support.v7.widget.LinearLayoutManager
@@ -15,6 +17,7 @@ import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.base.BaseDialogView
 import com.smallraw.foretime.app.entity.Weather
 import com.smallraw.foretime.app.repository.db.entity.MemorialEntity
+import com.smallraw.foretime.app.ui.calendar.vm.CalendarVewModle
 import com.smallraw.foretime.app.ui.main.OnMainActivityCallback
 import com.smallraw.foretime.app.ui.tomatoBell.TomatoBellFragment
 import com.smallraw.time.base.BaseFragment
@@ -36,6 +39,8 @@ class CalendarFragment : BaseFragment() {
         }
     }
 
+    lateinit var mCalendarVewModle: CalendarVewModle
+
     var onMainActivityCallback: OnMainActivityCallback? = null
     private val mCalendarList = ArrayList<MemorialEntity>()
     private val mCalendarAdapter = CalendarAdapter(mCalendarList)
@@ -46,8 +51,14 @@ class CalendarFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mCalendarVewModle = ViewModelProviders.of(this).get(CalendarVewModle::class.java)
         initView()
-        newData(0, 0)
+        mCalendarVewModle.memorialLiveData.observe(this, android.arch.lifecycle.Observer {
+            mCalendarList.clear()
+            mCalendarList.addAll(it!!.distinct())
+            mCalendarAdapter.notifyDataSetChanged()
+        })
+
         setDateTime()
         initWeatherNow()
     }
@@ -56,32 +67,6 @@ class CalendarFragment : BaseFragment() {
         recyclerView.layoutManager = LinearLayoutManager(activity?.applicationContext)
         recyclerView.adapter = mCalendarAdapter
         mCalendarAdapter.notifyDataSetChanged()
-    }
-
-    private fun newData(display: Int, order: Int) {
-        val application = activity!!.application as App
-        application.getAppExecutors().networkIO().execute {
-            val memorialList = application.getRepository().getActiveTask(display, order) as ArrayList
-
-            val memorialMap = LongSparseArray<MemorialEntity>(memorialList.size)
-            for (item in memorialList) {
-                memorialMap.put(item.id, item)
-            }
-
-            val taskTopList = application.getRepository().getTaskTopList(0)
-            val topMemorialList = ArrayList<MemorialEntity>(memorialMap.size());
-            for (item in taskTopList) {
-                val get = memorialMap.get(item.memorial_id)
-                if (get != null) {
-                    topMemorialList.add(get)
-                    memorialList.remove(get)
-                }
-            }
-            memorialList.addAll(0, topMemorialList)
-
-            mCalendarList.clear()
-            mCalendarList.addAll(memorialList.distinct())
-        }
     }
 
     fun showViewAction() {

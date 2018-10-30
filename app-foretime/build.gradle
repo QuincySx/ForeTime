@@ -48,6 +48,7 @@ dependencies {
     implementation this.libs.design
     implementation this.libs.cardviewV7
     implementation this.libs.recyclerviewV7
+    implementation this.libs.lifecycleExtensions
 
     implementation this.libs.roomRuntime
     kapt this.libs.roomCompiler

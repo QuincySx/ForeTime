@@ -10,6 +10,7 @@ import android.arch.persistence.room.Update;
 
 import com.smallraw.foretime.app.repository.db.entity.MemorialEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Dao
