@@ -18,6 +18,7 @@ import com.smallraw.foretime.app.base.BaseDialogView
 import com.smallraw.foretime.app.entity.Weather
 import com.smallraw.foretime.app.repository.db.entity.MemorialEntity
 import com.smallraw.foretime.app.ui.calendar.vm.CalendarVewModle
+import com.smallraw.foretime.app.ui.dialog.SelectDayTypeDialog
 import com.smallraw.foretime.app.ui.main.OnMainActivityCallback
 import com.smallraw.foretime.app.ui.tomatoBell.TomatoBellFragment
 import com.smallraw.time.base.BaseFragment
@@ -73,7 +74,7 @@ class CalendarFragment : BaseFragment() {
         onMainActivityCallback?.setOnLongClickListener(null)
         onMainActivityCallback?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-//                BaseDialogView(context).showAtViewAuto(v, AutoSizeUtils.dp2px(context, 10F))
+                SelectDayTypeDialog(context).showAtViewAuto(v, AutoSizeUtils.dp2px(context, 56F))
             }
         })
     }
