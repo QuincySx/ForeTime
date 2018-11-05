@@ -1,5 +1,6 @@
 package com.smallraw.foretime.app.repository.db.dao;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.db.SupportSQLiteQuery;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
@@ -32,7 +33,7 @@ public interface MemorialTopDao {
   List<MemorialTopEntity> selectAll();
 
   @Query("SELECT * FROM memorial_top WHERE type = :type ORDER BY createTime DESC")
-  List<MemorialTopEntity> selectAllByType(int type);
+  LiveData<List<MemorialTopEntity>> selectAllByType(int type);
 
   @Update
   int update(MemorialTopEntity memorialEntity);

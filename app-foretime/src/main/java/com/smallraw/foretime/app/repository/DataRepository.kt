@@ -1,5 +1,6 @@
 package com.smallraw.foretime.app.repository
 
+import android.arch.lifecycle.LiveData
 import android.arch.persistence.db.SimpleSQLiteQuery
 import android.util.Log
 import com.smallraw.foretime.app.repository.db.AppDatabase
@@ -35,7 +36,7 @@ class DataRepository {
      * @param order 按条件排序 0::默认排序 1::日期排序 2::颜色排序
      * @return 返回按顺序查找的任务列表
      */
-    fun getActiveTask(display: Int, order: Int): List<MemorialEntity> {
+    fun getActiveTask(display: Int, order: Int): LiveData<List<MemorialEntity>> {
         var displayOption: Int? = null
         when (display) {
             0 -> {
@@ -77,12 +78,12 @@ class DataRepository {
         return mDatabase.memorialDao().select(query)
     }
 
-    fun getTask(strike: Boolean = false, archive: Boolean = false): List<MemorialEntity> {
+    fun getTask(strike: Boolean = false, archive: Boolean = false): LiveData<List<MemorialEntity>> {
         val query = SimpleSQLiteQuery("SELECT * FROM memorial WHERE strike = ? AND archive = ? ORDER BY createTime DESC", arrayOf<Any>(strike, archive))
         return mDatabase.memorialDao().select(query)
     }
 
-    fun getTaskStrike(strike: Boolean = false): List<MemorialEntity> {
+    fun getTaskStrike(strike: Boolean = false): LiveData<List<MemorialEntity>> {
         val query = SimpleSQLiteQuery("SELECT * FROM memorial WHERE strike = ? ORDER BY createTime DESC", arrayOf<Any>(strike))
         return mDatabase.memorialDao().select(query)
     }
@@ -112,7 +113,7 @@ class DataRepository {
         mDatabase.memorialDao().deletes(memorialEntitys)
     }
 
-    fun getTaskTopList(type: Int): MutableList<MemorialTopEntity> {
+    fun getTaskTopList(type: Int): LiveData<MutableList<MemorialTopEntity>> {
         return mDatabase.memorialTopDao().selectAllByType(type)
     }
 

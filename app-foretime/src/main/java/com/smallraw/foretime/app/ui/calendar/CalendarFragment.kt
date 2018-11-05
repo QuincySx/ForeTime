@@ -54,7 +54,7 @@ class CalendarFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         mCalendarVewModle = ViewModelProviders.of(this).get(CalendarVewModle::class.java)
         initView()
-        mCalendarVewModle.memorialLiveData.observe(this, android.arch.lifecycle.Observer {
+        mCalendarVewModle.mMemorialListLiveData.observe(this, android.arch.lifecycle.Observer {
             mCalendarList.clear()
             mCalendarList.addAll(it!!.distinct())
             mCalendarAdapter.notifyDataSetChanged()
