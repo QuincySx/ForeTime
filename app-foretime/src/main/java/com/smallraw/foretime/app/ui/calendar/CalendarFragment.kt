@@ -33,9 +33,9 @@ class CalendarFragment : BaseFragment() {
         }
     }
 
-    lateinit var mCalendarVewModle: CalendarVewModel
+    private lateinit var mCalendarVewModel: CalendarVewModel
 
-    var onMainActivityCallback: OnMainActivityCallback? = null
+    private var onMainActivityCallback: OnMainActivityCallback? = null
     private val mCalendarList = ArrayList<MemorialEntity>()
     private val mCalendarAdapter = CalendarAdapter(mCalendarList)
 
@@ -45,15 +45,15 @@ class CalendarFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mCalendarVewModle = ViewModelProviders.of(this).get(CalendarVewModel::class.java)
+        mCalendarVewModel = ViewModelProviders.of(this).get(CalendarVewModel::class.java)
         initView()
-        mCalendarVewModle.mActiveTaskListLiveData.observe(this, android.arch.lifecycle.Observer {
+        mCalendarVewModel.mActiveTaskListLiveData.observe(this, android.arch.lifecycle.Observer {
             Log.e("LiveData", "任务卡列表收到变化")
             mCalendarList.clear()
             mCalendarList.addAll(it!!.distinct())
             mCalendarAdapter.notifyDataSetChanged()
         })
-        mCalendarVewModle.queryActiveTask(0, 0)
+        mCalendarVewModel.queryActiveTask(0, 0)
         setDateTime()
         initWeatherNow()
     }
