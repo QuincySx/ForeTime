@@ -53,7 +53,7 @@ class CalendarFragment : BaseFragment() {
             mCalendarList.addAll(it!!.distinct())
             mCalendarAdapter.notifyDataSetChanged()
         })
-        mCalendarVewModle.queryActiveTask(0,0)
+        mCalendarVewModle.queryActiveTask(0, 0)
         setDateTime()
         initWeatherNow()
     }

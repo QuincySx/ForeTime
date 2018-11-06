@@ -3,6 +3,7 @@ package com.smallraw.foretime.app.ui.calendar.vm
 import android.arch.lifecycle.*
 import android.util.Log
 import android.util.LongSparseArray
+import java.util.ArrayList
 
 import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.repository.DataRepository
@@ -11,19 +12,17 @@ import com.smallraw.foretime.app.repository.db.entity.MemorialTopEntity
 
 class CalendarVewModel : ViewModel() {
     private val mRepository: DataRepository = App.getInstance().getRepository()
-    private val mMediatorLiveData = MediatorLiveData<LiveData<*>>()
+    val mActiveTaskListLiveData = MediatorLiveData<List<MemorialEntity>>()
 
-    private var mActiveTaskLiveData = MutableLiveData<List<MemorialEntity>>()
+    private var mActiveTaskLiveData = MutableLiveData<ArrayList<MemorialEntity>>()
     private var mActiveTaskTopLiveData: LiveData<MutableList<MemorialTopEntity>>
-
-    val mActiveTaskListLiveData: MutableLiveData<List<MemorialEntity>> = MutableLiveData()
 
     init {
         Log.e("LiveData", "初始化完成")
         mActiveTaskTopLiveData = mRepository.getTaskTopList(0)
-        mMediatorLiveData.addSource(mActiveTaskTopLiveData) {
+        mActiveTaskListLiveData.addSource(mActiveTaskTopLiveData) {
             Log.e("LiveData", "顶置发生了变化")
-            var memorialEntities = mActiveTaskLiveData.value as ArrayList
+            var memorialEntities = mActiveTaskLiveData.value
             var taskTopList = it
             if (taskTopList == null) {
                 taskTopList = mutableListOf()
@@ -46,12 +45,11 @@ class CalendarVewModel : ViewModel() {
                 }
             }
             memorialEntities.addAll(0, topMemorialList)
-            App.getInstance().getAppExecutors().mainThread().execute {
-                mActiveTaskListLiveData.value = (memorialEntities)
-            }
+
+            mActiveTaskListLiveData.postValue(memorialEntities)
         }
 
-        mMediatorLiveData.addSource(mActiveTaskLiveData) {
+        mActiveTaskListLiveData.addSource(mActiveTaskLiveData) {
             Log.e("LiveData", "任务卡发生了变化")
             var memorialEntities = it as ArrayList
             var taskTopList = mActiveTaskTopLiveData.value
@@ -76,9 +74,8 @@ class CalendarVewModel : ViewModel() {
                 }
             }
             memorialEntities.addAll(0, topMemorialList)
-            App.getInstance().getAppExecutors().mainThread().execute {
-                mActiveTaskListLiveData.value = (memorialEntities)
-            }
+
+            mActiveTaskListLiveData.postValue(memorialEntities)
         }
     }
 
@@ -86,7 +83,7 @@ class CalendarVewModel : ViewModel() {
         App.getInstance().getAppExecutors().diskIO().execute {
             Log.e("Query DB", "查询新的任务数据")
             val activeTask = mRepository.getActiveTask(display, order)
-            mActiveTaskLiveData.postValue(activeTask)
+            mActiveTaskLiveData.postValue(activeTask as ArrayList<MemorialEntity>)
         }
     }
 }
