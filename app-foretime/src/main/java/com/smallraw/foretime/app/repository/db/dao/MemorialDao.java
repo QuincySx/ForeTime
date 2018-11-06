@@ -22,7 +22,7 @@ import java.util.List;
 @Dao
 public interface MemorialDao {
     @RawQuery
-    LiveData<List<MemorialEntity>> select(SupportSQLiteQuery sql);
+    List<MemorialEntity> select(SupportSQLiteQuery sql);
 
     @Query("SELECT COUNT(*) FROM memorial")
     int count();

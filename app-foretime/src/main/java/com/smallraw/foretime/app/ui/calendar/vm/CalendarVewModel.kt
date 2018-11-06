@@ -1,13 +1,7 @@
 package com.smallraw.foretime.app.ui.calendar.vm
 
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MediatorLiveData
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.Transformations
-import android.arch.lifecycle.ViewModel
-import android.system.Os.remove
+import android.arch.lifecycle.*
+import android.util.Log
 import android.util.LongSparseArray
 
 import com.smallraw.foretime.app.App
@@ -15,22 +9,21 @@ import com.smallraw.foretime.app.repository.DataRepository
 import com.smallraw.foretime.app.repository.db.entity.MemorialEntity
 import com.smallraw.foretime.app.repository.db.entity.MemorialTopEntity
 
-import java.util.HashMap
-
-class CalendarVewModle : ViewModel() {
-    val mRepository: DataRepository
+class CalendarVewModel : ViewModel() {
+    private val mRepository: DataRepository = App.getInstance().getRepository()
     private val mMediatorLiveData = MediatorLiveData<LiveData<*>>()
 
-    private var mMemorialLiveData = MutableLiveData<List<MemorialEntity>>()
-    private var mMemorialTopLiveData: LiveData<MutableList<MemorialTopEntity>>
+    private var mActiveTaskLiveData = MutableLiveData<List<MemorialEntity>>()
+    private var mActiveTaskTopLiveData: LiveData<MutableList<MemorialTopEntity>>
 
-     val mMemorialListLiveData: MutableLiveData<List<MemorialEntity>> = MutableLiveData<List<MemorialEntity>>()
+    val mActiveTaskListLiveData: MutableLiveData<List<MemorialEntity>> = MutableLiveData()
 
     init {
-        mRepository = App.getInstance().getRepository()
-        mMemorialTopLiveData = mRepository.getTaskTopList(0)
-        mMediatorLiveData.addSource(mMemorialTopLiveData) {
-            var memorialEntities = mMemorialLiveData.value as ArrayList
+        Log.e("LiveData", "初始化完成")
+        mActiveTaskTopLiveData = mRepository.getTaskTopList(0)
+        mMediatorLiveData.addSource(mActiveTaskTopLiveData) {
+            Log.e("LiveData", "顶置发生了变化")
+            var memorialEntities = mActiveTaskLiveData.value as ArrayList
             var taskTopList = it
             if (taskTopList == null) {
                 taskTopList = mutableListOf()
@@ -54,13 +47,14 @@ class CalendarVewModle : ViewModel() {
             }
             memorialEntities.addAll(0, topMemorialList)
             App.getInstance().getAppExecutors().mainThread().execute {
-                mMemorialListLiveData.value = (memorialEntities)
+                mActiveTaskListLiveData.value = (memorialEntities)
             }
         }
 
-        mMediatorLiveData.addSource(mMemorialLiveData) {
+        mMediatorLiveData.addSource(mActiveTaskLiveData) {
+            Log.e("LiveData", "任务卡发生了变化")
             var memorialEntities = it as ArrayList
-            var taskTopList = mMemorialTopLiveData.value
+            var taskTopList = mActiveTaskTopLiveData.value
             if (taskTopList == null) {
                 taskTopList = mutableListOf()
             }
@@ -83,12 +77,16 @@ class CalendarVewModle : ViewModel() {
             }
             memorialEntities.addAll(0, topMemorialList)
             App.getInstance().getAppExecutors().mainThread().execute {
-                mMemorialListLiveData.value = (memorialEntities)
+                mActiveTaskListLiveData.value = (memorialEntities)
             }
         }
     }
 
     fun queryActiveTask(display: Int, order: Int) {
-        mMemorialLiveData = mRepository.getActiveTask(display, order) as MutableLiveData<List<MemorialEntity>>
+        App.getInstance().getAppExecutors().diskIO().execute {
+            Log.e("Query DB", "查询新的任务数据")
+            val activeTask = mRepository.getActiveTask(display, order)
+            mActiveTaskLiveData.postValue(activeTask)
+        }
     }
 }

@@ -36,7 +36,7 @@ class DataRepository {
      * @param order 按条件排序 0::默认排序 1::日期排序 2::颜色排序
      * @return 返回按顺序查找的任务列表
      */
-    fun getActiveTask(display: Int, order: Int): LiveData<List<MemorialEntity>> {
+    fun getActiveTask(display: Int, order: Int): List<MemorialEntity> {
         var displayOption: Int? = null
         when (display) {
             0 -> {
@@ -78,12 +78,12 @@ class DataRepository {
         return mDatabase.memorialDao().select(query)
     }
 
-    fun getTask(strike: Boolean = false, archive: Boolean = false): LiveData<List<MemorialEntity>> {
+    fun getTask(strike: Boolean = false, archive: Boolean = false): List<MemorialEntity> {
         val query = SimpleSQLiteQuery("SELECT * FROM memorial WHERE strike = ? AND archive = ? ORDER BY createTime DESC", arrayOf<Any>(strike, archive))
         return mDatabase.memorialDao().select(query)
     }
 
-    fun getTaskStrike(strike: Boolean = false): LiveData<List<MemorialEntity>> {
+    fun getTaskStrike(strike: Boolean = false): List<MemorialEntity> {
         val query = SimpleSQLiteQuery("SELECT * FROM memorial WHERE strike = ? ORDER BY createTime DESC", arrayOf<Any>(strike))
         return mDatabase.memorialDao().select(query)
     }
