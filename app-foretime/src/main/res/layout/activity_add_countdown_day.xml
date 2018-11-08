@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:context=".ui.addTaskDay.AddTaskDayActivity">
+
+        <EditText
+            style="@style/TextBig"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:background="@null"
+            android:cursorVisible="true"
+            android:gravity="center"
+            android:hint="倒数日名称"
+            android:textColorHint="@color/TextColorHint"
+            android:textCursorDrawable="@drawable/shape_edittext_cursor" />
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginLeft="42dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="42dp">
+
+            <TextView
+                android:id="@+id/tv_time_hint"
+                style="@style/TextNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingLeft="4dp"
+                android:text="起始日期" />
+
+            <TextView
+                android:id="@+id/tv_time_text"
+                style="@style/TextNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingLeft="30dp"
+                android:text="2018-05-15"
+                app:layout_constraintRight_toRightOf="parent" />
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="#EDEDED"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginLeft="42dp"
+            android:layout_marginRight="42dp">
+
+            <TextView
+                style="@style/TextNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingLeft="4dp"
+                android:text="目标日期" />
+
+            <TextView
+                style="@style/TextNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingLeft="30dp"
+                android:text="2018-05-15"
+                app:layout_constraintRight_toRightOf="parent" />
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="#EDEDED"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginLeft="42dp"
+            android:layout_marginRight="42dp">
+
+            <TextView
+                style="@style/TextNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingLeft="4dp"
+                android:text="循环周期" />
+
+            <TextView
+                style="@style/TextNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingLeft="30dp"
+                android:text="从不"
+                app:layout_constraintRight_toRightOf="parent" />
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="#EDEDED"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="136dp"
+            android:layout_marginLeft="42dp"
+            android:layout_marginRight="42dp">
+
+            <TextView
+                android:id="@+id/tv_remark"
+                style="@style/TextNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="26dp"
+                android:gravity="center"
+                android:paddingLeft="4dp"
+                android:text="备注"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                style="@style/TextSmall"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="6dp"
+                android:background="@null"
+                android:gravity="left|top"
+                android:inputType="textMultiLine"
+                android:maxLength="88"
+                android:padding="4dp"
+                android:text="设置控件显示的位置：默认top，这里居中显示，还有bottom 设置控件显示的位置：默认top，这里居中显示，还有bottom 设置控件显示的位置：默认top，这里居中显示，还有bottom "
+                android:textColor="#DBDBDB"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_remark" />
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="#EDEDED"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/ivSuspension"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="55dp"
+            android:layout_marginBottom="25dp"
+            app:srcCompat="@drawable/ic_tab_suspension_next" />
+    </LinearLayout>
+</ScrollView>

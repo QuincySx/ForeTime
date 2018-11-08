@@ -3,7 +3,6 @@ package com.smallraw.foretime.app.ui.calendar.vm
 import android.arch.lifecycle.*
 import android.util.Log
 import android.util.LongSparseArray
-import java.util.ArrayList
 
 import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.repository.DataRepository

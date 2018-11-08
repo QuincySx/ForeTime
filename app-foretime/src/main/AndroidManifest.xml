@@ -34,7 +34,7 @@
         </activity>
         <activity android:name=".ui.setting.SettingActivity" />
         <activity android:name=".ui.harvestToday.HarvestTodayActivity" />
-        <activity android:name=".ui.shape.ShapeActivity"></activity>
+        <activity android:name=".ui.shape.ShapeActivity" />
         <activity android:name=".ui.musicListActivity.MusicListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,6 +42,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.addTaskDay.AddTaskDayActivity"></activity>
     </application>
 
 </manifest>
