@@ -10,6 +10,7 @@ import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.common.widget.dialog.SelectDateDialog
 import com.smallraw.time.base.BaseTitleBarActivity
 import kotlinx.android.synthetic.main.activity_add_countdown_day.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 class AddTaskDayActivity : BaseTitleBarActivity() {
@@ -35,6 +36,8 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
 
     var mCalendar = Calendar.getInstance()
 
+    var dataFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
     @IntDef(DaysMatter, DaysCumulative)
     annotation class DayType
 
@@ -49,8 +52,8 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
 
         tvTargeDate.setOnClickListener {
             SelectDateDialog.Builder(this)
-                    .setOnWheelCallback { year, _month, day ->
-                        tvTargeDate.text = "${year}-${_month}-${day}"
+                    .setOnWheelCallback { date ->
+                        tvTargeDate.text = dataFormat.format(date)
                     }
                     .build()
                     .showAtViewAuto(tvTargeDate)

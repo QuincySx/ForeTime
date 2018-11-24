@@ -9,51 +9,8 @@
     android:paddingRight="40dp"
     android:paddingBottom="20dp">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="38dp"
-        android:layout_gravity="center"
-        android:src="@drawable/shape_doalog_wheel_separate" />
-
-    <com.smallraw.support.wheelcompat.LoopView
-        android:id="@+id/view_year"
-        android:layout_width="75dp"
-        android:layout_height="150dp"
-        android:layout_weight="2.2"
-        app:lineColor="@color/colorWhite"
-        app:canLoop="true" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="38dp"
-        android:layout_gravity="center"
-        android:src="@drawable/shape_doalog_wheel_separate" />
-
-    <com.smallraw.support.wheelcompat.LoopView
-        android:id="@+id/view_month"
-        android:layout_width="75dp"
-        android:layout_height="150dp"
-        android:layout_weight="2.2"
-        app:lineColor="@color/colorWhite"
-        app:canLoop="true" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="38dp"
-        android:layout_gravity="center"
-        android:src="@drawable/shape_doalog_wheel_separate" />
-
-    <com.smallraw.support.wheelcompat.LoopView
-        android:id="@+id/view_day"
-        android:layout_width="75dp"
-        android:layout_height="150dp"
-        android:layout_weight="2.2"
-        app:lineColor="@color/colorWhite"
-        app:canLoop="true" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="38dp"
-        android:layout_gravity="center"
-        android:src="@drawable/shape_doalog_wheel_separate" />
+    <com.smallraw.foretime.app.common.widget.wheel.WheelDatePicker
+        android:id="@+id/viewWheelDataPicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

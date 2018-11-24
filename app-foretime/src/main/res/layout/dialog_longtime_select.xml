@@ -30,17 +30,19 @@
         app:layout_constraintRight_toLeftOf="@+id/view_wheel"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.smallraw.support.wheelcompat.LoopView
+
+    <com.smallraw.foretime.app.common.widget.wheel.WheelPicker
         android:id="@+id/view_wheel"
         android:layout_width="75dp"
-        android:layout_height="150dp"
-        android:layout_weight="2.2"
-        app:lineColor="@color/colorWhite"
-        app:canLoop="true"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:wheel_atmospheric="true"
+        app:wheel_curved="true"
+        app:wheel_item_text_size="22sp"
+        app:wheel_item_text_style="bold" />
 
     <ImageView
         android:layout_width="wrap_content"
