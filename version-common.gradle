@@ -4,10 +4,11 @@
  * @return
  */
 def addRepository(RepositoryHandler handler) {
+    handler.maven() { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
     handler.maven() { url "https://repo.huaweicloud.com/repository/maven/" }
     handler.google()
     handler.jcenter()
-    handler.maven() { url "http://maven.smallraw.com/repository/maven/" }
+    handler.maven() { url 'https://jitpack.io' }
 }
 
 ext.addRepository = this.&addRepository
@@ -41,8 +42,8 @@ ext {
     ]
 
     defaultConfigVersion = [
-            minSdkVersion            : 21,
-            targetSdkVersion         : 21,
+            minSdkVersion            : 24,
+            targetSdkVersion         : 28,
             versionCode              : 1,
             versionName              : "1.0",
             testInstrumentationRunner: "android.support.test.runner.AndroidJUnitRunner"

@@ -24,6 +24,7 @@ ext {
             StatusBarCompat     : "com.github.niorgai:StatusBarCompat:2.1.4",
             fastjson            : 'com.alibaba:fastjson:1.1.68.android',
             glide               : 'com.github.bumptech.glide:glide:4.8.0',
-            glideTransformations: "jp.wasabeef:glide-transformations:3.3.0"
+            glideTransformations: "jp.wasabeef:glide-transformations:3.3.0",
+            eventbus            : 'org.greenrobot:eventbus:3.1.1'
     ]
 }
