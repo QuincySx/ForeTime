@@ -1,11 +1,9 @@
 package com.smallraw.foretime.app.ui.setting
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.smallraw.foretime.app.R
-import com.smallraw.foretime.app.ui.dialog.SelectLongTimeDialog
-import com.smallraw.time.base.BaseActivity
+import com.smallraw.foretime.app.common.widget.dialog.SelectLongTimeDialog
 import com.smallraw.time.base.BaseTitleBarActivity
 import kotlinx.android.synthetic.main.activity_setting.*
 

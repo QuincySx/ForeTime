@@ -1,4 +1,4 @@
-package com.smallraw.foretime.app.ui.dialog;
+package com.smallraw.foretime.app.common.widget.dialog;
 
 import android.content.Context;
 import android.view.View;

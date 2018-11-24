@@ -563,4 +563,9 @@ public class LoopView extends View {
       mHandler.sendEmptyMessage(MSG_INVALIDATE);
     }
   }
+
+  public void setCurrentIndex(int currentIndex) {
+    mCurrentIndex = currentIndex;
+    invalidate();
+  }
 }

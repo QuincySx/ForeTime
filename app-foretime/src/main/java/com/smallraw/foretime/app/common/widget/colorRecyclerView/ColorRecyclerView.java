@@ -98,7 +98,7 @@ public class ColorRecyclerView extends RecyclerView {
           int temp = mCurrentSelectIndex;
           mCurrentSelectIndex = colorViewHolder.getAdapterPosition();
           notifyItemChanged(temp);
-          notifyItemChanged(colorViewHolder.getAdapterPosition());
+          notifyItemChanged(mCurrentSelectIndex);
         }
       });
     }

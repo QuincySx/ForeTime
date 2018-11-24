@@ -1,4 +1,4 @@
-package com.smallraw.foretime.app.ui.dialog;
+package com.smallraw.foretime.app.common.widget.dialog;
 
 import android.content.Context;
 import android.view.View;
@@ -6,6 +6,9 @@ import android.view.View;
 import com.smallraw.foretime.app.R;
 import com.smallraw.foretime.app.base.BaseDialogView;
 
+/**
+ * 添加倒数日任务选择器
+ */
 public class SelectDayTypeDialog extends BaseDialogView {
     private OnBaseDialogClickCallback mOnClickCallback;
 

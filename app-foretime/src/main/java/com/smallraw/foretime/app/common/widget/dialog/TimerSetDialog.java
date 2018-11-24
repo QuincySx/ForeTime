@@ -1,16 +1,13 @@
-package com.smallraw.foretime.app.ui.dialog;
+package com.smallraw.foretime.app.common.widget.dialog;
 
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,6 +22,9 @@ import java.util.List;
 
 import me.jessyan.autosize.utils.AutoSizeUtils;
 
+/**
+ * 固定时间选择器
+ */
 public class TimerSetDialog extends BaseDialogView {
   private ConstraintLayout mLayoutTime;
   private TextView mTvTimeText;

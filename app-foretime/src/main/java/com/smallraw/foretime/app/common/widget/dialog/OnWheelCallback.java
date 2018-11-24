@@ -1,4 +1,4 @@
-package com.smallraw.foretime.app.ui.dialog;
+package com.smallraw.foretime.app.common.widget.dialog;
 
 public interface OnWheelCallback {
   void onCall(String str);

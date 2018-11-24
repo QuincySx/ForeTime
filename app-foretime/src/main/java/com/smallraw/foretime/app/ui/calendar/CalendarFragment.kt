@@ -7,14 +7,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.base.BaseDialogView
+import com.smallraw.foretime.app.common.widget.dialog.SelectDayTypeDialog
 import com.smallraw.foretime.app.entity.Weather
 import com.smallraw.foretime.app.repository.db.entity.MemorialEntity
 import com.smallraw.foretime.app.ui.addTaskDay.AddTaskDayActivity
 import com.smallraw.foretime.app.ui.calendar.vm.CalendarVewModel
-import com.smallraw.foretime.app.ui.dialog.SelectDayTypeDialog
 import com.smallraw.foretime.app.ui.main.OnMainActivityCallback
 import com.smallraw.time.base.BaseFragment
 import com.smallraw.time.model.BaseCallback
@@ -75,15 +74,15 @@ class CalendarFragment : BaseFragment() {
                             override fun onClick(view: BaseDialogView?, index: Int) {
                                 if (context != null) {
                                     if (index == 0) {
-                                        AddTaskDayActivity.start(context!!)
+                                        AddTaskDayActivity.start(context!!, AddTaskDayActivity.DaysMatter)
                                     } else {
-
+                                        AddTaskDayActivity.start(context!!, AddTaskDayActivity.DaysCumulative)
                                     }
                                     view?.dismiss()
                                 }
                             }
                         })
-                        .showAtViewAuto(v, AutoSizeUtils.dp2px(context, 56F))
+                        .showAtViewAuto(v, AutoSizeUtils.dp2px(context, 6F))
             }
         })
     }
