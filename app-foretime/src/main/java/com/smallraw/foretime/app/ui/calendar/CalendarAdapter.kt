@@ -32,16 +32,16 @@ class CalendarAdapter(@NotNull val mCalendars: List<MemorialEntity>) : RecyclerV
         val context = holder.itemView.context;
 
         if (item.type == 0) {
-            holder.tvWeek.text = getWeekOfDate(context, item.targeTime)
+            holder.tvWeek.text = getWeekOfDate(context, item.targetTime)
         } else {
             holder.tvWeek.text = "至"
         }
-        holder.tvData.text = dateFormat(item.targeTime)
+        holder.tvData.text = dateFormat(item.targetTime)
 
         holder.tvTimeUnit.text = "天"
 
         if (item.type == 0) {
-            val days = differentDays(Date(), item.targeTime)
+            val days = differentDays(Date(), item.targetTime)
             holder.tvTimeNumber.text = "${Math.abs(days)}"
             holder.tvTypeData.text = "累计日"
             holder.tvTimeState.text = "累计"
@@ -49,16 +49,16 @@ class CalendarAdapter(@NotNull val mCalendars: List<MemorialEntity>) : RecyclerV
         } else {
             holder.tvTypeData.text = "倒数日"
             holder.tvStatus.text = "止"
-            if (mCurrentDate < item.targeTime) {
-                val days = differentDays(Date(), item.targeTime)
+            if (mCurrentDate < item.targetTime) {
+                val days = differentDays(Date(), item.targetTime)
                 holder.tvTimeNumber.text = "${Math.abs(days)}"
                 holder.tvTimeState.text = "剩余"
-            } else if (mCurrentDate == item.targeTime) {
-                val days = differentDays(Date(), item.targeTime)
+            } else if (mCurrentDate == item.targetTime) {
+                val days = differentDays(Date(), item.targetTime)
                 holder.tvTimeNumber.text = "${Math.abs(days + 1)}"
                 holder.tvTimeState.text = "活动中"
             } else {
-                val days = differentDays(item.targeTime, Date())
+                val days = differentDays(item.targetTime, Date())
                 holder.tvTimeNumber.text = "${Math.abs(days)}"
                 holder.tvTimeState.text = "已过"
             }
