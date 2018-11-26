@@ -64,7 +64,7 @@ class MainActivity() : BaseActivity(), OnMainActivityCallback {
     }
 
     private fun setTouchDelegate(view: View, expandTouchWidth: Int) {
-        val parentView = view.getParent() as ViewGroup
+        val parentView = view.parent as ViewGroup
         view.post {
             val rect = Rect()
             view.getHitRect(rect)

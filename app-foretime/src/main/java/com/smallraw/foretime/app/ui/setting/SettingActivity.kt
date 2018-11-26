@@ -1,5 +1,6 @@
 package com.smallraw.foretime.app.ui.setting
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import com.smallraw.foretime.app.R
@@ -15,6 +16,7 @@ class SettingActivity : BaseTitleBarActivity() {
         setTitleBarLeftImage(R.drawable.ic_back_black)
     }
 
+    @SuppressLint("SetTextI18n")
     fun onClick(view: View) {
         when (view.id) {
             R.id.tvLongTimeAbsorbed -> {
