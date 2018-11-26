@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull
 import java.util.*
 
 class CalendarAdapter(@NotNull val mCalendars: List<MemorialEntity>) : RecyclerView.Adapter<CalendarAdapter.CalenderViewHolder>() {
-    val mCurrentDate = dateParse(dateFormat(Date()))
+    private val mCurrentDate = dateParse(dateFormat(Date()))
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalenderViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_calendar, parent, false)
@@ -29,7 +29,7 @@ class CalendarAdapter(@NotNull val mCalendars: List<MemorialEntity>) : RecyclerV
         holder.tvCalendarTitle.text = item.description
 
 
-        val context = holder.itemView.context;
+        val context = holder.itemView.context
 
         if (item.type == 0) {
             holder.tvWeek.text = getWeekOfDate(context, item.targetTime)
@@ -49,18 +49,22 @@ class CalendarAdapter(@NotNull val mCalendars: List<MemorialEntity>) : RecyclerV
         } else {
             holder.tvTypeData.text = "倒数日"
             holder.tvStatus.text = "止"
-            if (mCurrentDate < item.targetTime) {
-                val days = differentDays(Date(), item.targetTime)
-                holder.tvTimeNumber.text = "${Math.abs(days)}"
-                holder.tvTimeState.text = "剩余"
-            } else if (mCurrentDate == item.targetTime) {
-                val days = differentDays(Date(), item.targetTime)
-                holder.tvTimeNumber.text = "${Math.abs(days + 1)}"
-                holder.tvTimeState.text = "活动中"
-            } else {
-                val days = differentDays(item.targetTime, Date())
-                holder.tvTimeNumber.text = "${Math.abs(days)}"
-                holder.tvTimeState.text = "已过"
+            when {
+                mCurrentDate < item.targetTime -> {
+                    val days = differentDays(Date(), item.targetTime)
+                    holder.tvTimeNumber.text = "${Math.abs(days)}"
+                    holder.tvTimeState.text = "剩余"
+                }
+                mCurrentDate == item.targetTime -> {
+                    val days = differentDays(Date(), item.targetTime)
+                    holder.tvTimeNumber.text = "${Math.abs(days + 1)}"
+                    holder.tvTimeState.text = "活动中"
+                }
+                else -> {
+                    val days = differentDays(item.targetTime, Date())
+                    holder.tvTimeNumber.text = "${Math.abs(days)}"
+                    holder.tvTimeState.text = "已过"
+                }
             }
         }
 
@@ -73,26 +77,14 @@ class CalendarAdapter(@NotNull val mCalendars: List<MemorialEntity>) : RecyclerV
     }
 
     class CalenderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val viewStatus: View
-        val tvCalendarTitle: TextView
-        val tvTypeData: TextView
-        val tvData: TextView
-        val tvWeek: TextView
-        val tvStatus: TextView
-        val tvTimeState: TextView
-        val tvTimeNumber: TextView
-        val tvTimeUnit: TextView
-
-        init {
-            viewStatus = itemView.findViewById(R.id.viewStatus)
-            tvTypeData = itemView.findViewById(R.id.tvTypeData)
-            tvCalendarTitle = itemView.findViewById(R.id.tvCalendarTitle)
-            tvData = itemView.findViewById(R.id.tvData)
-            tvWeek = itemView.findViewById(R.id.tvWeek)
-            tvStatus = itemView.findViewById(R.id.tvStatus)
-            tvTimeState = itemView.findViewById(R.id.tvTimeState)
-            tvTimeUnit = itemView.findViewById(R.id.tvTimeUnit)
-            tvTimeNumber = itemView.findViewById(R.id.tvTimeNumber)
-        }
+        val viewStatus: View = itemView.findViewById(R.id.viewStatus)
+        val tvCalendarTitle: TextView = itemView.findViewById(R.id.tvCalendarTitle)
+        val tvTypeData: TextView = itemView.findViewById(R.id.tvTypeData)
+        val tvData: TextView = itemView.findViewById(R.id.tvData)
+        val tvWeek: TextView = itemView.findViewById(R.id.tvWeek)
+        val tvStatus: TextView = itemView.findViewById(R.id.tvStatus)
+        val tvTimeState: TextView = itemView.findViewById(R.id.tvTimeState)
+        val tvTimeNumber: TextView = itemView.findViewById(R.id.tvTimeNumber)
+        val tvTimeUnit: TextView = itemView.findViewById(R.id.tvTimeUnit)
     }
 }

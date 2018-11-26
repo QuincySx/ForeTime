@@ -1,5 +1,6 @@
 package com.smallraw.foretime.app.ui.calendar
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -67,23 +68,19 @@ class CalendarFragment : BaseFragment() {
 
     fun showViewAction() {
         onMainActivityCallback?.setOnLongClickListener(null)
-        onMainActivityCallback?.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                SelectDayTypeDialog(context)
-                        .setOnClickCallback(object : SelectDayTypeDialog.OnBaseDialogClickCallback {
-                            override fun onClick(view: BaseDialogView?, index: Int) {
-                                if (context != null) {
-                                    if (index == 0) {
-                                        AddTaskDayActivity.start(context!!, AddTaskDayActivity.DaysMatter)
-                                    } else {
-                                        AddTaskDayActivity.start(context!!, AddTaskDayActivity.DaysCumulative)
-                                    }
-                                    view?.dismiss()
-                                }
+        onMainActivityCallback?.setOnClickListener(View.OnClickListener { v ->
+            SelectDayTypeDialog(context)
+                    .setOnClickCallback { view, index ->
+                        if (context != null) {
+                            if (index == 0) {
+                                AddTaskDayActivity.start(context!!, AddTaskDayActivity.DaysMatter)
+                            } else {
+                                AddTaskDayActivity.start(context!!, AddTaskDayActivity.DaysCumulative)
                             }
-                        })
-                        .showAtViewAuto(v, AutoSizeUtils.dp2px(context, 6F))
-            }
+                            view?.dismiss()
+                        }
+                    }
+                    .showAtViewAuto(v, AutoSizeUtils.dp2px(context, 6F))
         })
     }
 
@@ -108,6 +105,7 @@ class CalendarFragment : BaseFragment() {
         })
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setWeatherData(data: Weather?) {
         try {
             if (data == null) {

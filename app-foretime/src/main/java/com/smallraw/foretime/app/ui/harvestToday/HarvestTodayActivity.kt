@@ -1,5 +1,6 @@
 package com.smallraw.foretime.app.ui.harvestToday
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import com.smallraw.foretime.app.R
@@ -49,6 +50,7 @@ class HarvestTodayActivity : BaseTitleBarActivity() {
         })
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setWeatherData(data: Weather?) {
         try {
             if (data == null) {

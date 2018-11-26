@@ -2,6 +2,7 @@ package com.smallraw.foretime.app.ui.decoration;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -31,7 +32,7 @@ public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
    * @param state   The current state of RecyclerView.
    */
   @Override
-  public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+  public void getItemOffsets(@NonNull Rect outRect, @NonNull View view,@NonNull RecyclerView parent,@NonNull RecyclerView.State state) {
     super.getItemOffsets(outRect, view, parent, state);
 
     if (parent.getChildAdapterPosition(view) != 0) {

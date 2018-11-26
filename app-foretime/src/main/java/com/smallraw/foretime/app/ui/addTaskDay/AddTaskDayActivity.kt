@@ -1,5 +1,6 @@
 package com.smallraw.foretime.app.ui.addTaskDay
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -20,37 +21,38 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
         const val DaysMatter = 1
         const val DaysCumulative = 2
 
-        private const val DAYTYPE_EXTRA = "daytype_extra"
+        private const val DAY_TYPE_EXTRA = "day_type_extra"
 
         @JvmStatic
         fun start(context: Context, @DayType daytype: Int) {
             val intent = Intent(context, AddTaskDayActivity::class.java)
-            intent.putExtra(DAYTYPE_EXTRA, daytype)
+            intent.putExtra(DAY_TYPE_EXTRA, daytype)
             ContextCompat.startActivity(context, intent, null)
         }
 
-        private val CLOLR_LISR = arrayListOf<String>("#139EED", "#EE386D", "#FFC529", "#9092A5", "#FF8E9F", "#2B0050", "#FD92C4")
-        private val REPEAT_LISR = arrayListOf<String>("从不", "每周", "每月", "每年")
+        private val COLOR_LIST = arrayListOf("#139EED", "#EE386D", "#FFC529", "#9092A5", "#FF8E9F", "#2B0050", "#FD92C4")
+        private val REPEAT_LIST = arrayListOf("从不", "每周", "每月", "每年")
     }
 
     @DayType
-    var mCurrentDayType = DaysMatter
+    private var mCurrentDayType = DaysMatter
 
-    var mCalendar = Calendar.getInstance()
+    private var mCalendar = Calendar.getInstance()
 
-    var mSelectIndex = 0
+    private var mSelectIndex = 0
 
-    var dataFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    private var dataFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
     @IntDef(DaysMatter, DaysCumulative)
     annotation class DayType
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_countdown_day)
         setTitleBarLeftImage(R.drawable.ic_back_black)
 
-        mCurrentDayType = intent.getIntExtra(DAYTYPE_EXTRA, DaysMatter)
+        mCurrentDayType = intent.getIntExtra(DAY_TYPE_EXTRA, DaysMatter)
 
         dispatchView()
 
@@ -64,11 +66,11 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
         }
         tvRepeat.setOnClickListener {
             MultipleItemDialog.Builder(this)
-                    .setDate(REPEAT_LISR)
+                    .setDate(REPEAT_LIST)
                     .setSelectItem(mSelectIndex)
                     .setSelectItem { dialog, i ->
                         mSelectIndex = i
-                        tvRepeat.text = REPEAT_LISR[i]
+                        tvRepeat.text = REPEAT_LIST[i]
                         dialog.dismiss()
                     }
                     .build()
@@ -77,7 +79,7 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
         mCalendar.timeInMillis = System.currentTimeMillis()
         tvTargeDate.text = "${mCalendar.get(Calendar.YEAR)}-${mCalendar.get(Calendar.MONTH) + 1}-${mCalendar.get(Calendar.DAY_OF_MONTH)}"
 
-        colorRecyclerView.setColors(CLOLR_LISR)
+        colorRecyclerView.setColors(COLOR_LIST)
 
     }
 
