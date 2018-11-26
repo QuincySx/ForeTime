@@ -24,10 +24,8 @@ public class MemorialEntity implements Parcelable {
   private int type;
   @ColumnInfo(name = "color")
   private String color;
-  @ColumnInfo(name = "beginTime")
-  private Date beginTime;
-  @ColumnInfo(name = "endTime")
-  private Date endTime;
+  @ColumnInfo(name = "targeTime")
+  private Date targeTime;
   @ColumnInfo(name = "createTime")
   private Date createTime;
   @ColumnInfo(name = "strike")
@@ -40,13 +38,12 @@ public class MemorialEntity implements Parcelable {
 
   @Ignore
   public MemorialEntity(String name, String description, int type, String color,
-                        Date beginTime, Date endTime, Date createTime) {
+                        Date targeTime, Date createTime) {
     this.name = name;
     this.description = description;
     this.type = type;
     this.color = color;
-    this.beginTime = beginTime;
-    this.endTime = endTime;
+    this.targeTime = targeTime;
     this.createTime = createTime;
   }
 
@@ -90,20 +87,12 @@ public class MemorialEntity implements Parcelable {
     this.color = color;
   }
 
-  public Date getBeginTime() {
-    return beginTime;
+  public Date getTargeTime() {
+    return targeTime;
   }
 
-  public void setBeginTime(Date beginTime) {
-    this.beginTime = beginTime;
-  }
-
-  public Date getEndTime() {
-    return endTime;
-  }
-
-  public void setEndTime(Date endTime) {
-    this.endTime = endTime;
+  public void setTargeTime(Date targeTime) {
+    this.targeTime = targeTime;
   }
 
   public Date getCreateTime() {
@@ -138,8 +127,7 @@ public class MemorialEntity implements Parcelable {
             ", description='" + description + '\'' +
             ", type=" + type +
             ", color='" + color + '\'' +
-            ", beginTime=" + beginTime +
-            ", endTime=" + endTime +
+            ", targeTime=" + targeTime +
             ", createTime=" + createTime +
             ", strike=" + strike +
             ", archive=" + archive +
@@ -158,8 +146,7 @@ public class MemorialEntity implements Parcelable {
     dest.writeString(this.description);
     dest.writeInt(this.type);
     dest.writeString(this.color);
-    dest.writeLong(this.beginTime != null ? this.beginTime.getTime() : -1);
-    dest.writeLong(this.endTime != null ? this.endTime.getTime() : -1);
+    dest.writeLong(this.targeTime != null ? this.targeTime.getTime() : -1);
     dest.writeLong(this.createTime != null ? this.createTime.getTime() : -1);
     dest.writeByte(this.strike ? (byte) 1 : (byte) 0);
     dest.writeByte(this.archive ? (byte) 1 : (byte) 0);
@@ -171,17 +158,15 @@ public class MemorialEntity implements Parcelable {
     this.description = in.readString();
     this.type = in.readInt();
     this.color = in.readString();
-    long tmpBeginTime = in.readLong();
-    this.beginTime = tmpBeginTime == -1 ? null : new Date(tmpBeginTime);
-    long tmpEndTime = in.readLong();
-    this.endTime = tmpEndTime == -1 ? null : new Date(tmpEndTime);
+    long tmpTargeTime = in.readLong();
+    this.targeTime = tmpTargeTime == -1 ? null : new Date(tmpTargeTime);
     long tmpCreateTime = in.readLong();
     this.createTime = tmpCreateTime == -1 ? null : new Date(tmpCreateTime);
     this.strike = in.readByte() != 0;
     this.archive = in.readByte() != 0;
   }
 
-  public static final Parcelable.Creator<MemorialEntity> CREATOR = new Parcelable.Creator<MemorialEntity>() {
+  public static final Creator<MemorialEntity> CREATOR = new Creator<MemorialEntity>() {
     @Override
     public MemorialEntity createFromParcel(Parcel source) {
       return new MemorialEntity(source);

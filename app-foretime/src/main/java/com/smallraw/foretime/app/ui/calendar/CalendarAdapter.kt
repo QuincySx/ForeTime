@@ -1,8 +1,6 @@
 package com.smallraw.foretime.app.ui.calendar
 
 import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
-import android.os.Build
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -34,16 +32,16 @@ class CalendarAdapter(@NotNull val mCalendars: List<MemorialEntity>) : RecyclerV
         val context = holder.itemView.context;
 
         if (item.type == 0) {
-            holder.tvWeek.text = getWeekOfDate(context, item.beginTime)
+            holder.tvWeek.text = getWeekOfDate(context, item.targeTime)
         } else {
             holder.tvWeek.text = "至"
         }
-        holder.tvData.text = dateFormat(item.beginTime)
+        holder.tvData.text = dateFormat(item.targeTime)
 
         holder.tvTimeUnit.text = "天"
 
         if (item.type == 0) {
-            val days = differentDays(Date(), item.beginTime)
+            val days = differentDays(Date(), item.targeTime)
             holder.tvTimeNumber.text = "${Math.abs(days)}"
             holder.tvTypeData.text = "累计日"
             holder.tvTimeState.text = "累计"
@@ -51,16 +49,16 @@ class CalendarAdapter(@NotNull val mCalendars: List<MemorialEntity>) : RecyclerV
         } else {
             holder.tvTypeData.text = "倒数日"
             holder.tvStatus.text = "止"
-            if (mCurrentDate < item.beginTime) {
-                val days = differentDays(Date(), item.beginTime)
+            if (mCurrentDate < item.targeTime) {
+                val days = differentDays(Date(), item.targeTime)
                 holder.tvTimeNumber.text = "${Math.abs(days)}"
                 holder.tvTimeState.text = "剩余"
-            } else if (mCurrentDate <= item.endTime || (item.endTime == item.beginTime && mCurrentDate == item.beginTime)) {
-                val days = differentDays(Date(), item.beginTime)
+            } else if (mCurrentDate == item.targeTime) {
+                val days = differentDays(Date(), item.targeTime)
                 holder.tvTimeNumber.text = "${Math.abs(days + 1)}"
                 holder.tvTimeState.text = "活动中"
             } else {
-                val days = differentDays(item.endTime, Date())
+                val days = differentDays(item.targeTime, Date())
                 holder.tvTimeNumber.text = "${Math.abs(days)}"
                 holder.tvTimeState.text = "已过"
             }

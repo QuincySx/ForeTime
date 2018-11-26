@@ -7,6 +7,7 @@ import android.support.annotation.IntDef
 import android.support.v4.content.ContextCompat
 import android.view.View
 import com.smallraw.foretime.app.R
+import com.smallraw.foretime.app.common.widget.dialog.MultipleItemDialog
 import com.smallraw.foretime.app.common.widget.dialog.SelectDateDialog
 import com.smallraw.time.base.BaseTitleBarActivity
 import kotlinx.android.synthetic.main.activity_add_countdown_day.*
@@ -29,12 +30,15 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
         }
 
         private val CLOLR_LISR = arrayListOf<String>("#139EED", "#EE386D", "#FFC529", "#9092A5", "#FF8E9F", "#2B0050", "#FD92C4")
+        private val REPEAT_LISR = arrayListOf<String>("从不", "每周", "每月", "每年")
     }
 
     @DayType
     var mCurrentDayType = DaysMatter
 
     var mCalendar = Calendar.getInstance()
+
+    var mSelectIndex = 0
 
     var dataFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
@@ -57,6 +61,18 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
                     }
                     .build()
                     .showAtViewAuto(tvTargeDate)
+        }
+        tvRepeat.setOnClickListener {
+            MultipleItemDialog.Builder(this)
+                    .setDate(REPEAT_LISR)
+                    .setSelectItem(mSelectIndex)
+                    .setSelectItem { dialog, i ->
+                        mSelectIndex = i
+                        tvRepeat.text = REPEAT_LISR[i]
+                        dialog.dismiss()
+                    }
+                    .build()
+                    .showAtViewAuto(tvRepeat)
         }
         mCalendar.timeInMillis = System.currentTimeMillis()
         tvTargeDate.text = "${mCalendar.get(Calendar.YEAR)}-${mCalendar.get(Calendar.MONTH) + 1}-${mCalendar.get(Calendar.DAY_OF_MONTH)}"
