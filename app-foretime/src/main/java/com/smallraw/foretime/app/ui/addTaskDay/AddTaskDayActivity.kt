@@ -6,10 +6,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.IntDef
 import android.support.v4.content.ContextCompat
+import android.text.TextUtils
 import android.view.View
+import android.widget.Switch
+import android.widget.Toast
+import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.common.widget.dialog.MultipleItemDialog
 import com.smallraw.foretime.app.common.widget.dialog.SelectDateDialog
+import com.smallraw.foretime.app.repository.DataRepository
+import com.smallraw.foretime.app.repository.db.entity.MemorialEntity
 import com.smallraw.time.base.BaseTitleBarActivity
 import kotlinx.android.synthetic.main.activity_add_countdown_day.*
 import java.text.SimpleDateFormat
@@ -18,8 +24,14 @@ import java.util.*
 class AddTaskDayActivity : BaseTitleBarActivity() {
 
     companion object {
+        /**
+         * 累计日
+         */
+        const val DaysCumulative = 0
+        /**
+         * 倒数日
+         */
         const val DaysMatter = 1
-        const val DaysCumulative = 2
 
         private const val DAY_TYPE_EXTRA = "day_type_extra"
 
@@ -34,12 +46,19 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
         private val REPEAT_LIST = arrayListOf("从不", "每周", "每月", "每年")
     }
 
+    private val mDataRepository = App.getInstance().getRepository()
+
+    private val mSimpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
     @DayType
     private var mCurrentDayType = DaysMatter
 
     private var mCalendar = Calendar.getInstance()
 
-    private var mSelectIndex = 0
+    /**
+     * 选择的重复模式
+     */
+    private var mSelectRepeatIndex = 0
 
     private var dataFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
@@ -56,20 +75,20 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
 
         dispatchView()
 
-        tvTargeDate.setOnClickListener {
+        tvTargetDate.setOnClickListener {
             SelectDateDialog.Builder(this)
                     .setOnWheelCallback { date ->
-                        tvTargeDate.text = dataFormat.format(date)
+                        tvTargetDate.text = dataFormat.format(date)
                     }
                     .build()
-                    .showAtViewAuto(tvTargeDate)
+                    .showAtViewAuto(tvTargetDate)
         }
         tvRepeat.setOnClickListener {
             MultipleItemDialog.Builder(this)
                     .setDate(REPEAT_LIST)
-                    .setSelectItem(mSelectIndex)
+                    .setSelectItem(mSelectRepeatIndex)
                     .setSelectItem { dialog, i ->
-                        mSelectIndex = i
+                        mSelectRepeatIndex = i
                         tvRepeat.text = REPEAT_LIST[i]
                         dialog.dismiss()
                     }
@@ -77,10 +96,45 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
                     .showAtViewAuto(tvRepeat)
         }
         mCalendar.timeInMillis = System.currentTimeMillis()
-        tvTargeDate.text = "${mCalendar.get(Calendar.YEAR)}-${mCalendar.get(Calendar.MONTH) + 1}-${mCalendar.get(Calendar.DAY_OF_MONTH)}"
+        tvTargetDate.text = "${mCalendar.get(Calendar.YEAR)}-${mCalendar.get(Calendar.MONTH) + 1}-${mCalendar.get(Calendar.DAY_OF_MONTH)}"
 
         colorRecyclerView.setColors(COLOR_LIST)
 
+        ivSuspension.setOnClickListener {
+            val titleName = titleName.text.toString()
+            val note = tvNote.text.toString()
+            val date = mSimpleDateFormat.parse(tvTargetDate.text.toString())
+            val repeat = tvRepeat.text.toString()
+            val color = colorRecyclerView.selectColor
+
+            if (TextUtils.isEmpty(titleName)) {
+                Toast.makeText(applicationContext, "标题不能为空", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            val repeatTime: String
+            when (repeat) {
+                REPEAT_LIST[0] -> {
+                    repeatTime = "none"
+                }
+                REPEAT_LIST[1] -> {
+                    repeatTime = "1E"
+                }
+                REPEAT_LIST[2] -> {
+                    repeatTime = "1M"
+                }
+                REPEAT_LIST[3] -> {
+                    repeatTime = "1y"
+                }
+                else -> {
+                    repeatTime = "none"
+                }
+            }
+            App.getInstance().getAppExecutors().diskIO().execute {
+                val memorial = MemorialEntity(titleName, note, mCurrentDayType, color, date, repeatTime, Date())
+                mDataRepository.insertTask(memorial)
+            }
+            finish()
+        }
     }
 
     private fun dispatchView() {

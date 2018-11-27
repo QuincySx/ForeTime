@@ -85,13 +85,12 @@
                     android:text="目标日期" />
 
                 <TextView
-                    android:id="@+id/tvTargeDate"
+                    android:id="@+id/tvTargetDate"
                     style="@style/TextNormal"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:paddingLeft="30dp"
-                    android:text="2018-05-15"
                     app:layout_constraintRight_toRightOf="parent" />
 
                 <View
@@ -151,6 +150,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
+                    android:id="@+id/tvNote"
                     style="@style/TextSmall"
                     android:textColorHint="#DBDBDB"
                     android:layout_width="0dp"
@@ -161,7 +161,7 @@
                     android:inputType="textMultiLine"
                     android:maxLength="80"
                     android:padding="4dp"
-                    android:hint="请填写医德备注"
+                    android:hint="请填写您的备注"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
