@@ -72,7 +72,7 @@ public abstract class AppDatabase extends RoomDatabase {
                       contentValues.put("description", "第一次遇到[ForeTime]开心吗？");
                       contentValues.put("type", 0);
                       contentValues.put("color", "#139EED");
-                      contentValues.put("targeTime", new Date().getTime());
+                      contentValues.put("targetTime", new Date().getTime());
                       contentValues.put("strike", false);
                       contentValues.put("archive", false);
                       long insert = db.insert(MemorialEntity.TABLE_NAME,

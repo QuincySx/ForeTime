@@ -26,8 +26,17 @@ public class MemorialEntity implements Parcelable {
     private String color;
     @ColumnInfo(name = "targetTime")
     private Date targetTime;
-    @ColumnInfo(name = "repeat") // 重复时间 1s 1m 1H 1d 7d 1M 1h
-    private String repeat;
+    /**
+     * y 年
+     * M 月
+     * d 日
+     * h 时 在上午或下午 (1~12)
+     * H 时 在一天中 (0~23)
+     * m 分
+     * E 星期
+     */
+    @ColumnInfo(name = "repeatTime")
+    private String repeatTime;
     @ColumnInfo(name = "createTime")
     private Date createTime;
     @ColumnInfo(name = "strike")
@@ -40,14 +49,14 @@ public class MemorialEntity implements Parcelable {
 
     @Ignore
     public MemorialEntity(String name, String description, int type, String color,
-                          Date targetTime, String repeat, Date createTime) {
+                          Date targetTime, String repeatTime, Date createTime) {
         this.name = name;
         this.description = description;
         this.type = type;
         this.color = color;
         this.targetTime = targetTime;
         this.createTime = createTime;
-        this.repeat = repeat;
+        this.repeatTime = repeatTime;
     }
 
     public Long getId() {
@@ -98,12 +107,12 @@ public class MemorialEntity implements Parcelable {
         this.targetTime = targetTime;
     }
 
-    public String getRepeat() {
-        return repeat;
+    public String getRepeatTime() {
+        return repeatTime;
     }
 
-    public void setRepeat(String repeat) {
-        this.repeat = repeat;
+    public void setRepeatTime(String repeatTime) {
+        this.repeatTime = repeatTime;
     }
 
     public Date getCreateTime() {
@@ -159,7 +168,7 @@ public class MemorialEntity implements Parcelable {
         dest.writeInt(this.type);
         dest.writeString(this.color);
         dest.writeLong(this.targetTime != null ? this.targetTime.getTime() : -1);
-        dest.writeString(this.repeat);
+        dest.writeString(this.repeatTime);
         dest.writeLong(this.createTime != null ? this.createTime.getTime() : -1);
         dest.writeByte(this.strike ? (byte) 1 : (byte) 0);
         dest.writeByte(this.archive ? (byte) 1 : (byte) 0);
@@ -173,7 +182,7 @@ public class MemorialEntity implements Parcelable {
         this.color = in.readString();
         long tmpTargetTime = in.readLong();
         this.targetTime = tmpTargetTime == -1 ? null : new Date(tmpTargetTime);
-        this.repeat = in.readString();
+        this.repeatTime = in.readString();
         long tmpCreateTime = in.readLong();
         this.createTime = tmpCreateTime == -1 ? null : new Date(tmpCreateTime);
         this.strike = in.readByte() != 0;

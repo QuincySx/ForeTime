@@ -24,7 +24,7 @@ class SettingActivity : BaseTitleBarActivity() {
                         .setTitle("专注时间")
                         .setUnit("Min")
                         .setOnWheelCallback {
-                            tvLongTimeAbsorbed.setText("${it} 分钟")
+                            tvLongTimeAbsorbed.text = "$it 分钟"
                         }
                         .build()
                         .showAtViewAuto(tvLongTimeAbsorbed)
