@@ -12,8 +12,10 @@ class App : Application() {
 
         @JvmStatic
         fun getInstance(): App {
-            return mApp;
+            return mApp
         }
+
+
     }
 
     private lateinit var mAppExecutors: AppExecutors

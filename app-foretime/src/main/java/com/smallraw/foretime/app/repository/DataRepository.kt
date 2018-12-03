@@ -7,8 +7,8 @@ import com.smallraw.foretime.app.repository.db.AppDatabase
 import com.smallraw.foretime.app.repository.db.entity.MemorialEntity
 import com.smallraw.foretime.app.repository.db.entity.MemorialTopEntity
 
-class DataRepository {
-    private val mDatabase: AppDatabase
+class DataRepository(database: AppDatabase) {
+    private val mDatabase: AppDatabase = database
 
     companion object {
         @JvmStatic
@@ -27,54 +27,49 @@ class DataRepository {
         }
     }
 
-    constructor(database: AppDatabase) {
-        mDatabase = database
-    }
-
     /**
      * @param display 需要显示的内容 0::显示全部 1::显示倒数日 2::显示累计日
      * @param order 按条件排序 0::默认排序 1::日期排序 2::颜色排序
      * @return 返回按顺序查找的任务列表
      */
     fun getActiveTask(display: Int, order: Int): List<MemorialEntity> {
-        var displayOption: Int? = null
-        when (display) {
+        val displayOption = when (display) {
             0 -> {
-                displayOption = null
+                null
             }
             1 -> {
-                displayOption = 1
+                1
             }
             2 -> {
-                displayOption = 0
+                0
             }
             else -> {
-                displayOption = null
+                null
             }
         }
-        var orderBy = "id"
-        when (order) {
+
+        val orderBy = when (order) {
             0 -> {
-                orderBy = "id"
+                "id"
             }
             1 -> {
-                orderBy = "beginTime"
+                "beginTime"
             }
             2 -> {
-                orderBy = "color"
+                "color"
             }
             else -> {
-                orderBy = "id"
+                "id"
             }
         }
         val query: SimpleSQLiteQuery
-        if (displayOption == null) {
-            query = SimpleSQLiteQuery("SELECT * FROM memorial WHERE strike = 0 AND archive = 0 ORDER BY " + orderBy + " DESC")
+        query = if (displayOption == null) {
+            SimpleSQLiteQuery("SELECT * FROM memorial WHERE strike = 0 AND archive = 0 ORDER BY $orderBy DESC")
         } else {
-            query = SimpleSQLiteQuery("SELECT * FROM memorial WHERE strike = 0 AND archive = 0 AND type = ? ORDER BY " + orderBy + " DESC",
+            SimpleSQLiteQuery("SELECT * FROM memorial WHERE strike = 0 AND archive = 0 AND type = ? ORDER BY $orderBy DESC",
                     arrayOf<Any>(displayOption))
         }
-        Log.e("==sql==", query.sql + "   " + query.argCount)
+
         return mDatabase.memorialDao().select(query)
     }
 
