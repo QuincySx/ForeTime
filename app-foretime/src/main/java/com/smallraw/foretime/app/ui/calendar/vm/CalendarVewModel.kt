@@ -5,9 +5,14 @@ import android.util.Log
 import android.util.LongSparseArray
 
 import com.smallraw.foretime.app.App
+import com.smallraw.foretime.app.event.TaskChangeEvent
 import com.smallraw.foretime.app.repository.DataRepository
 import com.smallraw.foretime.app.repository.db.entity.MemorialEntity
 import com.smallraw.foretime.app.repository.db.entity.MemorialTopEntity
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.ThreadMode
+import org.greenrobot.eventbus.Subscribe
+
 
 class CalendarVewModel : ViewModel() {
     private var mDisplay = 0
@@ -20,6 +25,8 @@ class CalendarVewModel : ViewModel() {
     private var mActiveTaskTopLiveData: LiveData<MutableList<MemorialTopEntity>>
 
     init {
+        EventBus.getDefault().register(this)
+
         Log.e("LiveData", "初始化完成")
         mActiveTaskTopLiveData = mRepository.getTaskTopList(0)
         mActiveTaskListLiveData.addSource(mActiveTaskTopLiveData) {
@@ -33,9 +40,9 @@ class CalendarVewModel : ViewModel() {
         }
 
         mActiveTaskListLiveData.addSource(mActiveTaskLiveData) {
-            Log.e("LiveData", "任务卡发生了变化")
             App.getInstance().getAppExecutors().diskIO().execute {
-                val memorialEntities = it as ArrayList
+                Log.e("LiveData", "顶置发生了变化")
+                val memorialEntities = it
                 val taskTopList = mActiveTaskTopLiveData.value
 
                 settleMemorialList(memorialEntities, taskTopList)
@@ -50,6 +57,16 @@ class CalendarVewModel : ViewModel() {
 
                 settleMemorialList(memorialEntities as ArrayList<MemorialEntity>?, taskTopList)
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: TaskChangeEvent) {
+        App.getInstance().getAppExecutors().diskIO().execute {
+            val memorialEntities = mRepository.getActiveTask(mDisplay, mOrder)
+            val taskTopList = mActiveTaskTopLiveData.value
+
+            settleMemorialList(memorialEntities as ArrayList<MemorialEntity>?, taskTopList)
         }
     }
 
@@ -82,6 +99,7 @@ class CalendarVewModel : ViewModel() {
         mActiveTaskListLiveData.postValue(memorialEntities)
     }
 
+
     fun queryActiveTask(display: Int, order: Int) {
         mDisplay = display
         mOrder = order
@@ -90,5 +108,10 @@ class CalendarVewModel : ViewModel() {
             val activeTask = mRepository.getActiveTask(display, order)
             mActiveTaskLiveData.postValue(activeTask as ArrayList<MemorialEntity>)
         }
+    }
+
+    override fun onCleared() {
+        EventBus.getDefault().unregister(this)
+        super.onCleared()
     }
 }

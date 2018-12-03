@@ -14,10 +14,12 @@ import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.common.widget.dialog.MultipleItemDialog
 import com.smallraw.foretime.app.common.widget.dialog.SelectDateDialog
+import com.smallraw.foretime.app.event.TaskChangeEvent
 import com.smallraw.foretime.app.repository.DataRepository
 import com.smallraw.foretime.app.repository.db.entity.MemorialEntity
 import com.smallraw.time.base.BaseTitleBarActivity
 import kotlinx.android.synthetic.main.activity_add_countdown_day.*
+import org.greenrobot.eventbus.EventBus
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -132,6 +134,7 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
             App.getInstance().getAppExecutors().diskIO().execute {
                 val memorial = MemorialEntity(titleName, note, mCurrentDayType, color, date, repeatTime, Date())
                 mDataRepository.insertTask(memorial)
+                EventBus.getDefault().post(TaskChangeEvent(TaskChangeEvent.ADD))
             }
             finish()
         }
