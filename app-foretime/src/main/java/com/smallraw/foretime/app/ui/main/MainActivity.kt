@@ -51,6 +51,7 @@ class MainActivity() : BaseActivity(), OnMainActivityCallback {
                 ivTomatoBell.isChecked = true
                 ivCalendar.isChecked = false
                 setTouchDelegate(ivCalendar, 100)
+                calendarFragment.hiddenViewAction()
                 tomatoBellFragment.showViewAction()
             }
             R.id.ivCalendar -> {
@@ -58,6 +59,7 @@ class MainActivity() : BaseActivity(), OnMainActivityCallback {
                 ivTomatoBell.isChecked = false
                 ivCalendar.isChecked = true
                 setTouchDelegate(ivTomatoBell, 100)
+                tomatoBellFragment.hiddenViewAction()
                 calendarFragment.showViewAction()
             }
         }

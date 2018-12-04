@@ -3,6 +3,7 @@ package com.smallraw.foretime.app.ui.tomatoBell
 import android.os.Bundle
 import android.os.SystemClock
 import android.support.annotation.ColorInt
+import android.support.annotation.DrawableRes
 import android.support.v4.content.res.ResourcesCompat
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,8 @@ import com.smallraw.foretime.app.ui.main.OnMainActivityCallback
 import com.smallraw.time.base.BaseFragment
 import com.smallraw.time.utils.ms2Minutes
 import kotlinx.android.synthetic.main.fragment_tomato_bell.*
+import java.util.*
+import java.util.concurrent.LinkedBlockingQueue
 
 class TomatoBellFragment : BaseFragment() {
     companion object {
@@ -28,8 +31,10 @@ class TomatoBellFragment : BaseFragment() {
         }
     }
 
+    private var isDisplay = false
+    private var mSuspensionHandleQueue = LinkedBlockingQueue<Int>(1)
     var onMainActivityCallback: OnMainActivityCallback? = null
-    val countDownModel = CountDownModel.getInstance()
+    private val countDownModel = CountDownModel.getInstance()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_tomato_bell, container, false)
     }
@@ -61,13 +66,42 @@ class TomatoBellFragment : BaseFragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        isDisplay = true
+    }
+
     fun showViewAction() {
+        isDisplay = true
+        changeSuspensionIcon(getSuspensionIcon())
         onLongClickListener()
-        onMainActivityCallback?.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                onClickListener()
-            }
+        onMainActivityCallback?.setOnClickListener(View.OnClickListener {
+            onClickListener()
         })
+    }
+
+    fun hiddenViewAction() {
+        isDisplay = false
+    }
+
+    private fun changeSuspensionIcon(resId: Int) {
+        if (isDisplay) {
+            val res = mSuspensionHandleQueue.poll()
+            if(res == null){
+                onMainActivityCallback?.onChangeIvSuspension(resId)
+            }else{
+                onMainActivityCallback?.onChangeIvSuspension(res)
+            }
+        } else {
+            addSuspensionHandle(resId)
+        }
+    }
+
+    private fun addSuspensionHandle(resId: Int) {
+        if (!mSuspensionHandleQueue.isEmpty()) {
+            mSuspensionHandleQueue.poll()
+        }
+        mSuspensionHandleQueue.add(resId)
     }
 
     private fun stateInit(state: Int, totalTime: Long, lastTime: Long) {
@@ -76,13 +110,13 @@ class TomatoBellFragment : BaseFragment() {
                 val color = ResourcesCompat.getColor(resources, R.color.WorkingProgessColor, null)
                 refreshTimeSchedule(color, totalTime, lastTime)
                 setHint("轻触开始专注")
-                onMainActivityCallback?.onChangeIvSuspension(R.drawable.ic_tab_suspension_start)
+                changeSuspensionIcon(R.drawable.ic_tab_suspension_start)
             }
             CountDownModel.REPOSE -> {
                 val color = ResourcesCompat.getColor(resources, R.color.RestProgessColor, null)
                 refreshTimeSchedule(color, totalTime, lastTime)
                 setHint("长按取消休息")
-                onMainActivityCallback?.onChangeIvSuspension(R.drawable.ic_tab_suspension_rest)
+                changeSuspensionIcon(R.drawable.ic_tab_suspension_rest)
             }
         }
     }
@@ -93,13 +127,13 @@ class TomatoBellFragment : BaseFragment() {
                 val color = ResourcesCompat.getColor(resources, R.color.WorkingProgessColor, null)
                 refreshTimeSchedule(color, totalTime, lastTime)
                 setHint("持续专注中")
-                onMainActivityCallback?.onChangeIvSuspension(R.drawable.ic_tab_suspension_pause)
+                changeSuspensionIcon(R.drawable.ic_tab_suspension_pause)
             }
             CountDownModel.REPOSE -> {
                 val color = ResourcesCompat.getColor(resources, R.color.RestProgessColor, null)
                 refreshTimeSchedule(color, totalTime, lastTime)
                 setHint("站起来走一走")
-                onMainActivityCallback?.onChangeIvSuspension(R.drawable.ic_tab_suspension_rest)
+                changeSuspensionIcon(R.drawable.ic_tab_suspension_rest)
             }
         }
     }
@@ -110,7 +144,7 @@ class TomatoBellFragment : BaseFragment() {
                 val color = ResourcesCompat.getColor(resources, R.color.WorkingProgessColor, null)
                 refreshTimeSchedule(color, totalTime, lastTime)
                 setHint("轻触继续 长按终止")
-                onMainActivityCallback?.onChangeIvSuspension(R.drawable.ic_tab_suspension_start)
+                changeSuspensionIcon(R.drawable.ic_tab_suspension_start)
             }
         }
     }
@@ -138,7 +172,7 @@ class TomatoBellFragment : BaseFragment() {
         viewOperationHints.text = s
     }
 
-    fun refreshTimeSchedule(@ColorInt color: Int, totalTime: Long, lastTime: Long) {
+    private fun refreshTimeSchedule(@ColorInt color: Int, totalTime: Long, lastTime: Long) {
         viewTimeSchedule.setProgressColor(color)
         val process = lastTime.toFloat() / totalTime
         viewTimeSchedule.setProgress(process)
@@ -147,7 +181,7 @@ class TomatoBellFragment : BaseFragment() {
     }
 
     fun onClickListener() {
-        when (countDownModel.curretStatus) {
+        when (countDownModel.currentStatus) {
             CountDownModel.WORKING -> {
                 when (countDownModel.countDownStatus) {
                     CountDownManager.STATE_INIT -> {
@@ -171,7 +205,48 @@ class TomatoBellFragment : BaseFragment() {
         }
     }
 
-    fun onLongClickListener() {
+    @DrawableRes
+    private fun getSuspensionIcon(): Int {
+        return when (countDownModel.currentStatus) {
+            CountDownModel.WORKING -> {
+                when (countDownModel.countDownStatus) {
+                    CountDownManager.STATE_INIT -> {
+                        R.drawable.ic_tab_suspension_start
+                    }
+                    CountDownManager.STATE_RUNNING -> {
+                        R.drawable.ic_tab_suspension_pause
+                    }
+                    CountDownManager.STATE_RUNNING_PAUSE -> {
+                        R.drawable.ic_tab_suspension_start
+                    }
+                    else -> {
+                        R.drawable.ic_tab_suspension_start
+                    }
+                }
+            }
+            CountDownModel.REPOSE -> {
+                when (countDownModel.countDownStatus) {
+                    CountDownManager.STATE_INIT -> {
+                        R.drawable.ic_tab_suspension_rest
+                    }
+                    CountDownManager.STATE_RUNNING -> {
+                        R.drawable.ic_tab_suspension_rest
+                    }
+                    CountDownManager.STATE_RUNNING_PAUSE -> {
+                        R.drawable.ic_tab_suspension_rest
+                    }
+                    else -> {
+                        R.drawable.ic_tab_suspension_rest
+                    }
+                }
+            }
+            else -> {
+                R.drawable.ic_tab_suspension_start
+            }
+        }
+    }
+
+    private fun onLongClickListener() {
         onMainActivityCallback?.setOnLongClickListener(object : View.OnLongClickListener {
             override fun onLongClick(v: View?): Boolean {
                 return true
@@ -180,7 +255,7 @@ class TomatoBellFragment : BaseFragment() {
         onMainActivityCallback?.setOnTouchEventListener(object : OnClickProgressListener() {
             override fun onStart() {
                 var isLongClick = false
-                when (countDownModel.curretStatus) {
+                when (countDownModel.currentStatus) {
                     CountDownModel.WORKING -> {
                         when (countDownModel.countDownStatus) {
                             CountDownManager.STATE_RUNNING_PAUSE -> {
@@ -221,7 +296,7 @@ class TomatoBellFragment : BaseFragment() {
     }
 
     private fun responseEvent() {
-        when (countDownModel.curretStatus) {
+        when (countDownModel.currentStatus) {
             CountDownModel.WORKING -> {
                 when (countDownModel.countDownStatus) {
                     CountDownManager.STATE_RUNNING_PAUSE, CountDownManager.STATE_RUNNING -> {

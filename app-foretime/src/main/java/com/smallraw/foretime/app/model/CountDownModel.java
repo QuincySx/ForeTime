@@ -29,7 +29,7 @@ public class CountDownModel implements CountDownManager.OnCountDownListener {
     private List<OnCountDownListener> mOnCountDownListenerList = new ArrayList<>();
 
     @Status
-    private int mCurretStatus = WORKING;
+    private int mCurrentStatus = WORKING;
 
     public static CountDownModel getInstance() {
         if (sCountDownModel == null) {
@@ -43,7 +43,7 @@ public class CountDownModel implements CountDownManager.OnCountDownListener {
     }
 
     public void init(@Status int status) {
-        mCurretStatus = status;
+        mCurrentStatus = status;
         long time;
         switch (status) {
             default:
@@ -58,7 +58,7 @@ public class CountDownModel implements CountDownManager.OnCountDownListener {
     }
 
     public void init(@Status int status, long time) {
-        mCurretStatus = status;
+        mCurrentStatus = status;
         mCountDownManager.setRunningTime(time);
         mCountDownManager.init();
     }
@@ -80,8 +80,8 @@ public class CountDownModel implements CountDownManager.OnCountDownListener {
     }
 
     @Status
-    public int getCurretStatus() {
-        return mCurretStatus;
+    public int getCurrentStatus() {
+        return mCurrentStatus;
     }
 
     @CountDownManager.CountdownState
@@ -104,7 +104,7 @@ public class CountDownModel implements CountDownManager.OnCountDownListener {
     @Override
     public void onCall(int state, long totalTime, long lastTime) {
         for (OnCountDownListener countDownListener : mOnCountDownListenerList) {
-            countDownListener.onCall(mCurretStatus, state, totalTime, lastTime);
+            countDownListener.onCall(mCurrentStatus, state, totalTime, lastTime);
         }
     }
 

@@ -67,6 +67,7 @@ class CalendarFragment : BaseFragment() {
     }
 
     fun showViewAction() {
+        onMainActivityCallback?.onChangeIvSuspension(R.drawable.ic_tab_suspension_add)
         onMainActivityCallback?.setOnLongClickListener(null)
         onMainActivityCallback?.setOnClickListener(View.OnClickListener { v ->
             SelectDayTypeDialog(context)
@@ -124,5 +125,9 @@ class CalendarFragment : BaseFragment() {
     private fun setDateTime() {
         tvDate.text = monthDayFormat(Date())
         tvWeek.text = getWeekOfDate(activity!!.applicationContext, Date())
+    }
+
+    fun hiddenViewAction() {
+        
     }
 }
