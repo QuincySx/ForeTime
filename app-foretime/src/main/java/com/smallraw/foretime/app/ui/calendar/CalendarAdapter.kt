@@ -26,7 +26,7 @@ class CalendarAdapter(@NotNull val mCalendars: List<MemorialEntity>) : RecyclerV
 
     override fun onBindViewHolder(holder: CalenderViewHolder, position: Int) {
         val item = mCalendars[position]
-        holder.tvCalendarTitle.text = item.description
+        holder.tvCalendarTitle.text = item.name
 
 
         val context = holder.itemView.context
