@@ -18,7 +18,6 @@ import com.smallraw.foretime.app.ui.main.OnMainActivityCallback
 import com.smallraw.time.base.BaseFragment
 import com.smallraw.time.utils.ms2Minutes
 import kotlinx.android.synthetic.main.fragment_tomato_bell.*
-import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
 
 class TomatoBellFragment : BaseFragment() {
@@ -73,7 +72,7 @@ class TomatoBellFragment : BaseFragment() {
 
     fun showViewAction() {
         isDisplay = true
-        changeSuspensionIcon(getSuspensionIcon())
+        changeSuspensionIcon()
         onLongClickListener()
         onMainActivityCallback?.setOnClickListener(View.OnClickListener {
             onClickListener()
@@ -84,13 +83,21 @@ class TomatoBellFragment : BaseFragment() {
         isDisplay = false
     }
 
-    private fun changeSuspensionIcon(resId: Int) {
+    /**
+     * 修改底部图标
+     * TODO 底部图标应该两个叠加,业务操作隔离
+     */
+    private fun changeSuspensionIcon(resId: Int = -1) {
         if (isDisplay) {
             val res = mSuspensionHandleQueue.poll()
-            if(res == null){
+            if (resId == -1) {
+                if(res == null){
+                    onMainActivityCallback?.onChangeIvSuspension(getSuspensionIcon())
+                }else{
+                    onMainActivityCallback?.onChangeIvSuspension(res)
+                }
+            } else {
                 onMainActivityCallback?.onChangeIvSuspension(resId)
-            }else{
-                onMainActivityCallback?.onChangeIvSuspension(res)
             }
         } else {
             addSuspensionHandle(resId)
@@ -180,7 +187,7 @@ class TomatoBellFragment : BaseFragment() {
         viewTimeSchedule.postInvalidate()
     }
 
-    fun onClickListener() {
+    private fun onClickListener() {
         when (countDownModel.currentStatus) {
             CountDownModel.WORKING -> {
                 when (countDownModel.countDownStatus) {
@@ -205,6 +212,9 @@ class TomatoBellFragment : BaseFragment() {
         }
     }
 
+    /**
+     * 获取当前的 Icon
+     */
     @DrawableRes
     private fun getSuspensionIcon(): Int {
         return when (countDownModel.currentStatus) {
