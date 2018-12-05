@@ -43,6 +43,10 @@ abstract class BaseTitleBarActivity : BaseActivity() {
         mLayoutTitleBarRight.addView(view)
     }
 
+    protected fun addRightView(view: View, layoutParams: ViewGroup.LayoutParams) {
+        mLayoutTitleBarRight.addView(view, layoutParams)
+    }
+
     @ColorInt
     protected open fun selfTitleBackgroundColor(): Int {
         return Color.WHITE

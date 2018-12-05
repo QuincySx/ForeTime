@@ -2,6 +2,7 @@ package com.smallraw.foretime.app.ui.calendar
 
 import android.annotation.SuppressLint
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
@@ -9,13 +10,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.smallraw.foretime.app.R
-import com.smallraw.foretime.app.base.BaseDialogView
+import com.smallraw.foretime.app.common.adapter.OnItemClickListener
 import com.smallraw.foretime.app.common.widget.dialog.SelectDayTypeDialog
+import com.smallraw.foretime.app.common.widget.dialog.TimerSetDialog
 import com.smallraw.foretime.app.entity.Weather
 import com.smallraw.foretime.app.repository.db.entity.MemorialEntity
 import com.smallraw.foretime.app.ui.addTaskDay.AddTaskDayActivity
 import com.smallraw.foretime.app.ui.calendar.vm.CalendarVewModel
 import com.smallraw.foretime.app.ui.main.OnMainActivityCallback
+import com.smallraw.foretime.app.ui.taskInfo.TaskInfoActivity
 import com.smallraw.time.base.BaseFragment
 import com.smallraw.time.model.BaseCallback
 import com.smallraw.time.model.WeatherModel
@@ -56,6 +59,11 @@ class CalendarFragment : BaseFragment() {
             mCalendarAdapter.notifyDataSetChanged()
         })
         mCalendarVewModel.queryActiveTask(0, 0)
+        mCalendarAdapter.setOnItemClickListener(object : OnItemClickListener {
+            override fun onClick(view: View, position: Int) {
+                TaskInfoActivity.start(context,mCalendarList[position].id)
+            }
+        })
         setDateTime()
         initWeatherNow()
     }
@@ -128,6 +136,6 @@ class CalendarFragment : BaseFragment() {
     }
 
     fun hiddenViewAction() {
-        
+
     }
 }

@@ -71,15 +71,19 @@
         app:layout_constraintLeft_toRightOf="@+id/ivWeather"
         app:layout_constraintTop_toBottomOf="@+id/tvDate" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <com.smallraw.foretime.app.common.OverScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:scrollbars="none"
-        android:overScrollMode="never"
         android:layout_marginTop="19dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivWeather" />
+        app:layout_constraintTop_toBottomOf="@+id/ivWeather">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            android:overScrollMode="never" />
+    </com.smallraw.foretime.app.common.OverScrollView>
 </android.support.constraint.ConstraintLayout>

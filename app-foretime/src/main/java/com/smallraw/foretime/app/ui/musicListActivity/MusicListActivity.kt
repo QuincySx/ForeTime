@@ -15,8 +15,8 @@ import me.jessyan.autosize.AutoSizeConfig
 import me.jessyan.autosize.utils.AutoSizeUtils
 
 class MusicListActivity : BaseTitleBarActivity() {
-    private val mMusicList = ArrayList<MusicBean>();
-    private val mAdapter = MusicAdapter(mMusicList);
+    private val mMusicList = ArrayList<MusicBean>()
+    private val mAdapter = MusicAdapter(mMusicList)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 
 import com.smallraw.foretime.app.R
+import com.smallraw.foretime.app.common.adapter.OnItemClickListener
 import com.smallraw.foretime.app.repository.db.entity.MemorialEntity
 import com.smallraw.time.utils.dateFormat
 import com.smallraw.time.utils.dateParse
@@ -18,6 +19,15 @@ import java.util.*
 
 class CalendarAdapter(@NotNull val mCalendars: List<MemorialEntity>) : RecyclerView.Adapter<CalendarAdapter.CalenderViewHolder>() {
     private val mCurrentDate = dateParse(dateFormat(Date()))
+    private var mOnItemClickListener: OnItemClickListener? = null
+
+    fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
+        mOnItemClickListener = onItemClickListener
+    }
+
+    fun getOnItemClickListener(): OnItemClickListener? {
+        return mOnItemClickListener
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalenderViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_calendar, parent, false)
@@ -70,6 +80,9 @@ class CalendarAdapter(@NotNull val mCalendars: List<MemorialEntity>) : RecyclerV
 
         holder.viewStatus.setBackgroundColor(Color.parseColor(item.color))
         holder.tvStatus.setTextColor(Color.parseColor(item.color))
+        holder.itemView.setOnClickListener {
+            getOnItemClickListener()?.onClick(it, holder.layoutPosition)
+        }
     }
 
     override fun getItemCount(): Int {
