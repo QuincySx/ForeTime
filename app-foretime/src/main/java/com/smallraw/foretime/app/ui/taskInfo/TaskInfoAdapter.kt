@@ -14,12 +14,16 @@ import com.smallraw.time.utils.dateParse
 import com.smallraw.time.utils.differentDays
 import java.util.*
 
-class TaskInfoAdapter(private val item: MemorialEntity, private val mColors: List<String>?) : RecyclerView.Adapter<TaskInfoAdapter.ViewHolder>() {
+class TaskInfoAdapter(private var item: MemorialEntity, private val mColors: List<String>?) : RecyclerView.Adapter<TaskInfoAdapter.ViewHolder>() {
     private val mCurrentDate = dateParse(dateFormat(Date()))
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.item_task_info, viewGroup, false)
         return ViewHolder(view)
+    }
+
+    fun setData(item: MemorialEntity) {
+        this.item = item
     }
 
     override fun onBindViewHolder(holder: ViewHolder, i: Int) {

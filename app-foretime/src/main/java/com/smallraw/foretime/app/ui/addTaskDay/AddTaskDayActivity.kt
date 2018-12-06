@@ -8,22 +8,27 @@ import android.support.annotation.IntDef
 import android.support.v4.content.ContextCompat
 import android.text.TextUtils
 import android.view.View
-import android.widget.Switch
 import android.widget.Toast
 import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.common.widget.dialog.MultipleItemDialog
 import com.smallraw.foretime.app.common.widget.dialog.SelectDateDialog
 import com.smallraw.foretime.app.event.TaskChangeEvent
-import com.smallraw.foretime.app.repository.DataRepository
 import com.smallraw.foretime.app.repository.db.entity.MemorialEntity
 import com.smallraw.time.base.BaseTitleBarActivity
 import kotlinx.android.synthetic.main.activity_add_countdown_day.*
 import org.greenrobot.eventbus.EventBus
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
 class AddTaskDayActivity : BaseTitleBarActivity() {
+
+    @IntDef(DaysMatter, DaysCumulative)
+    annotation class DayType
+
+    @IntDef(OptionTypeAdd, OptionTypeEdit)
+    annotation class OptionType
 
     companion object {
         /**
@@ -35,18 +40,52 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
          */
         const val DaysMatter = 1
 
+        /**
+         * 添加
+         */
+        const val OptionTypeAdd = 0
+        /**
+         * 修改
+         */
+        const val OptionTypeEdit = 1
+
+        /**
+         *  添加的日期类型
+         */
         private const val DAY_TYPE_EXTRA = "day_type_extra"
 
+        /**
+         * 修改的任务 ID
+         */
+        private const val TASK_ID_EXTRA = "task_id_extra"
+
+        /**
+         * 操作类型：修改、删除
+         */
+        private const val DAY_OPTION_TYPE_EXTRA = "day_option_type_extra"
+
         @JvmStatic
-        fun start(context: Context, @DayType daytype: Int) {
+        fun startAdd(context: Context, @DayType dayType: Int) {
             val intent = Intent(context, AddTaskDayActivity::class.java)
-            intent.putExtra(DAY_TYPE_EXTRA, daytype)
+            intent.putExtra(DAY_TYPE_EXTRA, dayType)
+            intent.putExtra(DAY_OPTION_TYPE_EXTRA, OptionTypeAdd)
+            ContextCompat.startActivity(context, intent, null)
+        }
+
+        @JvmStatic
+        fun startEdit(context: Context, taskId: Long, @DayType dayType: Int) {
+            val intent = Intent(context, AddTaskDayActivity::class.java)
+            intent.putExtra(DAY_TYPE_EXTRA, dayType)
+            intent.putExtra(TASK_ID_EXTRA, taskId)
+            intent.putExtra(DAY_OPTION_TYPE_EXTRA, OptionTypeEdit)
             ContextCompat.startActivity(context, intent, null)
         }
 
         private val COLOR_LIST = arrayListOf("#139EED", "#EE386D", "#FFC529", "#9092A5", "#FF8E9F", "#2B0050", "#FD92C4")
         private val REPEAT_LIST = arrayListOf("从不", "每周", "每月", "每年")
     }
+
+    private var mCalendar = Calendar.getInstance()
 
     private val mDataRepository = App.getInstance().getRepository()
 
@@ -55,17 +94,15 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
     @DayType
     private var mCurrentDayType = DaysMatter
 
-    private var mCalendar = Calendar.getInstance()
+    @OptionType
+    private var mCurrentDayOptionType = OptionTypeAdd
+
+    private var mEditTaskId: Long = -1
 
     /**
      * 选择的重复模式
      */
     private var mSelectRepeatIndex = 0
-
-    private var dataFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-
-    @IntDef(DaysMatter, DaysCumulative)
-    annotation class DayType
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,18 +110,43 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
         setContentView(R.layout.activity_add_countdown_day)
         setTitleBarLeftImage(R.drawable.ic_back_black)
 
+        mCurrentDayOptionType = intent.getIntExtra(DAY_OPTION_TYPE_EXTRA, OptionTypeAdd)
+        when (mCurrentDayOptionType) {
+            OptionTypeAdd -> {
+                mCalendar.timeInMillis = System.currentTimeMillis()
+                tvTargetDate.text = "${mCalendar.get(Calendar.YEAR)}-${mCalendar.get(Calendar.MONTH) + 1}-${mCalendar.get(Calendar.DAY_OF_MONTH)}"
+            }
+            OptionTypeEdit -> {
+                mEditTaskId = intent.getLongExtra(TASK_ID_EXTRA, mEditTaskId)
+                if (mEditTaskId == -1L) {
+                    finish()
+                }
+                queryTask(mEditTaskId)
+            }
+        }
+
         mCurrentDayType = intent.getIntExtra(DAY_TYPE_EXTRA, DaysMatter)
 
-        dispatchView()
+        dispatchTypeTitle(mCurrentDayType)
 
         tvTargetDate.setOnClickListener {
+            var date: Long
+            try {
+                val parse = mSimpleDateFormat.parse(tvTargetDate.text.toString())
+                date = parse.time
+            } catch (e: Exception) {
+                date = System.currentTimeMillis()
+                e.printStackTrace()
+            }
             SelectDateDialog.Builder(this)
                     .setOnWheelCallback { date ->
-                        tvTargetDate.text = dataFormat.format(date)
+                        tvTargetDate.text = mSimpleDateFormat.format(date)
                     }
+                    .setTime(date)
                     .build()
                     .showAtViewAuto(tvTargetDate)
         }
+
         tvRepeat.setOnClickListener {
             MultipleItemDialog.Builder(this)
                     .setDate(REPEAT_LIST)
@@ -97,8 +159,6 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
                     .build()
                     .showAtViewAuto(tvRepeat)
         }
-        mCalendar.timeInMillis = System.currentTimeMillis()
-        tvTargetDate.text = "${mCalendar.get(Calendar.YEAR)}-${mCalendar.get(Calendar.MONTH) + 1}-${mCalendar.get(Calendar.DAY_OF_MONTH)}"
 
         colorRecyclerView.setColors(COLOR_LIST)
 
@@ -132,16 +192,62 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
                 }
             }
             App.getInstance().getAppExecutors().diskIO().execute {
-                val memorial = MemorialEntity(titleName, note, mCurrentDayType, color, date, repeatTime, Date())
-                mDataRepository.insertTask(memorial)
-                EventBus.getDefault().post(TaskChangeEvent(TaskChangeEvent.ADD))
+                when (mCurrentDayOptionType) {
+                    OptionTypeAdd -> {
+                        val memorial = MemorialEntity(titleName, note, mCurrentDayType, color, date, repeatTime, Date())
+                        mDataRepository.insertTask(memorial)
+                        EventBus.getDefault().post(TaskChangeEvent(TaskChangeEvent.ADD))
+                    }
+                    OptionTypeEdit -> {
+                        val memorial = MemorialEntity(titleName, note, mCurrentDayType, color, date, repeatTime, Date())
+                        memorial.id = mEditTaskId
+                        mDataRepository.update(memorial)
+                        EventBus.getDefault().post(TaskChangeEvent(TaskChangeEvent.UPDATE, mEditTaskId, mCurrentDayType))
+                    }
+                }
             }
             finish()
         }
     }
 
-    private fun dispatchView() {
-        when (mCurrentDayType) {
+    private fun queryTask(i: Long) {
+        App.getInstance().getAppExecutors().diskIO().execute {
+            val task = mDataRepository.getTask(i)
+            App.getInstance().getAppExecutors().mainThread().execute {
+                setContentViewData(task)
+            }
+        }
+
+    }
+
+    private fun setContentViewData(task: MemorialEntity) {
+        mCalendar.timeInMillis = task.targetTime.time
+        tvTargetDate.text = "${mCalendar.get(Calendar.YEAR)}-${mCalendar.get(Calendar.MONTH) + 1}-${mCalendar.get(Calendar.DAY_OF_MONTH)}"
+
+        titleName.setText(task.name)
+        tvNote.setText(task.description)
+
+        mSelectRepeatIndex = when (task.repeatTime) {
+            "none" -> {
+                0
+            }
+            "1E" -> {
+                1
+            }
+            "1M" -> {
+                2
+            }
+            "1y" -> {
+                3
+            }
+            else -> {
+                0
+            }
+        }
+    }
+
+    private fun dispatchTypeTitle(@DayType dayType: Int) {
+        when (dayType) {
             DaysMatter -> {
                 titleName.hint = "倒数日名称"
                 layoutCyclePeriod.visibility = View.VISIBLE

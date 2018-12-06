@@ -15,7 +15,12 @@ import me.jessyan.autosize.utils.AutoSizeUtils
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.PagerSnapHelper
 import com.smallraw.foretime.app.App
+import com.smallraw.foretime.app.event.TaskChangeEvent
 import com.smallraw.foretime.app.repository.db.entity.MemorialEntity
+import com.smallraw.foretime.app.ui.addTaskDay.AddTaskDayActivity
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 class TaskInfoActivity : BaseTitleBarActivity() {
@@ -40,22 +45,42 @@ class TaskInfoActivity : BaseTitleBarActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_info)
         setTitleBarLeftImage(R.drawable.ic_back_black)
-        addRightView(newEditView())
-        addRightView(newShareView())
+        EventBus.getDefault().register(this)
 
-        val longExtra = intent.getLongExtra(EXT_TASK_ID, -1L)
+        addRightView(newEditView(View.OnClickListener {
+            //编辑
+            AddTaskDayActivity.startEdit(this, task!!.id, task!!.type)
+        }))
+        addRightView(newShareView(View.OnClickListener {
+            //分享
+        }))
 
-        if (longExtra == -1L) {
+        val taskIDExtra = intent.getLongExtra(EXT_TASK_ID, -1L)
+
+        if (taskIDExtra == -1L) {
             finish()
         }
 
         initRecyclerView()
+
         App.getInstance().getAppExecutors().diskIO().execute {
-            task = App.getInstance().getRepository().getTask(longExtra)
+            task = App.getInstance().getRepository().getTask(taskIDExtra)
             taskInfoAdapter = TaskInfoAdapter(task!!, colorList)
 
             App.getInstance().getAppExecutors().mainThread().execute {
                 setAdapterDate()
+            }
+        }
+    }
+
+    private fun refreshTask(taskId: Long) {
+        App.getInstance().getAppExecutors().diskIO().execute {
+            val tempTask: MemorialEntity = App.getInstance().getRepository().getTask(taskId)
+                    ?: return@execute
+            task = tempTask
+            App.getInstance().getAppExecutors().mainThread().execute {
+                taskInfoAdapter?.setData(task!!)
+                taskInfoAdapter?.notifyDataSetChanged()
             }
         }
     }
@@ -70,19 +95,35 @@ class TaskInfoActivity : BaseTitleBarActivity() {
         pagerSnapHelper.attachToRecyclerView(recyclerView)
     }
 
-    private fun newShareView(): View {
+    private fun newShareView(onClickListener: View.OnClickListener? = null): View {
         val right = ImageView(this)
         val layoutParams = ViewGroup.LayoutParams(AutoSizeUtils.dp2px(this, 35F), AutoSizeUtils.dp2px(this, 35F))
         right.layoutParams = layoutParams
         right.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_share_black, null))
+        right.setOnClickListener(onClickListener)
         return right
     }
 
-    private fun newEditView(): View {
+    private fun newEditView(onClickListener: View.OnClickListener? = null): View {
         val right = ImageView(this)
         val layoutParams = ViewGroup.LayoutParams(AutoSizeUtils.dp2px(this, 35F), AutoSizeUtils.dp2px(this, 35F))
         right.layoutParams = layoutParams
         right.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_edit_black, null))
+        right.setOnClickListener(onClickListener)
         return right
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: TaskChangeEvent) {
+        if (event.changeType == TaskChangeEvent.UPDATE
+                && task != null
+                && event.taskID == task!!.id) {
+            refreshTask(task!!.id)
+        }
+    }
+
+    override fun onDestroy() {
+        EventBus.getDefault().unregister(this)
+        super.onDestroy()
     }
 }

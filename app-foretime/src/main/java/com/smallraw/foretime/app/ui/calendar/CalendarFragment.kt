@@ -82,9 +82,9 @@ class CalendarFragment : BaseFragment() {
                     .setOnClickCallback { view, index ->
                         if (context != null) {
                             if (index == 0) {
-                                AddTaskDayActivity.start(context!!, AddTaskDayActivity.DaysMatter)
+                                AddTaskDayActivity.startAdd(context!!, AddTaskDayActivity.DaysMatter)
                             } else {
-                                AddTaskDayActivity.start(context!!, AddTaskDayActivity.DaysCumulative)
+                                AddTaskDayActivity.startAdd(context!!, AddTaskDayActivity.DaysCumulative)
                             }
                             view?.dismiss()
                         }
