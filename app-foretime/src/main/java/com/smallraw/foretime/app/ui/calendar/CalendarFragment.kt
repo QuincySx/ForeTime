@@ -89,7 +89,7 @@ class CalendarFragment : BaseFragment() {
                             view?.dismiss()
                         }
                     }
-                    .showAtViewAuto(v, AutoSizeUtils.dp2px(context, 6F))
+                    .showAtViewAuto(v, AutoSizeUtils.dp2px(context, 55F))
         })
     }
 

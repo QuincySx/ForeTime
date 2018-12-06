@@ -16,7 +16,7 @@ import com.smallraw.foretime.app.ui.tomatoBell.TomatoBellFragment
 import com.smallraw.time.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity() : BaseActivity(), OnMainActivityCallback {
+class MainActivity : BaseActivity(), OnMainActivityCallback {
     private lateinit var viewPagerAdapter: ViewPagerAdapter
     private lateinit var tomatoBellFragment: TomatoBellFragment
     private lateinit var calendarFragment: CalendarFragment
