@@ -61,7 +61,7 @@ class CalendarFragment : BaseFragment() {
         mCalendarVewModel.queryActiveTask(0, 0)
         mCalendarAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onClick(view: View, position: Int) {
-                TaskInfoActivity.start(context,mCalendarList[position].id)
+                TaskInfoActivity.start(activity, mCalendarList[position].id)
             }
         })
         setDateTime()
