@@ -2,7 +2,6 @@ package com.smallraw.foretime.app.ui.calendar
 
 import android.annotation.SuppressLint
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
@@ -12,7 +11,6 @@ import android.view.ViewGroup
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.common.adapter.OnItemClickListener
 import com.smallraw.foretime.app.common.widget.dialog.SelectDayTypeDialog
-import com.smallraw.foretime.app.common.widget.dialog.TimerSetDialog
 import com.smallraw.foretime.app.entity.Weather
 import com.smallraw.foretime.app.repository.db.entity.MemorialEntity
 import com.smallraw.foretime.app.ui.addTaskDay.AddTaskDayActivity

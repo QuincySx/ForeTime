@@ -32,6 +32,20 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    dexOptions {
+        dexInProcess = true
+
+        javaMaxHeapSize = "2g"
+
+        //是否支持大工程模式
+        jumboMode = true
+        //预编译
+        preDexLibraries = true
+        //线程数
+        threadCount = 8
+    }
+
 }
 
 dependencies {
