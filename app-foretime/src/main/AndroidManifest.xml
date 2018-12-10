@@ -29,7 +29,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.setting.SettingActivity" />
+        <activity android:name=".ui.tomatoSetting.TomatoSettingActivity" />
         <activity android:name=".ui.harvestToday.HarvestTodayActivity" />
         <activity android:name=".ui.shape.ShapeActivity" />
         <activity android:name=".ui.musicListActivity.MusicListActivity">
@@ -40,7 +40,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.addTaskDay.AddTaskDayActivity" />
-        <activity android:name=".ui.taskInfo.TaskInfoActivity"></activity>
+        <activity android:name=".ui.taskInfo.TaskInfoActivity" />
+        <activity android:name=".ui.calendarSetting.CalendarSettingActivity" />
+        <activity android:name=".ui.backup.BackupActivity"></activity>
     </application>
 
 </manifest>

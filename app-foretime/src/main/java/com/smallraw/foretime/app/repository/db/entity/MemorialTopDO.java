@@ -9,14 +9,14 @@ import android.arch.persistence.room.PrimaryKey;
 
 import java.util.Date;
 
-@Entity(tableName = MemorialTopEntity.TABLE_NAME,
-        foreignKeys = {@ForeignKey(entity = MemorialEntity.class,
+@Entity(tableName = MemorialTopDO.TABLE_NAME,
+        foreignKeys = {@ForeignKey(entity = MemorialDO.class,
                 parentColumns = "id",
                 childColumns = "memorial_id")},
         indices = {@Index(value = {"id", "memorial_id"},
                 unique = true)}
 )
-public class MemorialTopEntity {
+public class MemorialTopDO {
     public final static String TABLE_NAME = "memorial_top";
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
@@ -28,17 +28,17 @@ public class MemorialTopEntity {
     @ColumnInfo(name = "createTime")
     private Date createTime;
 
-    public MemorialTopEntity() {
+    public MemorialTopDO() {
     }
 
     @Ignore
-    public MemorialTopEntity(Long memorial_id) {
+    public MemorialTopDO(Long memorial_id) {
         this.memorial_id = memorial_id;
         this.createTime = new Date();
     }
 
     @Ignore
-    public MemorialTopEntity(Long memorial_id, Long type) {
+    public MemorialTopDO(Long memorial_id, Long type) {
         this.memorial_id = memorial_id;
         this.createTime = new Date();
         this.type = type;

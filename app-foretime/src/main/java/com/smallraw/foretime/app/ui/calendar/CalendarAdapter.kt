@@ -9,7 +9,7 @@ import android.widget.TextView
 
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.common.adapter.OnItemClickListener
-import com.smallraw.foretime.app.repository.db.entity.MemorialEntity
+import com.smallraw.foretime.app.repository.db.entity.MemorialDO
 import com.smallraw.time.utils.dateFormat
 import com.smallraw.time.utils.dateParse
 import com.smallraw.time.utils.differentDays
@@ -17,7 +17,7 @@ import com.smallraw.time.utils.getWeekOfDate
 import org.jetbrains.annotations.NotNull
 import java.util.*
 
-class CalendarAdapter(@NotNull val mCalendars: List<MemorialEntity>) : RecyclerView.Adapter<CalendarAdapter.CalenderViewHolder>() {
+class CalendarAdapter(@NotNull val mCalendars: List<MemorialDO>) : RecyclerView.Adapter<CalendarAdapter.CalenderViewHolder>() {
     private val mCurrentDate = dateParse(dateFormat(Date()))
     private var mOnItemClickListener: OnItemClickListener? = null
 

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@null"
+    android:orientation="vertical"
+    android:paddingLeft="30dp"
+    android:paddingTop="30dp"
+    android:paddingRight="21dp"
+    android:paddingBottom="12dp">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/layout_time"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="8dp">
+
+        <TextView
+            android:id="@+id/tv_calendar_hint"
+            style="@style/TextSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingLeft="4dp"
+            android:text="展示方式" />
+
+        <TextView
+            android:id="@+id/tv_calendar_text"
+            style="@style/TextSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingLeft="30dp"
+            android:paddingRight="24dp"
+            android:text="显示全部"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_calendar_arrow"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:srcCompat="@drawable/ic_arrow_right_black" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_calendar_type"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:overScrollMode="never"
+            android:paddingLeft="4dp"
+            android:paddingRight="10dp"
+            android:scrollbars="none"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/layout_more_setting"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="8dp">
+
+        <TextView
+            style="@style/TextSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingLeft="4dp"
+            android:text="更多设置" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:srcCompat="@drawable/ic_arrow_right_black" />
+    </android.support.constraint.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="9dp"
+        android:background="#EDEDED" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/layoutShare"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/tv_harvest_hint"
+            style="@style/TextSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="通知提醒" />
+
+        <ImageView
+            android:id="@+id/iv_harvest_today"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="3dp"
+            app:layout_constraintLeft_toRightOf="@+id/tv_harvest_hint"
+            app:srcCompat="@drawable/ic_notice_black" />
+
+        <TextView
+            android:id="@+id/tv_harvest_number"
+            style="@style/TextSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30dp"
+            android:gravity="center"
+            android:text="12"
+            app:layout_constraintLeft_toRightOf="@+id/tv_harvest_hint" />
+    </android.support.constraint.ConstraintLayout>
+</LinearLayout>

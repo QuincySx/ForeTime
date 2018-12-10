@@ -7,8 +7,8 @@ import android.arch.persistence.room.PrimaryKey;
 
 import java.util.Date;
 
-@Entity(tableName = ConfigEntity.TABLE_NAME)
-public class ConfigEntity {
+@Entity(tableName = ConfigDO.TABLE_NAME)
+public class ConfigDO {
   public static final String TABLE_NAME = "config";
 
   @PrimaryKey(autoGenerate = true)
@@ -23,11 +23,11 @@ public class ConfigEntity {
   @ColumnInfo(name = "createTime")
   private Date createTime;
 
-  public ConfigEntity() {
+  public ConfigDO() {
   }
 
   @Ignore
-  public ConfigEntity(String name, String value, Long overTime) {
+  public ConfigDO(String name, String value, Long overTime) {
     this.name = name;
     this.value = value;
     this.overTime = overTime;
@@ -35,7 +35,7 @@ public class ConfigEntity {
   }
 
   @Ignore
-  public ConfigEntity(Long id, String name, String value, Long overTime, Date createTime) {
+  public ConfigDO(Long id, String name, String value, Long overTime, Date createTime) {
     this.id = id;
     this.name = name;
     this.value = value;
@@ -85,7 +85,7 @@ public class ConfigEntity {
 
   @Override
   public String toString() {
-    return "ConfigEntity{" +
+    return "ConfigDO{" +
             "id=" + id +
             ", name='" + name + '\'' +
             ", value='" + value + '\'' +

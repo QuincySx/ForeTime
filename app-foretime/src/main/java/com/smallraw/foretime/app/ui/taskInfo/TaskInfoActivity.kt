@@ -16,7 +16,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.PagerSnapHelper
 import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.event.TaskChangeEvent
-import com.smallraw.foretime.app.repository.db.entity.MemorialEntity
+import com.smallraw.foretime.app.repository.db.entity.MemorialDO
 import com.smallraw.foretime.app.ui.addTaskDay.AddTaskDayActivity
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -37,7 +37,7 @@ class TaskInfoActivity : BaseTitleBarActivity() {
         private val colorList = arrayListOf("#139EED", "#EE386D", "#FFC529", "#9092A5", "#FF8E9F", "#2B0050", "#FD92C4")
     }
 
-    private var task: MemorialEntity? = null
+    private var mTask: MemorialDO? = null
     private var taskInfoAdapter: TaskInfoAdapter? = null
     private var pagerSnapHelper = PagerSnapHelper()
 
@@ -49,7 +49,7 @@ class TaskInfoActivity : BaseTitleBarActivity() {
 
         addRightView(newEditView(View.OnClickListener {
             //编辑
-            AddTaskDayActivity.startEdit(this, task!!.id, task!!.type)
+            AddTaskDayActivity.startEdit(this, mTask!!.id, mTask!!.type)
         }))
         addRightView(newShareView(View.OnClickListener {
             //分享
@@ -64,8 +64,8 @@ class TaskInfoActivity : BaseTitleBarActivity() {
         initRecyclerView()
 
         App.getInstance().getAppExecutors().diskIO().execute {
-            task = App.getInstance().getRepository().getTask(taskIDExtra)
-            taskInfoAdapter = TaskInfoAdapter(task!!, colorList)
+            mTask = App.getInstance().getRepository().getTask(taskIDExtra)
+            taskInfoAdapter = TaskInfoAdapter(mTask!!, colorList)
 
             App.getInstance().getAppExecutors().mainThread().execute {
                 setAdapterDate()
@@ -75,11 +75,11 @@ class TaskInfoActivity : BaseTitleBarActivity() {
 
     private fun refreshTask(taskId: Long) {
         App.getInstance().getAppExecutors().diskIO().execute {
-            val tempTask: MemorialEntity = App.getInstance().getRepository().getTask(taskId)
+            val tempTask: MemorialDO = App.getInstance().getRepository().getTask(taskId)
                     ?: return@execute
-            task = tempTask
+            mTask = tempTask
             App.getInstance().getAppExecutors().mainThread().execute {
-                taskInfoAdapter?.setData(task!!)
+                taskInfoAdapter?.setData(mTask!!)
                 taskInfoAdapter?.notifyDataSetChanged()
             }
         }
@@ -116,9 +116,9 @@ class TaskInfoActivity : BaseTitleBarActivity() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: TaskChangeEvent) {
         if (event.changeType == TaskChangeEvent.UPDATE
-                && task != null
-                && event.taskID == task!!.id) {
-            refreshTask(task!!.id)
+                && mTask != null
+                && event.taskID == mTask!!.id) {
+            refreshTask(mTask!!.id)
         }
     }
 

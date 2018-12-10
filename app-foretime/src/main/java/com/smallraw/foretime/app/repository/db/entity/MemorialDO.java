@@ -9,8 +9,8 @@ import android.os.Parcelable;
 
 import java.util.Date;
 
-@Entity(tableName = MemorialEntity.TABLE_NAME)
-public class MemorialEntity implements Parcelable {
+@Entity(tableName = MemorialDO.TABLE_NAME)
+public class MemorialDO implements Parcelable {
     public final static String TABLE_NAME = "memorial";
 
     @PrimaryKey(autoGenerate = true)
@@ -44,12 +44,12 @@ public class MemorialEntity implements Parcelable {
     @ColumnInfo(name = "archive")
     private boolean archive;
 
-    public MemorialEntity() {
+    public MemorialDO() {
     }
 
     @Ignore
-    public MemorialEntity(String name, String description, int type, String color,
-                          Date targetTime, String repeatTime, Date createTime) {
+    public MemorialDO(String name, String description, int type, String color,
+                      Date targetTime, String repeatTime, Date createTime) {
         this.name = name;
         this.description = description;
         this.type = type;
@@ -141,7 +141,7 @@ public class MemorialEntity implements Parcelable {
 
     @Override
     public String toString() {
-        return "MemorialEntity{" +
+        return "MemorialDO{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
@@ -174,7 +174,7 @@ public class MemorialEntity implements Parcelable {
         dest.writeByte(this.archive ? (byte) 1 : (byte) 0);
     }
 
-    protected MemorialEntity(Parcel in) {
+    protected MemorialDO(Parcel in) {
         this.id = (Long) in.readValue(Long.class.getClassLoader());
         this.name = in.readString();
         this.description = in.readString();
@@ -189,15 +189,15 @@ public class MemorialEntity implements Parcelable {
         this.archive = in.readByte() != 0;
     }
 
-    public static final Creator<MemorialEntity> CREATOR = new Creator<MemorialEntity>() {
+    public static final Creator<MemorialDO> CREATOR = new Creator<MemorialDO>() {
         @Override
-        public MemorialEntity createFromParcel(Parcel source) {
-            return new MemorialEntity(source);
+        public MemorialDO createFromParcel(Parcel source) {
+            return new MemorialDO(source);
         }
 
         @Override
-        public MemorialEntity[] newArray(int size) {
-            return new MemorialEntity[size];
+        public MemorialDO[] newArray(int size) {
+            return new MemorialDO[size];
         }
     };
 }

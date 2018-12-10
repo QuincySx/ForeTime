@@ -9,10 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.smallraw.foretime.app.R
+import com.smallraw.foretime.app.base.BaseDialogView
 import com.smallraw.foretime.app.common.adapter.OnItemClickListener
 import com.smallraw.foretime.app.common.widget.dialog.SelectDayTypeDialog
+import com.smallraw.foretime.app.constant.TaskTypeConsts
 import com.smallraw.foretime.app.entity.Weather
-import com.smallraw.foretime.app.repository.db.entity.MemorialEntity
+import com.smallraw.foretime.app.repository.db.entity.MemorialDO
 import com.smallraw.foretime.app.ui.addTaskDay.AddTaskDayActivity
 import com.smallraw.foretime.app.ui.calendar.vm.CalendarVewModel
 import com.smallraw.foretime.app.ui.main.OnMainActivityCallback
@@ -39,7 +41,7 @@ class CalendarFragment : BaseFragment() {
     private lateinit var mCalendarVewModel: CalendarVewModel
 
     private var onMainActivityCallback: OnMainActivityCallback? = null
-    private val mCalendarList = ArrayList<MemorialEntity>()
+    private val mCalendarList = ArrayList<MemorialDO>()
     private val mCalendarAdapter = CalendarAdapter(mCalendarList)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -56,7 +58,7 @@ class CalendarFragment : BaseFragment() {
             mCalendarList.addAll(it!!.distinct())
             mCalendarAdapter.notifyDataSetChanged()
         })
-        mCalendarVewModel.queryActiveTask(0, 0)
+        mCalendarVewModel.queryActiveTask(-1, 0)
         mCalendarAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onClick(view: View, position: Int) {
                 TaskInfoActivity.start(activity, mCalendarList[position].id)
@@ -64,6 +66,19 @@ class CalendarFragment : BaseFragment() {
         })
         setDateTime()
         initWeatherNow()
+
+        ivSetting.setOnClickListener {
+            CalendarSettingDialog.Builder(context)
+                    .setOnChangeSelectListener(object : CalendarSettingDialog.OnShowTypeListener {
+                        override fun onChange(dialog: BaseDialogView, type: Int) {
+                            mCalendarVewModel.queryActiveTask(type, 0)
+                            dialog.dismiss()
+                        }
+                    })
+                    .setSelectType(mCalendarVewModel.getDisplay())
+                    .build()
+                    .showAtViewAuto(it)
+        }
     }
 
     private fun initView() {

@@ -5,7 +5,7 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-import com.smallraw.foretime.app.repository.db.entity.ConfigEntity;
+import com.smallraw.foretime.app.repository.db.entity.ConfigDO;
 
 import java.util.List;
 
@@ -15,14 +15,14 @@ public interface ConfigDao {
   int count();
 
   @Insert
-  long insert(ConfigEntity configEntity);
+  long insert(ConfigDO configDO);
 
   @Query("SELECT * FROM config WHERE id = :id")
-  ConfigEntity findById(long id);
+  ConfigDO findById(long id);
 
   @Query("SELECT * FROM config WHERE name= :name")
-  List<ConfigEntity> findByKey(String name);
+  List<ConfigDO> findByKey(String name);
 
   @Update
-  int update(ConfigEntity configEntity);
+  int update(ConfigDO configDO);
 }

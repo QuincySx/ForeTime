@@ -16,17 +16,17 @@ import com.smallraw.foretime.app.executors.AppExecutors;
 import com.smallraw.foretime.app.repository.db.dao.ConfigDao;
 import com.smallraw.foretime.app.repository.db.dao.MemorialDao;
 import com.smallraw.foretime.app.repository.db.dao.MemorialTopDao;
-import com.smallraw.foretime.app.repository.db.entity.ConfigEntity;
-import com.smallraw.foretime.app.repository.db.entity.MemorialEntity;
-import com.smallraw.foretime.app.repository.db.entity.MemorialTopEntity;
+import com.smallraw.foretime.app.repository.db.entity.ConfigDO;
+import com.smallraw.foretime.app.repository.db.entity.MemorialDO;
+import com.smallraw.foretime.app.repository.db.entity.MemorialTopDO;
 import com.smallraw.time.db.converter.DateConverter;
 
 import java.util.Date;
 
 @Database(entities = {
-        ConfigEntity.class,
-        MemorialEntity.class,
-        MemorialTopEntity.class
+        ConfigDO.class,
+        MemorialDO.class,
+        MemorialTopDO.class
 }, version = 1, exportSchema = false)
 @TypeConverters(DateConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
@@ -74,13 +74,13 @@ public abstract class AppDatabase extends RoomDatabase {
                       contentValues.put("targetTime", new Date().getTime());
                       contentValues.put("strike", false);
                       contentValues.put("archive", false);
-                      long insert = db.insert(MemorialEntity.TABLE_NAME,
+                      long insert = db.insert(MemorialDO.TABLE_NAME,
                               SQLiteDatabase.CONFLICT_REPLACE, contentValues);
                       ContentValues contentTopValues = new ContentValues();
                       contentTopValues.put("memorial_id", insert);
                       contentTopValues.put("type", 0);
                       contentTopValues.put("createTime", new Date().getTime());
-                      db.insert(MemorialTopEntity.TABLE_NAME,
+                      db.insert(MemorialTopDO.TABLE_NAME,
                               SQLiteDatabase.CONFLICT_REPLACE, contentTopValues);
                       db.setTransactionSuccessful();
                     } finally {
@@ -96,7 +96,7 @@ public abstract class AppDatabase extends RoomDatabase {
   }
 
   private void updateDatabaseCreated(final Context context) {
-    if (context.getDatabasePath(MemorialEntity.TABLE_NAME).exists()) {
+    if (context.getDatabasePath(MemorialDO.TABLE_NAME).exists()) {
       setDatabaseCreated();
     }
   }

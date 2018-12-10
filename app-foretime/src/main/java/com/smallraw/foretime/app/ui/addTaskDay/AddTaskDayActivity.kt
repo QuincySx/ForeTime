@@ -13,8 +13,9 @@ import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.common.widget.dialog.MultipleItemDialog
 import com.smallraw.foretime.app.common.widget.dialog.SelectDateDialog
+import com.smallraw.foretime.app.constant.TaskTypeConsts
 import com.smallraw.foretime.app.event.TaskChangeEvent
-import com.smallraw.foretime.app.repository.db.entity.MemorialEntity
+import com.smallraw.foretime.app.repository.db.entity.MemorialDO
 import com.smallraw.time.base.BaseTitleBarActivity
 import kotlinx.android.synthetic.main.activity_add_countdown_day.*
 import org.greenrobot.eventbus.EventBus
@@ -34,11 +35,11 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
         /**
          * 累计日
          */
-        const val DaysCumulative = 0
+        const val DaysCumulative = TaskTypeConsts.CUMULATIVE_DAY
         /**
          * 倒数日
          */
-        const val DaysMatter = 1
+        const val DaysMatter = TaskTypeConsts.COUNTDOWN_DAY
 
         /**
          * 添加
@@ -194,12 +195,12 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
             App.getInstance().getAppExecutors().diskIO().execute {
                 when (mCurrentDayOptionType) {
                     OptionTypeAdd -> {
-                        val memorial = MemorialEntity(titleName, note, mCurrentDayType, color, date, repeatTime, Date())
+                        val memorial = MemorialDO(titleName, note, mCurrentDayType, color, date, repeatTime, Date())
                         mDataRepository.insertTask(memorial)
                         EventBus.getDefault().post(TaskChangeEvent(TaskChangeEvent.ADD))
                     }
                     OptionTypeEdit -> {
-                        val memorial = MemorialEntity(titleName, note, mCurrentDayType, color, date, repeatTime, Date())
+                        val memorial = MemorialDO(titleName, note, mCurrentDayType, color, date, repeatTime, Date())
                         memorial.id = mEditTaskId
                         mDataRepository.update(memorial)
                         EventBus.getDefault().post(TaskChangeEvent(TaskChangeEvent.UPDATE, mEditTaskId, mCurrentDayType))
@@ -220,7 +221,7 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
 
     }
 
-    private fun setContentViewData(task: MemorialEntity) {
+    private fun setContentViewData(task: MemorialDO) {
         mCalendar.timeInMillis = task.targetTime.time
         tvTargetDate.text = "${mCalendar.get(Calendar.YEAR)}-${mCalendar.get(Calendar.MONTH) + 1}-${mCalendar.get(Calendar.DAY_OF_MONTH)}"
 

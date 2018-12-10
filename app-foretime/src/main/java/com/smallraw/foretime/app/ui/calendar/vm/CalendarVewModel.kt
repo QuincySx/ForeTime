@@ -7,22 +7,22 @@ import android.util.LongSparseArray
 import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.event.TaskChangeEvent
 import com.smallraw.foretime.app.repository.DataRepository
-import com.smallraw.foretime.app.repository.db.entity.MemorialEntity
-import com.smallraw.foretime.app.repository.db.entity.MemorialTopEntity
+import com.smallraw.foretime.app.repository.db.entity.MemorialDO
+import com.smallraw.foretime.app.repository.db.entity.MemorialTopDO
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.ThreadMode
 import org.greenrobot.eventbus.Subscribe
 
 
 class CalendarVewModel : ViewModel() {
-    private var mDisplay = 0
+    private var mDisplay = -1
     private var mOrder = 0
 
     private val mRepository: DataRepository = App.getInstance().getRepository()
-    val mActiveTaskListLiveData = MediatorLiveData<List<MemorialEntity>>()
+    val mActiveTaskListLiveData = MediatorLiveData<List<MemorialDO>>()
 
-    private var mActiveTaskLiveData = MutableLiveData<ArrayList<MemorialEntity>>()
-    private var mActiveTaskTopLiveData: LiveData<MutableList<MemorialTopEntity>>
+    private var mActiveTaskLiveData = MutableLiveData<ArrayList<MemorialDO>>()
+    private var mActiveTaskTopLiveData: LiveData<MutableList<MemorialTopDO>>
 
     init {
         EventBus.getDefault().register(this)
@@ -55,7 +55,7 @@ class CalendarVewModel : ViewModel() {
                 val memorialEntities = mRepository.getActiveTask(mDisplay, mOrder)
                 val taskTopList = mActiveTaskTopLiveData.value
 
-                settleMemorialList(memorialEntities as ArrayList<MemorialEntity>?, taskTopList)
+                settleMemorialList(memorialEntities as ArrayList<MemorialDO>?, taskTopList)
             }
         }
     }
@@ -66,11 +66,11 @@ class CalendarVewModel : ViewModel() {
             val memorialEntities = mRepository.getActiveTask(mDisplay, mOrder)
             val taskTopList = mActiveTaskTopLiveData.value
 
-            settleMemorialList(memorialEntities as ArrayList<MemorialEntity>?, taskTopList)
+            settleMemorialList(memorialEntities as ArrayList<MemorialDO>?, taskTopList)
         }
     }
 
-    private fun settleMemorialList(memorialList: ArrayList<MemorialEntity>?, taskTopLists: MutableList<MemorialTopEntity>?) {
+    private fun settleMemorialList(memorialList: ArrayList<MemorialDO>?, taskTopLists: MutableList<MemorialTopDO>?) {
         var memorialEntities = memorialList
         var taskTopList = taskTopLists
 
@@ -80,12 +80,12 @@ class CalendarVewModel : ViewModel() {
         if (memorialEntities == null) {
             memorialEntities = arrayListOf()
         }
-        val memorialMap = LongSparseArray<MemorialEntity>(memorialEntities.size)
+        val memorialMap = LongSparseArray<MemorialDO>(memorialEntities.size)
         for (item in memorialEntities) {
             memorialMap.put(item.id!!, item)
         }
 
-        val topMemorialList = ArrayList<MemorialEntity>(memorialMap.size())
+        val topMemorialList = ArrayList<MemorialDO>(memorialMap.size())
 
         for (item in taskTopList) {
             val get = memorialMap.get(item.memorial_id)
@@ -106,8 +106,12 @@ class CalendarVewModel : ViewModel() {
         App.getInstance().getAppExecutors().diskIO().execute {
             Log.e("Query DB", "查询新的任务数据")
             val activeTask = mRepository.getActiveTask(display, order)
-            mActiveTaskLiveData.postValue(activeTask as ArrayList<MemorialEntity>)
+            mActiveTaskLiveData.postValue(activeTask as ArrayList<MemorialDO>)
         }
+    }
+
+    fun getDisplay(): Int {
+        return mDisplay
     }
 
     override fun onCleared() {

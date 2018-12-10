@@ -8,13 +8,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 
 import com.smallraw.foretime.app.R
-import com.smallraw.foretime.app.repository.db.entity.MemorialEntity
+import com.smallraw.foretime.app.repository.db.entity.MemorialDO
 import com.smallraw.time.utils.dateFormat
 import com.smallraw.time.utils.dateParse
 import com.smallraw.time.utils.differentDays
 import java.util.*
 
-class TaskInfoAdapter(private var item: MemorialEntity, private val mColors: List<String>?) : RecyclerView.Adapter<TaskInfoAdapter.ViewHolder>() {
+class TaskInfoAdapter(private var item: MemorialDO, private val mColors: List<String>?) : RecyclerView.Adapter<TaskInfoAdapter.ViewHolder>() {
     private val mCurrentDate = dateParse(dateFormat(Date()))
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
@@ -22,7 +22,7 @@ class TaskInfoAdapter(private var item: MemorialEntity, private val mColors: Lis
         return ViewHolder(view)
     }
 
-    fun setData(item: MemorialEntity) {
+    fun setData(item: MemorialDO) {
         this.item = item
     }
 

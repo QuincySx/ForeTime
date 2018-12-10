@@ -2,7 +2,7 @@ package com.smallraw.time.model
 
 
 import com.smallraw.foretime.app.App
-import com.smallraw.foretime.app.repository.db.entity.ConfigEntity
+import com.smallraw.foretime.app.repository.db.entity.ConfigDO
 import java.util.*
 
 public class ConfigModel {
@@ -24,7 +24,7 @@ public class ConfigModel {
                 get.overTime = time
                 configDao.update(get)
             } else {
-                val configEntity = ConfigEntity()
+                val configEntity = ConfigDO()
                 configEntity.name = key
                 configEntity.value = value
                 configEntity.createTime = Date()

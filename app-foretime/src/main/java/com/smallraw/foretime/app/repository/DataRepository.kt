@@ -2,10 +2,9 @@ package com.smallraw.foretime.app.repository
 
 import android.arch.lifecycle.LiveData
 import android.arch.persistence.db.SimpleSQLiteQuery
-import android.util.Log
 import com.smallraw.foretime.app.repository.db.AppDatabase
-import com.smallraw.foretime.app.repository.db.entity.MemorialEntity
-import com.smallraw.foretime.app.repository.db.entity.MemorialTopEntity
+import com.smallraw.foretime.app.repository.db.entity.MemorialDO
+import com.smallraw.foretime.app.repository.db.entity.MemorialTopDO
 
 class DataRepository(database: AppDatabase) {
     private val mDatabase: AppDatabase = database
@@ -32,16 +31,16 @@ class DataRepository(database: AppDatabase) {
      * @param order 按条件排序 0::默认排序 1::日期排序 2::颜色排序
      * @return 返回按顺序查找的任务列表
      */
-    fun getActiveTask(display: Int, order: Int): List<MemorialEntity> {
+    fun getActiveTask(display: Int, order: Int): List<MemorialDO> {
         val displayOption = when (display) {
-            0 -> {
+            -1 -> {
                 null
+            }
+            0 -> {
+                0
             }
             1 -> {
                 1
-            }
-            2 -> {
-                0
             }
             else -> {
                 null
@@ -73,30 +72,30 @@ class DataRepository(database: AppDatabase) {
         return mDatabase.memorialDao().select(query)
     }
 
-    fun getTask(strike: Boolean = false, archive: Boolean = false): List<MemorialEntity> {
+    fun getTask(strike: Boolean = false, archive: Boolean = false): List<MemorialDO> {
         val query = SimpleSQLiteQuery("SELECT * FROM memorial WHERE strike = ? AND archive = ? ORDER BY createTime DESC", arrayOf<Any>(strike, archive))
         return mDatabase.memorialDao().select(query)
     }
 
-    fun getTaskStrike(strike: Boolean = false): List<MemorialEntity> {
+    fun getTaskStrike(strike: Boolean = false): List<MemorialDO> {
         val query = SimpleSQLiteQuery("SELECT * FROM memorial WHERE strike = ? ORDER BY createTime DESC", arrayOf<Any>(strike))
         return mDatabase.memorialDao().select(query)
     }
 
-    fun getTask(id: Long): MemorialEntity {
+    fun getTask(id: Long): MemorialDO {
         return mDatabase.memorialDao().selectById(id)
     }
 
-    fun insertTask(memorialEntity: MemorialEntity): Long {
-        return mDatabase.memorialDao().insert(memorialEntity)
+    fun insertTask(memorialDO: MemorialDO): Long {
+        return mDatabase.memorialDao().insert(memorialDO)
     }
 
-    fun update(memorialEntity: MemorialEntity) {
-        val deleteById = mDatabase.memorialDao().update(memorialEntity)
+    fun update(memorialDO: MemorialDO) {
+        val deleteById = mDatabase.memorialDao().update(memorialDO)
     }
 
-    fun update(memorialEntitys: List<MemorialEntity>) {
-        val deleteById = mDatabase.memorialDao().update(memorialEntitys)
+    fun update(memorialDOS: List<MemorialDO>) {
+        val deleteById = mDatabase.memorialDao().update(memorialDOS)
     }
 
     fun delete(id: Long) {
@@ -104,11 +103,11 @@ class DataRepository(database: AppDatabase) {
         mDatabase.memorialDao().deleteById(id)
     }
 
-    fun deleteTask(memorialEntitys: List<MemorialEntity>) {
-        mDatabase.memorialDao().deletes(memorialEntitys)
+    fun deleteTask(memorialDOS: List<MemorialDO>) {
+        mDatabase.memorialDao().deletes(memorialDOS)
     }
 
-    fun getTaskTopList(type: Int): LiveData<MutableList<MemorialTopEntity>> {
+    fun getTaskTopList(type: Int): LiveData<MutableList<MemorialTopDO>> {
         return mDatabase.memorialTopDao().selectAllByType(type)
     }
 
@@ -117,8 +116,8 @@ class DataRepository(database: AppDatabase) {
         return int > 0
     }
 
-    fun insertTopTask(memorialEntity: MemorialTopEntity): Long {
-        return mDatabase.memorialTopDao().insert(memorialEntity)
+    fun insertTopTask(memorialDO: MemorialTopDO): Long {
+        return mDatabase.memorialTopDao().insert(memorialDO)
     }
 
     fun deleteTopTask(id: Long, type: Long): Int {
