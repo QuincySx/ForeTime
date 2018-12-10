@@ -1,5 +1,6 @@
 package com.smallraw.foretime.app.ui.tomatoBell
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.SystemClock
 import android.support.annotation.ColorInt
@@ -14,6 +15,7 @@ import com.smallraw.foretime.app.common.timer.CountDownManager
 import com.smallraw.foretime.app.common.widget.OnClickProgressListener
 import com.smallraw.foretime.app.model.CountDownModel
 import com.smallraw.foretime.app.ui.main.OnMainActivityCallback
+import com.smallraw.foretime.app.ui.musicListActivity.MusicListActivity
 import com.smallraw.time.base.BaseFragment
 import com.smallraw.time.utils.ms2Minutes
 import kotlinx.android.synthetic.main.fragment_tomato_bell.*
@@ -62,6 +64,11 @@ class TomatoBellFragment : BaseFragment() {
         ivSetting.setOnClickListener {
             TomatoSettingDialog(context).showAtViewAuto(it)
         }
+
+        layoutMusic.setOnClickListener {
+            val i = Intent(activity, MusicListActivity::class.java)
+            startActivity(i)
+        }
     }
 
     override fun onResume() {
@@ -90,9 +97,9 @@ class TomatoBellFragment : BaseFragment() {
         if (isDisplay) {
             val res = mSuspensionHandleQueue.poll()
             if (resId == -1) {
-                if(res == null){
+                if (res == null) {
                     onMainActivityCallback?.onChangeIvSuspension(getSuspensionIcon())
-                }else{
+                } else {
                     onMainActivityCallback?.onChangeIvSuspension(res)
                 }
             } else {
