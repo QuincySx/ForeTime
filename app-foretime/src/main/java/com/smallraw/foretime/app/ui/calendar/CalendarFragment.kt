@@ -2,8 +2,13 @@ package com.smallraw.foretime.app.ui.calendar
 
 import android.annotation.SuppressLint
 import android.arch.lifecycle.ViewModelProviders
+import android.graphics.Color
+import android.opengl.Visibility
 import android.os.Bundle
+import android.support.v4.view.ViewCompat
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -28,6 +33,7 @@ import kotlinx.android.synthetic.main.fragment_calendar.*
 import me.jessyan.autosize.utils.AutoSizeUtils
 import java.util.*
 
+
 class CalendarFragment : BaseFragment() {
     companion object {
         @JvmStatic
@@ -43,6 +49,45 @@ class CalendarFragment : BaseFragment() {
     private var onMainActivityCallback: OnMainActivityCallback? = null
     private val mCalendarList = ArrayList<MemorialDO>()
     private val mCalendarAdapter = CalendarAdapter(mCalendarList)
+
+    private val mItemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.Callback() {
+        override fun getMovementFlags(p0: RecyclerView, p1: RecyclerView.ViewHolder): Int {
+            val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN or
+                    ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+            val swipeFlags = 0
+            return makeMovementFlags(dragFlags, swipeFlags)
+        }
+
+        override fun onMove(p0: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+            val fromPosition = viewHolder.adapterPosition
+            //拿到当前拖拽到的item的viewHolder
+            val toPosition = target.adapterPosition
+            if (fromPosition < toPosition) {
+                for (i in toPosition..fromPosition) {
+                    Collections.swap(mCalendarList, i, i + 1)
+                }
+            } else {
+                for (i in fromPosition..toPosition) {
+                    Collections.swap(mCalendarList, i, i - 1)
+                }
+            }
+            mCalendarAdapter.notifyItemMoved(fromPosition, toPosition)
+
+            return true
+        }
+
+        override fun onSwiped(p0: RecyclerView.ViewHolder, p1: Int) {
+            if (p1 != ItemTouchHelper.ACTION_STATE_IDLE) {
+                p0.itemView.visibility = View.GONE
+            }
+        }
+
+        override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+            super.clearView(recyclerView, viewHolder)
+            viewHolder.itemView.visibility = View.VISIBLE
+        }
+
+    })
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_calendar, container, false)
@@ -85,6 +130,7 @@ class CalendarFragment : BaseFragment() {
         recyclerView.layoutManager = LinearLayoutManager(activity?.applicationContext)
         recyclerView.adapter = mCalendarAdapter
         mCalendarAdapter.notifyDataSetChanged()
+//        mItemTouchHelper.attachToRecyclerView(recyclerView)
     }
 
     fun showViewAction() {

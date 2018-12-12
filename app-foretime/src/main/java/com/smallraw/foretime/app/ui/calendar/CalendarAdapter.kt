@@ -1,6 +1,8 @@
 package com.smallraw.foretime.app.ui.calendar
 
+import android.content.ClipData
 import android.graphics.Color
+import android.support.v4.view.ViewCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +18,7 @@ import com.smallraw.time.utils.differentDays
 import com.smallraw.time.utils.getWeekOfDate
 import org.jetbrains.annotations.NotNull
 import java.util.*
+import android.view.View.DragShadowBuilder
 
 class CalendarAdapter(@NotNull val mCalendars: List<MemorialDO>) : RecyclerView.Adapter<CalendarAdapter.CalenderViewHolder>() {
     private val mCurrentDate = dateParse(dateFormat(Date()))
@@ -31,7 +34,17 @@ class CalendarAdapter(@NotNull val mCalendars: List<MemorialDO>) : RecyclerView.
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalenderViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_calendar, parent, false)
-        return CalenderViewHolder(view)
+        val viewHolder = CalenderViewHolder(view)
+        viewHolder.itemView.setOnClickListener {
+            getOnItemClickListener()?.onClick(it, viewHolder.layoutPosition)
+        }
+        viewHolder.itemView.setOnLongClickListener {
+            val item = mCalendars[viewHolder.adapterPosition]
+            val state = DragData(item, it.width, it.height)
+            val shadow = DragShadowBuilder(it)
+            ViewCompat.startDragAndDrop(it, null, shadow, state, 0)
+        }
+        return viewHolder
     }
 
     override fun onBindViewHolder(holder: CalenderViewHolder, position: Int) {
@@ -80,9 +93,6 @@ class CalendarAdapter(@NotNull val mCalendars: List<MemorialDO>) : RecyclerView.
 
         holder.viewStatus.setBackgroundColor(Color.parseColor(item.color))
         holder.tvStatus.setTextColor(Color.parseColor(item.color))
-        holder.itemView.setOnClickListener {
-            getOnItemClickListener()?.onClick(it, holder.layoutPosition)
-        }
     }
 
     override fun getItemCount(): Int {
@@ -100,4 +110,6 @@ class CalendarAdapter(@NotNull val mCalendars: List<MemorialDO>) : RecyclerView.
         val tvTimeNumber: TextView = itemView.findViewById(R.id.tvTimeNumber)
         val tvTimeUnit: TextView = itemView.findViewById(R.id.tvTimeUnit)
     }
+
+    inner class DragData(val item: MemorialDO, val width: Int, val height: Int)
 }
