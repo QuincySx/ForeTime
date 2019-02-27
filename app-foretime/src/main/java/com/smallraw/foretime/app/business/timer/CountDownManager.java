@@ -1,21 +1,6 @@
-package com.smallraw.foretime.app.common.timer;
-
-import android.support.annotation.IntDef;
-
-import com.smallraw.foretime.app.common.timer.ExtCountdownTimer;
-
-import java.util.ArrayList;
-import java.util.List;
+package com.smallraw.foretime.app.business.timer;
 
 public class CountDownManager {
-    public final static int STATE_INIT = 0;
-    public final static int STATE_RUNNING = 1;
-    public final static int STATE_RUNNING_PAUSE = 2;
-    public final static int STATE_RUNNING_FINISH = 3;
-
-    @IntDef({STATE_INIT, STATE_RUNNING, STATE_RUNNING_PAUSE, STATE_RUNNING_FINISH})
-    public @interface CountdownState {
-    }
 
     //工作时长
     private long mRunningTime = 1000 * 60 * 2;
@@ -25,7 +10,7 @@ public class CountDownManager {
     //刷新间隔
     private long mRefreshIntervalTime = 25;
 
-    private ExtCountdownTimer mCountDownTimer = null;
+    private ITimerSupport mCountDownTimer = null;
 
     private OnCountDownListener mOnCountDownListener = null;
 
@@ -42,14 +27,14 @@ public class CountDownManager {
      * 当前倒计时状态
      */
     @CountdownState
-    private int mCountDownState = STATE_INIT;
+    private int mCountDownState = CountdownState.STATE_INIT;
 
     public void setCountDownListener(OnCountDownListener onInitListener) {
         mOnCountDownListener = onInitListener;
     }
 
     public void init() {
-        mCountDownState = STATE_INIT;
+        mCountDownState = CountdownState.STATE_INIT;
         mUsedTime = mRunningTime;
         onCall(mCountDownState, mRunningTime, mUsedTime);
     }
@@ -59,10 +44,11 @@ public class CountDownManager {
      */
     public void startRunning() {
         if (mCountDownTimer != null) {
-            mCountDownTimer.cancel();
+            mCountDownTimer.reset();
         }
-        mCountDownState = STATE_RUNNING;
-        mCountDownTimer = new ExtCountdownTimer(mRunningTime, mRefreshIntervalTime) {
+        mCountDownState = CountdownState.STATE_RUNNING;
+        mCountDownTimer = new CountDownTimerSupport(mRunningTime, mRefreshIntervalTime);
+        mCountDownTimer.setOnCountDownTimerListener(new OnCountDownTimerListener() {
             @Override
             public void onTick(long millisUntilFinished) {
                 mUsedTime = millisUntilFinished;
@@ -71,28 +57,28 @@ public class CountDownManager {
 
             @Override
             public void onFinish() {
-                mCountDownState = STATE_RUNNING_FINISH;
+                mCountDownState = CountdownState.STATE_RUNNING_FINISH;
                 onCall(mCountDownState, mRunningTime, mUsedTime);
             }
-        };
+        });
 
         mCountDownTimer.start();
     }
 
     public void pauseRunning() {
-        mCountDownState = STATE_RUNNING_PAUSE;
+        mCountDownState = CountdownState.STATE_RUNNING_PAUSE;
         mCountDownTimer.pause();
         onCall(mCountDownState, mRunningTime, mUsedTime);
     }
 
     public void resumeRunning() {
-        mCountDownState = STATE_RUNNING;
+        mCountDownState = CountdownState.STATE_RUNNING;
         mCountDownTimer.resume();
         onCall(mCountDownState, mRunningTime, mUsedTime);
     }
 
     public void stopRunning() {
-        mCountDownTimer.cancel();
+        mCountDownTimer.stop();
     }
 
     public void setRunningTime(long runningTime) {

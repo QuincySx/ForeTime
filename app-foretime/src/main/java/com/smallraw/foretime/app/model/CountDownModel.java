@@ -3,7 +3,8 @@ package com.smallraw.foretime.app.model;
 import android.os.CountDownTimer;
 import android.support.annotation.IntDef;
 
-import com.smallraw.foretime.app.common.timer.CountDownManager;
+import com.smallraw.foretime.app.business.timer.CountDownManager;
+import com.smallraw.foretime.app.business.timer.CountdownState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +85,7 @@ public class CountDownModel implements CountDownManager.OnCountDownListener {
         return mCurrentStatus;
     }
 
-    @CountDownManager.CountdownState
+    @CountdownState
     public int getCountDownStatus() {
         return mCountDownManager.getCountDownState();
     }
@@ -109,6 +110,6 @@ public class CountDownModel implements CountDownManager.OnCountDownListener {
     }
 
     public interface OnCountDownListener {
-        public void onCall(@Status int state, @CountDownManager.CountdownState int countdownState, long totalTime, long lastTime);
+        public void onCall(@Status int state, @CountdownState int countdownState, long totalTime, long lastTime);
     }
 }

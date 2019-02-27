@@ -9,9 +9,8 @@ import android.support.v4.content.res.ResourcesCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import com.smallraw.foretime.app.R
-import com.smallraw.foretime.app.common.timer.CountDownManager
+import com.smallraw.foretime.app.business.timer.CountdownState
 import com.smallraw.foretime.app.common.widget.OnClickProgressListener
 import com.smallraw.foretime.app.model.CountDownModel
 import com.smallraw.foretime.app.ui.main.OnMainActivityCallback
@@ -46,16 +45,16 @@ class TomatoBellFragment : BaseFragment() {
                 return@addOnCountDownListener
             }
             when (countdownState) {
-                CountDownManager.STATE_INIT -> {
+                CountdownState.STATE_INIT -> {
                     stateInit(state, totalTime, lastTime)
                 }
-                CountDownManager.STATE_RUNNING -> {
+                CountdownState.STATE_RUNNING -> {
                     stateRunning(state, totalTime, lastTime)
                 }
-                CountDownManager.STATE_RUNNING_PAUSE -> {
+                CountdownState.STATE_RUNNING_PAUSE -> {
                     statePause(state, totalTime, lastTime)
                 }
-                CountDownManager.STATE_RUNNING_FINISH -> {
+                CountdownState.STATE_RUNNING_FINISH -> {
                     stateFinish(state, totalTime, lastTime)
                 }
             }
@@ -197,20 +196,20 @@ class TomatoBellFragment : BaseFragment() {
         when (countDownModel.currentStatus) {
             CountDownModel.WORKING -> {
                 when (countDownModel.countDownStatus) {
-                    CountDownManager.STATE_INIT -> {
+                    CountdownState.STATE_INIT -> {
                         countDownModel.start()
                     }
-                    CountDownManager.STATE_RUNNING -> {
+                    CountdownState.STATE_RUNNING -> {
                         countDownModel.pause()
                     }
-                    CountDownManager.STATE_RUNNING_PAUSE -> {
+                    CountdownState.STATE_RUNNING_PAUSE -> {
                         countDownModel.resume()
                     }
                 }
             }
             CountDownModel.REPOSE -> {
                 when (countDownModel.countDownStatus) {
-                    CountDownManager.STATE_INIT -> {
+                    CountdownState.STATE_INIT -> {
                         countDownModel.start()
                     }
                 }
@@ -226,13 +225,13 @@ class TomatoBellFragment : BaseFragment() {
         return when (countDownModel.currentStatus) {
             CountDownModel.WORKING -> {
                 when (countDownModel.countDownStatus) {
-                    CountDownManager.STATE_INIT -> {
+                    CountdownState.STATE_INIT -> {
                         R.drawable.ic_tab_suspension_start
                     }
-                    CountDownManager.STATE_RUNNING -> {
+                    CountdownState.STATE_RUNNING -> {
                         R.drawable.ic_tab_suspension_pause
                     }
-                    CountDownManager.STATE_RUNNING_PAUSE -> {
+                    CountdownState.STATE_RUNNING_PAUSE -> {
                         R.drawable.ic_tab_suspension_start
                     }
                     else -> {
@@ -242,13 +241,13 @@ class TomatoBellFragment : BaseFragment() {
             }
             CountDownModel.REPOSE -> {
                 when (countDownModel.countDownStatus) {
-                    CountDownManager.STATE_INIT -> {
+                    CountdownState.STATE_INIT -> {
                         R.drawable.ic_tab_suspension_rest
                     }
-                    CountDownManager.STATE_RUNNING -> {
+                    CountdownState.STATE_RUNNING -> {
                         R.drawable.ic_tab_suspension_rest
                     }
-                    CountDownManager.STATE_RUNNING_PAUSE -> {
+                    CountdownState.STATE_RUNNING_PAUSE -> {
                         R.drawable.ic_tab_suspension_rest
                     }
                     else -> {
@@ -274,17 +273,17 @@ class TomatoBellFragment : BaseFragment() {
                 when (countDownModel.currentStatus) {
                     CountDownModel.WORKING -> {
                         when (countDownModel.countDownStatus) {
-                            CountDownManager.STATE_RUNNING_PAUSE -> {
+                            CountdownState.STATE_RUNNING_PAUSE -> {
                                 isLongClick = true
                             }
-                            CountDownManager.STATE_RUNNING -> {
+                            CountdownState.STATE_RUNNING -> {
                                 isLongClick = true
                             }
                         }
                     }
                     CountDownModel.REPOSE -> {
                         when (countDownModel.countDownStatus) {
-                            CountDownManager.STATE_RUNNING -> {
+                            CountdownState.STATE_RUNNING -> {
                                 isLongClick = true
                             }
                         }
@@ -315,7 +314,7 @@ class TomatoBellFragment : BaseFragment() {
         when (countDownModel.currentStatus) {
             CountDownModel.WORKING -> {
                 when (countDownModel.countDownStatus) {
-                    CountDownManager.STATE_RUNNING_PAUSE, CountDownManager.STATE_RUNNING -> {
+                    CountdownState.STATE_RUNNING_PAUSE, CountdownState.STATE_RUNNING -> {
                         countDownModel.stop()
                         countDownModel.init(CountDownModel.REPOSE)
                         countDownModel.start()
@@ -325,7 +324,7 @@ class TomatoBellFragment : BaseFragment() {
             }
             CountDownModel.REPOSE -> {
                 when (countDownModel.countDownStatus) {
-                    CountDownManager.STATE_RUNNING -> {
+                    CountdownState.STATE_RUNNING -> {
                         countDownModel.stop()
                         countDownModel.init(CountDownModel.WORKING)
                     }
