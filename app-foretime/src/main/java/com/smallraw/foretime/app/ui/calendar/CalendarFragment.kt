@@ -129,6 +129,7 @@ class CalendarFragment : BaseFragment() {
     private fun initView() {
         recyclerView.layoutManager = LinearLayoutManager(activity?.applicationContext)
         recyclerView.adapter = mCalendarAdapter
+        recyclerView.setHasFixedSize(true)
         mCalendarAdapter.notifyDataSetChanged()
 //        mItemTouchHelper.attachToRecyclerView(recyclerView)
     }

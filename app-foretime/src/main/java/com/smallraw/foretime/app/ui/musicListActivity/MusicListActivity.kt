@@ -1,17 +1,12 @@
 package com.smallraw.foretime.app.ui.musicListActivity
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
-import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.R
 import com.smallraw.time.base.BaseTitleBarActivity
-import com.smallraw.time.model.thoroughDeleteTaskAll
 import kotlinx.android.synthetic.main.activity_music_list.*
-import me.jessyan.autosize.AutoSizeConfig
+import kotlinx.android.synthetic.main.fragment_calendar.*
 import me.jessyan.autosize.utils.AutoSizeUtils
 
 class MusicListActivity : BaseTitleBarActivity() {
@@ -33,6 +28,7 @@ class MusicListActivity : BaseTitleBarActivity() {
     private fun initRecyclerView() {
         recyclerViewMusic.layoutManager = LinearLayoutManager(this)
         recyclerViewMusic.adapter = mAdapter
+        recyclerView.setHasFixedSize(true)
     }
 
     private fun newTitleRightView(): View {

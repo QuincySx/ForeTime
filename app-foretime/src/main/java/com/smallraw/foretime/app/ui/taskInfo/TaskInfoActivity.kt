@@ -4,20 +4,19 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.res.ResourcesCompat
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.PagerSnapHelper
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-
-import com.smallraw.foretime.app.R
-import com.smallraw.time.base.BaseTitleBarActivity
-import kotlinx.android.synthetic.main.activity_task_info.*
-import me.jessyan.autosize.utils.AutoSizeUtils
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.PagerSnapHelper
 import com.smallraw.foretime.app.App
+import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.event.TaskChangeEvent
 import com.smallraw.foretime.app.repository.db.entity.MemorialDO
 import com.smallraw.foretime.app.ui.addTaskDay.AddTaskDayActivity
+import com.smallraw.time.base.BaseTitleBarActivity
+import kotlinx.android.synthetic.main.activity_task_info.*
+import me.jessyan.autosize.utils.AutoSizeUtils
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -92,6 +91,7 @@ class TaskInfoActivity : BaseTitleBarActivity() {
     private fun initRecyclerView() {
         val linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = linearLayoutManager
+        recyclerView.setHasFixedSize(true)
         pagerSnapHelper.attachToRecyclerView(recyclerView)
     }
 
