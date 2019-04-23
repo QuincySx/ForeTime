@@ -1,15 +1,30 @@
 package com.smallraw.foretime.app.ui.tomatoBell
 
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
+import android.os.IBinder
+import android.support.annotation.ColorInt
+import android.support.annotation.DrawableRes
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.smallraw.foretime.app.R
+import com.smallraw.foretime.app.business.timer.CountdownState
+import com.smallraw.foretime.app.model.CountDownTick
+import com.smallraw.foretime.app.service.CountDownService
+import com.smallraw.foretime.app.service.CountDownStatus
+import com.smallraw.foretime.app.service.CountDownType
 import com.smallraw.foretime.app.ui.main.OnMainActivityCallback
+import com.smallraw.foretime.app.ui.musicListActivity.MusicListActivity
 import com.smallraw.time.base.BaseFragment
+import com.smallraw.time.utils.ms2Minutes
+import kotlinx.android.synthetic.main.fragment_tomato_bell.*
 import java.util.concurrent.LinkedBlockingQueue
 
-class TomatoBellFragment : BaseFragment() {
+class TomatoBellFragment : BaseFragment(), ServiceConnection {
     companion object {
         @JvmStatic
         fun newInstance(onMainActivityCallback: OnMainActivityCallback): TomatoBellFragment {
@@ -19,44 +34,78 @@ class TomatoBellFragment : BaseFragment() {
         }
     }
 
+    private val mCountDownBinder: CountDownService.CountDownBinder? = null
     private var isDisplay = false
     private var mSuspensionHandleQueue = LinkedBlockingQueue<Int>(1)
     var onMainActivityCallback: OnMainActivityCallback? = null
-//    private val countDownModel = CountDownModel.getInstance()
+    //    private val countDownModel = CountDownModel.getInstance()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val intent = Intent(context, CountDownService::class.java)
+        context?.startService(intent)
+        context?.bindService(intent, this, Context.BIND_AUTO_CREATE)
+
         return inflater.inflate(R.layout.fragment_tomato_bell, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        countDownModel.addOnCountDownListener { state, countdownState, totalTime, lastTime ->
-//            if (!isAdded) {
-//                return@addOnCountDownListener
-//            }
-//            when (countdownState) {
-//                CountdownState.STATE_INIT -> {
-//                    stateInit(state, totalTime, lastTime)
-//                }
-//                CountdownState.STATE_RUNNING -> {
-//                    stateRunning(state, totalTime, lastTime)
-//                }
-//                CountdownState.STATE_RUNNING_PAUSE -> {
-//                    statePause(state, totalTime, lastTime)
-//                }
-//                CountdownState.STATE_RUNNING_FINISH -> {
-//                    stateFinish(state, totalTime, lastTime)
-//                }
-//            }
-//        }
-//        countDownModel.init(CountDownModel.WORKING)
-//        ivSetting.setOnClickListener {
-//            TomatoSettingDialog(context).showAtViewAuto(it)
-//        }
-//
-//        layoutMusic.setOnClickListener {
-//            val i = Intent(activity, MusicListActivity::class.java)
-//            startActivity(i)
-//        }
+
+        countDownModel.addOnCountDownListener { state, countdownState, totalTime, lastTime ->
+            if (!isAdded) {
+                return@addOnCountDownListener
+            }
+            when (countdownState) {
+                CountdownState.STATE_INIT -> {
+                    stateInit(state, totalTime, lastTime)
+                }
+                CountdownState.STATE_RUNNING -> {
+                    stateRunning(state, totalTime, lastTime)
+                }
+                CountdownState.STATE_RUNNING_PAUSE -> {
+                    statePause(state, totalTime, lastTime)
+                }
+                CountdownState.STATE_RUNNING_FINISH -> {
+                    stateFinish(state, totalTime, lastTime)
+                }
+            }
+        }
+        countDownModel.init(CountDownModel.WORKING)
+        ivSetting.setOnClickListener {
+            TomatoSettingDialog(context).showAtViewAuto(it)
+        }
+
+        layoutMusic.setOnClickListener {
+            val i = Intent(activity, MusicListActivity::class.java)
+            startActivity(i)
+        }
+    }
+
+    override fun onDestroy() {
+        context?.unbindService(this)
+        super.onDestroy()
+    }
+
+    override fun onServiceDisconnected(name: ComponentName?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
+    }
+
+    @Suppress("UNREACHABLE_CODE")
+    override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        if (null != service) {
+            mCountDownBinder = service as CountDownService.CountDownBinder?
+        }
+
+        mCountDownBinder?.setListener(object : CountDownTick.OnCountDownTickListener {
+            override fun onCountDownTick(millisUntilFinished: Long) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onCountDownFinish() {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+        })
     }
 
 //    override fun onResume() {
@@ -77,34 +126,34 @@ class TomatoBellFragment : BaseFragment() {
         isDisplay = false
     }
 
-//    /**
-//     * 修改底部图标
-//     * TODO 底部图标应该两个叠加,业务操作隔离
-//     */
-//    private fun changeSuspensionIcon(resId: Int = -1) {
-//        if (isDisplay) {
-//            val res = mSuspensionHandleQueue.poll()
-//            if (resId == -1) {
-//                if (res == null) {
-//                    onMainActivityCallback?.onChangeIvSuspension(getSuspensionIcon())
-//                } else {
-//                    onMainActivityCallback?.onChangeIvSuspension(res)
-//                }
-//            } else {
-//                onMainActivityCallback?.onChangeIvSuspension(resId)
-//            }
-//        } else {
-//            addSuspensionHandle(resId)
-//        }
-//    }
-//
-//    private fun addSuspensionHandle(resId: Int) {
-//        if (!mSuspensionHandleQueue.isEmpty()) {
-//            mSuspensionHandleQueue.poll()
-//        }
-//        mSuspensionHandleQueue.add(resId)
-//    }
-//
+    /**
+     * 修改底部图标
+     * TODO 底部图标应该两个叠加,业务操作隔离
+     */
+    private fun changeSuspensionIcon(resId: Int = -1) {
+        if (isDisplay) {
+            val res = mSuspensionHandleQueue.poll()
+            if (resId == -1) {
+                if (res == null) {
+                    onMainActivityCallback?.onChangeIvSuspension(getSuspensionIcon())
+                } else {
+                    onMainActivityCallback?.onChangeIvSuspension(res)
+                }
+            } else {
+                onMainActivityCallback?.onChangeIvSuspension(resId)
+            }
+        } else {
+            addSuspensionHandle(resId)
+        }
+    }
+
+    private fun addSuspensionHandle(resId: Int) {
+        if (!mSuspensionHandleQueue.isEmpty()) {
+            mSuspensionHandleQueue.poll()
+        }
+        mSuspensionHandleQueue.add(resId)
+    }
+
 //    private fun stateInit(state: Int, totalTime: Long, lastTime: Long) {
 //        when (state) {
 //            CountDownModel.WORKING -> {
@@ -167,20 +216,20 @@ class TomatoBellFragment : BaseFragment() {
 //            }
 //        }
 //    }
-//
-//    private fun setHint(s: String) {
-//        viewOperationHints.visibility = View.VISIBLE
-//        viewOperationHints.text = s
-//    }
-//
-//    private fun refreshTimeSchedule(@ColorInt color: Int, totalTime: Long, lastTime: Long) {
-//        viewTimeSchedule.setProgressColor(color)
-//        val process = lastTime.toFloat() / totalTime
-//        viewTimeSchedule.setProgress(process)
-//        viewTimeSchedule.setText(ms2Minutes(lastTime))
-//        viewTimeSchedule.postInvalidate()
-//    }
-//
+
+    private fun setHint(s: String) {
+        viewOperationHints.visibility = View.VISIBLE
+        viewOperationHints.text = s
+    }
+
+    private fun refreshTimeSchedule(@ColorInt color: Int, totalTime: Long, lastTime: Long) {
+        viewTimeSchedule.setProgressColor(color)
+        val process = lastTime.toFloat() / totalTime
+        viewTimeSchedule.setProgress(process)
+        viewTimeSchedule.setText(ms2Minutes(lastTime))
+        viewTimeSchedule.postInvalidate()
+    }
+
 //    private fun onClickListener() {
 //        when (countDownModel.currentStatus) {
 //            CountDownModel.WORKING -> {
@@ -206,49 +255,49 @@ class TomatoBellFragment : BaseFragment() {
 //        }
 //    }
 //
-//    /**
-//     * 获取当前的 Icon
-//     */
-//    @DrawableRes
-//    private fun getSuspensionIcon(): Int {
-//        return when (countDownModel.currentStatus) {
-//            CountDownModel.WORKING -> {
-//                when (countDownModel.countDownStatus) {
-//                    CountdownState.STATE_INIT -> {
-//                        R.drawable.ic_tab_suspension_start
-//                    }
-//                    CountdownState.STATE_RUNNING -> {
-//                        R.drawable.ic_tab_suspension_pause
-//                    }
-//                    CountdownState.STATE_RUNNING_PAUSE -> {
-//                        R.drawable.ic_tab_suspension_start
-//                    }
-//                    else -> {
-//                        R.drawable.ic_tab_suspension_start
-//                    }
-//                }
-//            }
-//            CountDownModel.REPOSE -> {
-//                when (countDownModel.countDownStatus) {
-//                    CountdownState.STATE_INIT -> {
-//                        R.drawable.ic_tab_suspension_rest
-//                    }
-//                    CountdownState.STATE_RUNNING -> {
-//                        R.drawable.ic_tab_suspension_rest
-//                    }
-//                    CountdownState.STATE_RUNNING_PAUSE -> {
-//                        R.drawable.ic_tab_suspension_rest
-//                    }
-//                    else -> {
-//                        R.drawable.ic_tab_suspension_rest
-//                    }
-//                }
-//            }
-//            else -> {
-//                R.drawable.ic_tab_suspension_start
-//            }
-//        }
-//    }
+    /**
+     * 获取当前的 Icon
+     */
+    @DrawableRes
+    private fun getSuspensionIcon(): Int {
+        return when (mCountDownBinder?.getType()) {
+            CountDownType.WORKING -> {
+                when (mCountDownBinder?.getStatus()) {
+                    CountDownStatus.SPARE -> {
+                        R.drawable.ic_tab_suspension_start
+                    }
+                    CountDownStatus.RUNNING -> {
+                        R.drawable.ic_tab_suspension_pause
+                    }
+                    CountDownStatus.PAUSE -> {
+                        R.drawable.ic_tab_suspension_start
+                    }
+                    else -> {
+                        R.drawable.ic_tab_suspension_start
+                    }
+                }
+            }
+            CountDownType.WORKING -> {
+                when (mCountDownBinder?.getStatus()) {
+                    CountDownStatus.SPARE -> {
+                        R.drawable.ic_tab_suspension_rest
+                    }
+                    CountDownStatus.RUNNING -> {
+                        R.drawable.ic_tab_suspension_rest
+                    }
+                    CountDownStatus.PAUSE -> {
+                        R.drawable.ic_tab_suspension_rest
+                    }
+                    else -> {
+                        R.drawable.ic_tab_suspension_rest
+                    }
+                }
+            }
+            else -> {
+                R.drawable.ic_tab_suspension_start
+            }
+        }
+    }
 //
 //    private fun onLongClickListener() {
 //        onMainActivityCallback?.setOnLongClickListener(object : View.OnLongClickListener {
