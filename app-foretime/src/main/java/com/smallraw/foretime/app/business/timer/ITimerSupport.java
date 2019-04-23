@@ -13,6 +13,4 @@ public interface ITimerSupport {
     void reset();
 
     void setOnCountDownTimerListener(OnCountDownTimerListener listener);
-
-    long getMillisUntilFinished();
 }

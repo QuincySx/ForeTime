@@ -44,7 +44,7 @@ public class CountDownManager {
      */
     public void startRunning() {
         if (mCountDownTimer != null) {
-            mCountDownTimer.reset();
+            mCountDownTimer.stop();
         }
         mCountDownState = CountdownState.STATE_RUNNING;
         mCountDownTimer = new CountDownTimerSupport(mRunningTime, mRefreshIntervalTime);

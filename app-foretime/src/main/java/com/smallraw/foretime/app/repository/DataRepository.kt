@@ -91,11 +91,11 @@ class DataRepository(database: AppDatabase) {
     }
 
     fun update(memorialDO: MemorialDO) {
-        val deleteById = mDatabase.memorialDao().update(memorialDO)
+        mDatabase.memorialDao().update(memorialDO)
     }
 
     fun update(memorialDOS: List<MemorialDO>) {
-        val deleteById = mDatabase.memorialDao().update(memorialDOS)
+        mDatabase.memorialDao().update(memorialDOS)
     }
 
     fun delete(id: Long) {

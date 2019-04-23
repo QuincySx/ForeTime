@@ -20,11 +20,12 @@ ext {
             recyclerviewV7      : "com.android.support:recyclerview-v7:${this.libVersion.supportLayoutVersion}",
             roomRuntime         : "android.arch.persistence.room:runtime:${this.libVersion.roomVersion}",
             roomCompiler        : "android.arch.persistence.room:compiler:${this.libVersion.roomVersion}",
-            autosize            : "me.jessyan:autosize:0.9.5",
+            autosize            : "me.jessyan:autosize:1.1.2",
             StatusBarCompat     : "com.github.niorgai:StatusBarCompat:2.1.4",
-            fastjson            : 'com.alibaba:fastjson:1.1.68.android',
-            glide               : 'com.github.bumptech.glide:glide:4.8.0',
-            glideTransformations: "jp.wasabeef:glide-transformations:3.3.0",
+            fastjson            : 'com.alibaba:fastjson:1.1.70.android',
+            glide               : 'com.github.bumptech.glide:glide:4.9.0',
+            glideProcessor      : 'com.github.bumptech.glide:compiler:4.9.0',
+            glideTransformations: "jp.wasabeef:glide-transformations:4.0.1",
             eventbus            : 'org.greenrobot:eventbus:3.1.1'
     ]
 }

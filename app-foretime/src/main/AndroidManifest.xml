@@ -13,6 +13,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme">
+        <service
+            android:name=".service.CountDownService"
+            android:enabled="true"
+            android:exported="false" />
+
         <meta-data
             android:name="design_width_in_dp"
             android:value="360" />
@@ -36,7 +41,7 @@
         <activity android:name=".ui.addTaskDay.AddTaskDayActivity" />
         <activity android:name=".ui.taskInfo.TaskInfoActivity" />
         <activity android:name=".ui.calendarSetting.CalendarSettingActivity" />
-        <activity android:name=".ui.backup.BackupActivity"></activity>
+        <activity android:name=".ui.backup.BackupActivity" />
     </application>
 
 </manifest>

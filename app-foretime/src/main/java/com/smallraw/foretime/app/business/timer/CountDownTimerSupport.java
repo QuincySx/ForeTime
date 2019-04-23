@@ -98,6 +98,7 @@ public class CountDownTimerSupport implements ITimerSupport {
         mTimer.cancel();
         mTimer.purge();
         mTimer = null;
+        mHandler.removeCallbacksAndMessages(null);
     }
 
     public boolean isStart() {
@@ -138,10 +139,6 @@ public class CountDownTimerSupport implements ITimerSupport {
     public @TimerState
     int getTimerState() {
         return mTimerState;
-    }
-
-    public void onDestroy() {
-        mHandler.removeCallbacksAndMessages(null);
     }
 
     /**

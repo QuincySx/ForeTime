@@ -70,6 +70,7 @@ dependencies {
     implementation this.libs.autosize
     implementation this.libs.fastjson
     implementation this.libs.glide
+    kapt this.libs.glideProcessor
     implementation this.libs.glideTransformations
 
     implementation this.libs.eventbus
@@ -81,4 +82,5 @@ dependencies {
     implementation project(":lib-core")
     implementation project(":lib-switch")
     implementation project(":lib-wheel")
+
 }

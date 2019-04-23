@@ -13,7 +13,7 @@ import java.util.Date;
         foreignKeys = {@ForeignKey(entity = MemorialDO.class,
                 parentColumns = "id",
                 childColumns = "memorial_id")},
-        indices = {@Index(value = {"id", "memorial_id"},
+        indices = {@Index(value = {"memorial_id"},
                 unique = true)}
 )
 public class MemorialTopDO {

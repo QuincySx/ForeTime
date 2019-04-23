@@ -19,9 +19,10 @@ abstract class BaseFragment : Fragment() {
     }
 
     fun showPrompt(msg: String) {
-        val msg = Message.obtain()
-        msg.what = BaseFragment.HANDLER_MSG_PROMPT
-        msg.obj = msg
-        mHandler.sendMessage(msg)
+        mHandler.sendMessage(
+                Message.obtain().apply {
+                    what = BaseFragment.HANDLER_MSG_PROMPT
+                    obj = msg
+                })
     }
 }
