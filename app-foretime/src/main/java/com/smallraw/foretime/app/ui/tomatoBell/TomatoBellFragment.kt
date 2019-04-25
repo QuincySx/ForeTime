@@ -6,14 +6,17 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
+import android.os.SystemClock
 import android.support.annotation.ColorInt
 import android.support.annotation.DrawableRes
+import android.support.v4.content.res.ResourcesCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.business.timer.CountdownState
-import com.smallraw.foretime.app.model.CountDownTick
+import com.smallraw.foretime.app.common.widget.OnClickProgressListener
 import com.smallraw.foretime.app.service.CountDownService
 import com.smallraw.foretime.app.service.CountDownStatus
 import com.smallraw.foretime.app.service.CountDownType
@@ -25,6 +28,7 @@ import kotlinx.android.synthetic.main.fragment_tomato_bell.*
 import java.util.concurrent.LinkedBlockingQueue
 
 class TomatoBellFragment : BaseFragment(), ServiceConnection {
+
     companion object {
         @JvmStatic
         fun newInstance(onMainActivityCallback: OnMainActivityCallback): TomatoBellFragment {
@@ -34,42 +38,21 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
         }
     }
 
-    private val mCountDownBinder: CountDownService.CountDownBinder? = null
+    private var mCountDownService: CountDownService? = null
     private var isDisplay = false
     private var mSuspensionHandleQueue = LinkedBlockingQueue<Int>(1)
     var onMainActivityCallback: OnMainActivityCallback? = null
-    //    private val countDownModel = CountDownModel.getInstance()
+
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val intent = Intent(context, CountDownService::class.java)
-        context?.startService(intent)
         context?.bindService(intent, this, Context.BIND_AUTO_CREATE)
-
         return inflater.inflate(R.layout.fragment_tomato_bell, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        countDownModel.addOnCountDownListener { state, countdownState, totalTime, lastTime ->
-            if (!isAdded) {
-                return@addOnCountDownListener
-            }
-            when (countdownState) {
-                CountdownState.STATE_INIT -> {
-                    stateInit(state, totalTime, lastTime)
-                }
-                CountdownState.STATE_RUNNING -> {
-                    stateRunning(state, totalTime, lastTime)
-                }
-                CountdownState.STATE_RUNNING_PAUSE -> {
-                    statePause(state, totalTime, lastTime)
-                }
-                CountdownState.STATE_RUNNING_FINISH -> {
-                    stateFinish(state, totalTime, lastTime)
-                }
-            }
-        }
-        countDownModel.init(CountDownModel.WORKING)
         ivSetting.setOnClickListener {
             TomatoSettingDialog(context).showAtViewAuto(it)
         }
@@ -86,40 +69,73 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
     }
 
     override fun onServiceDisconnected(name: ComponentName?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-
+        val intent = Intent(context, CountDownService::class.java)
+        context?.bindService(intent, this, Context.BIND_AUTO_CREATE)
     }
 
-    @Suppress("UNREACHABLE_CODE")
     override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         if (null != service) {
-            mCountDownBinder = service as CountDownService.CountDownBinder?
+            mCountDownService = (service as CountDownService.CountDownBinder).getService()
         }
 
-        mCountDownBinder?.setListener(object : CountDownTick.OnCountDownTickListener {
+        refresh()
+
+        mCountDownService?.setCountDownTickListener(object : CountDownService.OnCountDownServiceListener {
+            override fun onCountDownChange() {
+                refresh()
+            }
+
             override fun onCountDownTick(millisUntilFinished: Long) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                refresh()
             }
 
             override fun onCountDownFinish() {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                refresh()
             }
         })
     }
 
-//    override fun onResume() {
-//        super.onResume()
-//        isDisplay = true
-//    }
+    override fun onResume() {
+        super.onResume()
+        isDisplay = true
+        refresh()
+    }
 
     fun showViewAction() {
         isDisplay = true
-//        changeSuspensionIcon()
-//        onLongClickListener()
-//        onMainActivityCallback?.setOnClickListener(View.OnClickListener {
-//            onClickListener()
-//        })
+        changeSuspensionIcon()
+        onLongClickListener()
+        onMainActivityCallback?.setOnClickListener(View.OnClickListener {
+            onClickListener()
+        })
+    }
+
+    private fun refresh() {
+        (context?.applicationContext as App).getAppExecutors().mainThread().execute {
+            val type = mCountDownService?.getType()
+            val status = mCountDownService?.getStatus()
+            val surplusTimeMillis = mCountDownService?.getSurplusTimeMillis()
+            val implementTimeMillis = mCountDownService?.getImplementTimeMillis()
+
+            if (null == type || null == status || null == surplusTimeMillis || null == implementTimeMillis) {
+                return@execute
+            }
+
+            when (status) {
+                CountDownStatus.SPARE -> {
+                    stateInit(type, implementTimeMillis, surplusTimeMillis)
+                }
+                CountDownStatus.RUNNING -> {
+                    stateRunning(type, implementTimeMillis, surplusTimeMillis)
+                }
+                CountDownStatus.PAUSE -> {
+                    statePause(type, implementTimeMillis, surplusTimeMillis)
+                }
+                CountDownStatus.FINISH -> {
+                    stateFinish(type, implementTimeMillis, surplusTimeMillis)
+                }
+            }
+        }
     }
 
     fun hiddenViewAction() {
@@ -154,68 +170,68 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
         mSuspensionHandleQueue.add(resId)
     }
 
-//    private fun stateInit(state: Int, totalTime: Long, lastTime: Long) {
-//        when (state) {
-//            CountDownModel.WORKING -> {
-//                val color = ResourcesCompat.getColor(resources, R.color.WorkingProgessColor, null)
-//                refreshTimeSchedule(color, totalTime, lastTime)
-//                setHint("轻触开始专注")
-//                changeSuspensionIcon(R.drawable.ic_tab_suspension_start)
-//            }
-//            CountDownModel.REPOSE -> {
-//                val color = ResourcesCompat.getColor(resources, R.color.RestProgessColor, null)
-//                refreshTimeSchedule(color, totalTime, lastTime)
-//                setHint("长按取消休息")
-//                changeSuspensionIcon(R.drawable.ic_tab_suspension_rest)
-//            }
-//        }
-//    }
-//
-//    private fun stateRunning(state: Int, totalTime: Long, lastTime: Long) {
-//        when (state) {
-//            CountDownModel.WORKING -> {
-//                val color = ResourcesCompat.getColor(resources, R.color.WorkingProgessColor, null)
-//                refreshTimeSchedule(color, totalTime, lastTime)
-//                setHint("持续专注中")
-//                changeSuspensionIcon(R.drawable.ic_tab_suspension_pause)
-//            }
-//            CountDownModel.REPOSE -> {
-//                val color = ResourcesCompat.getColor(resources, R.color.RestProgessColor, null)
-//                refreshTimeSchedule(color, totalTime, lastTime)
-//                setHint("站起来走一走")
-//                changeSuspensionIcon(R.drawable.ic_tab_suspension_rest)
-//            }
-//        }
-//    }
-//
-//    private fun statePause(state: Int, totalTime: Long, lastTime: Long) {
-//        when (state) {
-//            CountDownModel.WORKING -> {
-//                val color = ResourcesCompat.getColor(resources, R.color.WorkingProgessColor, null)
-//                refreshTimeSchedule(color, totalTime, lastTime)
-//                setHint("轻触继续 长按终止")
-//                changeSuspensionIcon(R.drawable.ic_tab_suspension_start)
-//            }
-//        }
-//    }
-//
-//    private fun stateFinish(state: Int, totalTime: Long, lastTime: Long) {
-//        when (state) {
-//            CountDownModel.WORKING -> {
-//                val color = ResourcesCompat.getColor(resources, R.color.WorkingProgessColor, null)
-//                refreshTimeSchedule(color, totalTime, lastTime)
-//                setHint("稍后进入休息")
-//                countDownModel.init(CountDownModel.REPOSE)
-//                countDownModel.start()
-//            }
-//            CountDownModel.REPOSE -> {
-//                val color = ResourcesCompat.getColor(resources, R.color.RestProgessColor, null)
-//                refreshTimeSchedule(color, totalTime, lastTime)
-//                countDownModel.init(CountDownModel.WORKING)
-//                setHint("点击继续工作")
-//            }
-//        }
-//    }
+    private fun stateInit(state: Int, totalTime: Long, lastTime: Long) {
+        when (state) {
+            CountDownType.WORKING -> {
+                val color = ResourcesCompat.getColor(resources, R.color.WorkingProgessColor, null)
+                refreshTimeSchedule(color, totalTime, lastTime)
+                setHint("轻触开始专注")
+                changeSuspensionIcon(R.drawable.ic_tab_suspension_start)
+            }
+            CountDownType.REPOSE -> {
+                val color = ResourcesCompat.getColor(resources, R.color.RestProgessColor, null)
+                refreshTimeSchedule(color, totalTime, lastTime)
+                setHint("长按取消休息")
+                changeSuspensionIcon(R.drawable.ic_tab_suspension_rest)
+            }
+        }
+    }
+
+    private fun stateRunning(state: Int, totalTime: Long, lastTime: Long) {
+        when (state) {
+            CountDownType.WORKING -> {
+                val color = ResourcesCompat.getColor(resources, R.color.WorkingProgessColor, null)
+                refreshTimeSchedule(color, totalTime, lastTime)
+                setHint("持续专注中")
+                changeSuspensionIcon(R.drawable.ic_tab_suspension_pause)
+            }
+            CountDownType.REPOSE -> {
+                val color = ResourcesCompat.getColor(resources, R.color.RestProgessColor, null)
+                refreshTimeSchedule(color, totalTime, lastTime)
+                setHint("站起来走一走")
+                changeSuspensionIcon(R.drawable.ic_tab_suspension_rest)
+            }
+        }
+    }
+
+    private fun statePause(state: Int, totalTime: Long, lastTime: Long) {
+        when (state) {
+            CountDownType.WORKING -> {
+                val color = ResourcesCompat.getColor(resources, R.color.WorkingProgessColor, null)
+                refreshTimeSchedule(color, totalTime, lastTime)
+                setHint("轻触继续 长按终止")
+                changeSuspensionIcon(R.drawable.ic_tab_suspension_start)
+            }
+        }
+    }
+
+    private fun stateFinish(state: Int, totalTime: Long, lastTime: Long) {
+        when (state) {
+            CountDownType.WORKING -> {
+                val color = ResourcesCompat.getColor(resources, R.color.WorkingProgessColor, null)
+                refreshTimeSchedule(color, totalTime, lastTime)
+                setHint("稍后进入休息")
+                mCountDownService?.change(CountDownType.REPOSE)
+                mCountDownService?.start()
+            }
+            CountDownType.REPOSE -> {
+                val color = ResourcesCompat.getColor(resources, R.color.RestProgessColor, null)
+                refreshTimeSchedule(color, totalTime, lastTime)
+                mCountDownService?.change(CountDownType.REPOSE)
+                setHint("点击继续工作")
+            }
+        }
+    }
 
     private fun setHint(s: String) {
         viewOperationHints.visibility = View.VISIBLE
@@ -230,39 +246,46 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
         viewTimeSchedule.postInvalidate()
     }
 
-//    private fun onClickListener() {
-//        when (countDownModel.currentStatus) {
-//            CountDownModel.WORKING -> {
-//                when (countDownModel.countDownStatus) {
-//                    CountdownState.STATE_INIT -> {
-//                        countDownModel.start()
-//                    }
-//                    CountdownState.STATE_RUNNING -> {
-//                        countDownModel.pause()
-//                    }
-//                    CountdownState.STATE_RUNNING_PAUSE -> {
-//                        countDownModel.resume()
-//                    }
-//                }
-//            }
-//            CountDownModel.REPOSE -> {
-//                when (countDownModel.countDownStatus) {
-//                    CountdownState.STATE_INIT -> {
-//                        countDownModel.start()
-//                    }
-//                }
-//            }
-//        }
-//    }
-//
+    private fun onClickListener() {
+        val type = mCountDownService?.getType()
+        val status = mCountDownService?.getStatus()
+
+        if (null == type || null == status) {
+            return
+        }
+
+        when (type) {
+            CountDownType.WORKING -> {
+                when (status) {
+                    CountDownStatus.SPARE -> {
+                        mCountDownService?.start()
+                    }
+                    CountDownStatus.RUNNING -> {
+                        mCountDownService?.pause()
+                    }
+                    CountDownStatus.PAUSE -> {
+                        mCountDownService?.resume()
+                    }
+                }
+            }
+            CountDownType.REPOSE -> {
+                when (status) {
+                    CountDownStatus.SPARE -> {
+                        mCountDownService?.start()
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * 获取当前的 Icon
      */
     @DrawableRes
     private fun getSuspensionIcon(): Int {
-        return when (mCountDownBinder?.getType()) {
+        return when (mCountDownService?.getType()) {
             CountDownType.WORKING -> {
-                when (mCountDownBinder?.getStatus()) {
+                when (mCountDownService?.getStatus()) {
                     CountDownStatus.SPARE -> {
                         R.drawable.ic_tab_suspension_start
                     }
@@ -277,8 +300,8 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
                     }
                 }
             }
-            CountDownType.WORKING -> {
-                when (mCountDownBinder?.getStatus()) {
+            CountDownType.REPOSE -> {
+                when (mCountDownService?.getStatus()) {
                     CountDownStatus.SPARE -> {
                         R.drawable.ic_tab_suspension_rest
                     }
@@ -298,76 +321,90 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
             }
         }
     }
-//
-//    private fun onLongClickListener() {
-//        onMainActivityCallback?.setOnLongClickListener(object : View.OnLongClickListener {
-//            override fun onLongClick(v: View?): Boolean {
-//                return true
-//            }
-//        })
-//        onMainActivityCallback?.setOnTouchEventListener(object : OnClickProgressListener() {
-//            override fun onStart() {
-//                var isLongClick = false
-//                when (countDownModel.currentStatus) {
-//                    CountDownModel.WORKING -> {
-//                        when (countDownModel.countDownStatus) {
-//                            CountdownState.STATE_RUNNING_PAUSE -> {
-//                                isLongClick = true
-//                            }
-//                            CountdownState.STATE_RUNNING -> {
-//                                isLongClick = true
-//                            }
-//                        }
-//                    }
-//                    CountDownModel.REPOSE -> {
-//                        when (countDownModel.countDownStatus) {
-//                            CountdownState.STATE_RUNNING -> {
-//                                isLongClick = true
-//                            }
-//                        }
-//                    }
-//                }
-//                if (isLongClick) {
-//                    viewTimeProgress.setProgress(0F)
-//                    viewTimeProgress.visibility = View.VISIBLE
-//                }
-//            }
-//
-//            override fun onProgress(progress: Double) {
-//                viewTimeProgress.setProgress(progress.toFloat())
-//            }
-//
-//            override fun onSuccess() {
-//                viewTimeProgress.visibility = View.GONE
-//                responseEvent()
-//            }
-//
-//            override fun onCancel() {
-//                viewTimeProgress.visibility = View.GONE
-//            }
-//        })
-//    }
-//
-//    private fun responseEvent() {
-//        when (countDownModel.currentStatus) {
-//            CountDownModel.WORKING -> {
-//                when (countDownModel.countDownStatus) {
-//                    CountdownState.STATE_RUNNING_PAUSE, CountdownState.STATE_RUNNING -> {
-//                        countDownModel.stop()
-//                        countDownModel.init(CountDownModel.REPOSE)
-//                        countDownModel.start()
-//                        SystemClock.sleep(2000)
-//                    }
-//                }
-//            }
-//            CountDownModel.REPOSE -> {
-//                when (countDownModel.countDownStatus) {
-//                    CountdownState.STATE_RUNNING -> {
-//                        countDownModel.stop()
-//                        countDownModel.init(CountDownModel.WORKING)
-//                    }
-//                }
-//            }
-//        }
-//    }
+
+    private fun onLongClickListener() {
+        onMainActivityCallback?.setOnLongClickListener(object : View.OnLongClickListener {
+            override fun onLongClick(v: View?): Boolean {
+                return true
+            }
+        })
+        onMainActivityCallback?.setOnTouchEventListener(object : OnClickProgressListener() {
+            override fun onStart() {
+                val type = mCountDownService?.getType()
+                val status = mCountDownService?.getStatus()
+
+                if (null == type || null == status) {
+                    return
+                }
+
+                var isLongClick = false
+                when (type) {
+                    CountDownType.WORKING -> {
+                        when (status) {
+                            CountdownState.STATE_RUNNING_PAUSE -> {
+                                isLongClick = true
+                            }
+                            CountdownState.STATE_RUNNING -> {
+                                isLongClick = true
+                            }
+                        }
+                    }
+                    CountDownType.REPOSE -> {
+                        when (status) {
+                            CountdownState.STATE_RUNNING -> {
+                                isLongClick = true
+                            }
+                        }
+                    }
+                }
+                if (isLongClick) {
+                    viewTimeProgress.setProgress(0F)
+                    viewTimeProgress.visibility = View.VISIBLE
+                }
+            }
+
+            override fun onProgress(progress: Double) {
+                viewTimeProgress.setProgress(progress.toFloat())
+            }
+
+            override fun onSuccess() {
+                viewTimeProgress.visibility = View.GONE
+                responseEvent()
+            }
+
+            override fun onCancel() {
+                viewTimeProgress.visibility = View.GONE
+            }
+        })
+    }
+
+    private fun responseEvent() {
+        val type = mCountDownService?.getType()
+        val status = mCountDownService?.getStatus()
+
+        if (null == type || null == status) {
+            return
+        }
+
+        when (type) {
+            CountDownType.WORKING -> {
+                when (status) {
+                    CountdownState.STATE_RUNNING_PAUSE, CountdownState.STATE_RUNNING -> {
+                        mCountDownService?.stop()
+                        mCountDownService?.change(CountDownType.REPOSE)
+                        mCountDownService?.start()
+                        SystemClock.sleep(2000)
+                    }
+                }
+            }
+            CountDownType.REPOSE -> {
+                when (status) {
+                    CountdownState.STATE_RUNNING -> {
+                        mCountDownService?.stop()
+                        mCountDownService?.change(CountDownType.WORKING)
+                    }
+                }
+            }
+        }
+    }
 }

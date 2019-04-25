@@ -1,4 +1,4 @@
-package com.smallraw.time.utils
+package com.smallraw.foretime.app.utils
 
 import java.io.ByteArrayOutputStream
 import java.io.IOException

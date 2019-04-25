@@ -3,6 +3,7 @@ package com.smallraw.foretime.app.ui.main
 import android.content.Intent
 import android.graphics.Color.*
 import android.graphics.Rect
+import android.os.Build
 import android.os.Bundle
 import android.support.annotation.DrawableRes
 import android.view.DragEvent
@@ -47,7 +48,11 @@ class MainActivity : BaseActivity(), OnMainActivityCallback {
         tomatoBellFragment.showViewAction()
 
         val intent = Intent(this, CountDownService::class.java)
-        startService(intent)
+        if (Build.VERSION.SDK_INT >= 26) {//Android8.0
+            startForegroundService(intent);
+        } else {
+            startService(intent);
+        }
 
         ivSuspension.setOnDragListener { v, event ->
             when (event.action) {
@@ -57,11 +62,11 @@ class MainActivity : BaseActivity(), OnMainActivityCallback {
                 DragEvent.ACTION_DRAG_EXITED -> {
                     v.setBackgroundColor(RED)
                 }
-                DragEvent.ACTION_DRAG_ENDED ->{
+                DragEvent.ACTION_DRAG_ENDED -> {
                     v.setBackgroundColor(WHITE)
                 }
                 DragEvent.ACTION_DROP -> {
-                    Toast.makeText(applicationContext,"tuodong",Toast.LENGTH_LONG).show()
+                    Toast.makeText(applicationContext, "tuodong", Toast.LENGTH_LONG).show()
 //                    val dropX = event.x
 //                    val dropY = event.y
 //                    val state = event.localState as DragData

@@ -4,7 +4,7 @@ import android.util.Log
 import com.alibaba.fastjson.JSON
 import com.smallraw.foretime.app.entity.Weather
 import com.smallraw.foretime.app.repository.http.response.WeatherResponse
-import com.smallraw.time.utils.is2String
+import com.smallraw.foretime.app.utils.is2String
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -25,7 +25,7 @@ class WeatherRequest {
                 if (connection.responseCode == HttpURLConnection.HTTP_OK) {
                     val inputStream = connection.inputStream
                     val response = is2String(inputStream)
-                    Log.e("==net response==", "$response")
+                    Log.e("==net response==", response)
                     connection.disconnect()
                     inputStream.close()
                     val baseResponse = JSON.parseObject(response, WeatherResponse::class.java)

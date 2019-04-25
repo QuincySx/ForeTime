@@ -7,22 +7,21 @@ import android.os.IBinder
 import android.util.Log
 import com.smallraw.foretime.app.model.CountDownTick
 import com.smallraw.foretime.app.service.CountDownType.Companion.REPOSE
-import com.smallraw.foretime.app.service.CountDownType.Companion.SPARE
 import com.smallraw.foretime.app.service.CountDownType.Companion.WORKING
 
 class CountDownService : Service(), CountDownTick.OnCountDownTickListener {
-    private var TAG = CountDownService::class.simpleName
-    private var mType = CountDownType.SPARE
-    private var mOnCountDownTickListener: CountDownTick.OnCountDownTickListener? = null
+    private var TAG = CountDownService::class.java.simpleName
+    private var mType = CountDownType.WORKING
+    private var onCountDownServiceListener: OnCountDownServiceListener? = null
 
     override fun onCountDownTick(millisUntilFinished: Long) {
-        Log.e(TAG, "Countdown Residual $millisUntilFinished second")
-        mOnCountDownTickListener?.onCountDownTick(millisUntilFinished)
+        Log.d(TAG, "Countdown Residual $millisUntilFinished second")
+        onCountDownServiceListener?.onCountDownTick(millisUntilFinished)
     }
 
     override fun onCountDownFinish() {
-        Log.e(TAG, "success")
-        mOnCountDownTickListener?.onCountDownFinish()
+        Log.d(TAG, "success")
+        onCountDownServiceListener?.onCountDownFinish()
     }
 
     //刷新间隔
@@ -45,29 +44,68 @@ class CountDownService : Service(), CountDownTick.OnCountDownTickListener {
     }
 
     inner class CountDownBinder : Binder() {
-        fun start() {
-            startCountDown()
-        }
+        fun getService() = this@CountDownService
+    }
 
-        fun pause() {
-            pauseCountDown()
-        }
+    fun start() {
+        startCountDown()
+    }
 
-        fun change(type: Int) {
-            changeCountDown(type)
-        }
+    fun pause() {
+        pauseCountDown()
+    }
 
-        fun stop() {
-            stopCountDown()
-        }
+    fun resume() {
+        resumeCountDown()
+    }
 
-        fun setListener(listener: CountDownTick.OnCountDownTickListener) {
-            mOnCountDownTickListener = listener
-        }
+    fun change(type: Int) {
+        changeCountDown(type)
+    }
 
-        fun getType() = getCountDownType()
+    fun stop() {
+        stopCountDown()
+    }
 
-        fun getStatus() = getCountDownStatus()
+    fun setCountDownTickListener(listener: OnCountDownServiceListener) {
+        onCountDownServiceListener = listener
+    }
+
+    fun getType() = getCountDownType()
+
+    fun getStatus() = getCountDownStatus()
+
+    fun getCountDownType() = mType
+
+    fun getSurplusTimeMillis() = mCountTickTimer.getSurplusTimeMillis()
+
+    fun getImplementTimeMillis() = mCountTickTimer.getImplementTimeMillis()
+
+    private fun startCountDown() {
+        mCountTickTimer.setImplementTimeMillis(getCurrentTypeTime())
+        mCountTickTimer.start()
+        Log.d(TAG, "CountDown Type Change")
+        onCountDownServiceListener?.onCountDownChange()
+    }
+
+    private fun pauseCountDown() {
+        mCountTickTimer.pause()
+    }
+
+    private fun resumeCountDown() {
+        mCountTickTimer.resume()
+    }
+
+    private fun stopCountDown() {
+        mCountTickTimer.cancel()
+    }
+
+    private fun changeCountDown(type: Int) {
+        mType = type
+        mCountTickTimer.setImplementTimeMillis(getCurrentTypeTime())
+        mCountTickTimer.resume()
+        Log.d(TAG, "CountDown Type Change")
+        onCountDownServiceListener?.onCountDownChange()
     }
 
     private fun getCountDownStatus(): Int {
@@ -75,40 +113,39 @@ class CountDownService : Service(), CountDownTick.OnCountDownTickListener {
             CountDownStatus.PAUSE
         else if (mCountTickTimer.isRuning())
             CountDownStatus.RUNNING
+        else if (mCountTickTimer.isFinish())
+            CountDownStatus.FINISH
         else
             CountDownStatus.SPARE
-    }
-
-    fun getCountDownType() = mType
-
-    fun startCountDown() {
-        mCountTickTimer.setImplementTimeMillis(getCurrentTypeTime())
-        mCountTickTimer.start()
-    }
-
-    fun pauseCountDown() {
-        mCountTickTimer.pause()
-    }
-
-    fun stopCountDown() {
-        mCountTickTimer.pause()
-    }
-
-    fun changeCountDown(type: Int) {
-        mType = type
-        mCountTickTimer.setImplementTimeMillis(getCurrentTypeTime())
-        mCountTickTimer.resume()
     }
 
     /**
      * 根据类型获取时间
      */
-    fun getCurrentTypeTime(): Long {
+    private fun getCurrentTypeTime(): Long {
         return when (mType) {
-            SPARE -> 0
             WORKING -> 15 * 1000
             REPOSE -> 10 * 1000
             else -> 0
         }
+    }
+
+    interface OnCountDownServiceListener {
+
+        /**
+         * CountDownService 时间变化触发的事件
+         */
+        fun onCountDownTick(millisUntilFinished: Long)
+
+        /**
+         * CountDownService 变更任务时触发的事件
+         */
+        fun onCountDownChange()
+
+        /**
+         * CountDownService 完成任务时触发的事件
+         */
+        fun onCountDownFinish()
+
     }
 }

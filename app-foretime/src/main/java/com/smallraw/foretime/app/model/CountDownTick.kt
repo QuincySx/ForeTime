@@ -52,6 +52,11 @@ class CountDownTick
      */
     private var isPause: Boolean = false
 
+    /**
+     * 已完成
+     */
+    private var isFinish: Boolean = false
+
     interface OnCountDownTickListener {
 
         /**
@@ -88,6 +93,7 @@ class CountDownTick
     }
 
     fun pause(): CountDownTick {
+        isRunning = false
         isPause = true
         mHandler.sendEmptyMessage(0)
         mSurplusTimeMillis = mEndTimeMillis - SystemClock.elapsedRealtime()
@@ -95,27 +101,30 @@ class CountDownTick
     }
 
     fun resume(): CountDownTick {
+        isRunning = false
         isPause = false
         mEndTimeMillis = SystemClock.elapsedRealtime() + mSurplusTimeMillis
-        mHandler.sendEmptyMessage(0)
+//        mHandler.sendEmptyMessage(0)
         return this
     }
 
     fun cancel(): CountDownTick {
         isRunning = false
+        isPause = false
         mHandler.removeCallbacksAndMessages(null)
         return this
     }
 
     override fun handleMessage(msg: Message): Boolean {
         if (mSurplusTimeMillis <= 0) {
-            mOnCountDownTickListener?.onCountDownFinish()
-        }else{
+            isFinish = true
+            mOnCountDownTickListener.onCountDownFinish()
+        } else {
             mHandler.sendEmptyMessageDelayed(0, mIntervalTime)
         }
         if (isRunning) {
             mSurplusTimeMillis = mEndTimeMillis - SystemClock.elapsedRealtime()
-            mOnCountDownTickListener?.onCountDownTick(mSurplusTimeMillis)
+            mOnCountDownTickListener.onCountDownTick(mSurplusTimeMillis)
         }
         return false
     }
@@ -131,7 +140,19 @@ class CountDownTick
         }
     }
 
+    /**
+     * 获取剩余时间
+     */
+    fun getSurplusTimeMillis() = mSurplusTimeMillis
+
+    /**
+     * 获取总时间
+     */
+    fun getImplementTimeMillis() = mImplementTimeMillis
+
     fun isRuning() = isRunning
 
     fun isPause() = isPause
+
+    fun isFinish() = isFinish
 }
