@@ -155,9 +155,13 @@ class CountDownTick
             isFinish = true
             mOnCountDownTickListener.onCountDownFinish()
         } else {
-            mHandler.sendEmptyMessageDelayed(0, mIntervalTime)
+            if (mSurplusTimeMillis < mIntervalTime) {
+                mHandler.sendEmptyMessageDelayed(0, mSurplusTimeMillis)
+            } else {
+                mHandler.sendEmptyMessageDelayed(0, mIntervalTime)
+            }
         }
-        if (isRunning && !isPause) {
+        if (isRunning && !isPause && !isFinish) {
             mSurplusTimeMillis = mEndTimeMillis - SystemClock.elapsedRealtime()
             mOnCountDownTickListener.onCountDownTick(mSurplusTimeMillis)
         }

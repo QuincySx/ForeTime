@@ -22,6 +22,37 @@ class CountDownService : Service(), CountDownTick.OnCountDownTickListener {
     private var mType = CountDownType.WORKING
     private var onCountDownServiceListener: OnCountDownServiceListener? = null
 
+    //刷新间隔
+    private val mRefreshIntervalTime: Long = 25
+
+    private var mCountTickTimer = CountDownTick(1000 * 15, this, mRefreshIntervalTime)
+
+    override fun onCreate() {
+        super.onCreate()
+        reset(WORKING)
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        val notifyID = 1
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createNotificationChannel(notifyID)
+        } else {
+            createErrorNotification(notifyID)
+        }
+        return super.onStartCommand(intent, flags, startId)
+    }
+
+    override fun onBind(intent: Intent): IBinder = CountDownBinder()
+
+    override fun onUnbind(intent: Intent?): Boolean {
+        return super.onUnbind(intent)
+    }
+
+    override fun onDestroy() {
+        stop()
+        super.onDestroy()
+    }
+
     override fun onCountDownTick(millisUntilFinished: Long) {
         if (millisUntilFinished < 1000) {
             Log.d(TAG, "Countdown Residual $millisUntilFinished second")
@@ -48,36 +79,6 @@ class CountDownService : Service(), CountDownTick.OnCountDownTickListener {
                 reset(WORKING)
             }
         }
-    }
-
-    //刷新间隔
-    private val mRefreshIntervalTime: Long = 25
-
-    private var mCountTickTimer = CountDownTick(1000 * 15, this, mRefreshIntervalTime)
-
-    override fun onCreate() {
-        super.onCreate()
-
-        val notifyID = 1
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createNotificationChannel(notifyID)
-        } else {
-            createErrorNotification(notifyID)
-        }
-    }
-
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        return super.onStartCommand(intent, flags, startId)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
-    override fun onBind(intent: Intent): IBinder = CountDownBinder()
-
-    override fun onUnbind(intent: Intent?): Boolean {
-        return super.onUnbind(intent)
     }
 
     inner class CountDownBinder : Binder() {

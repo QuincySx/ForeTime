@@ -1,9 +1,7 @@
 package com.smallraw.foretime.app.ui.main
 
-import android.content.Intent
 import android.graphics.Color.*
 import android.graphics.Rect
-import android.os.Build
 import android.os.Bundle
 import android.support.annotation.DrawableRes
 import android.view.DragEvent
@@ -13,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.common.adapter.ViewPagerAdapter
-import com.smallraw.foretime.app.service.CountDownService
 import com.smallraw.foretime.app.ui.calendar.CalendarFragment
 import com.smallraw.foretime.app.ui.tomatoBell.TomatoBellFragment
 import com.smallraw.time.base.BaseActivity
@@ -46,13 +43,6 @@ class MainActivity : BaseActivity(), OnMainActivityCallback {
 
         setTouchDelegate(ivCalendar, 100)
         tomatoBellFragment.showViewAction()
-
-        val intent = Intent(this, CountDownService::class.java)
-        if (Build.VERSION.SDK_INT >= 26) {//Android8.0
-            startForegroundService(intent);
-        } else {
-            startService(intent);
-        }
 
         ivSuspension.setOnDragListener { v, event ->
             when (event.action) {
