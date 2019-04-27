@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
-import android.os.SystemClock
 import android.support.annotation.ColorInt
 import android.support.annotation.DrawableRes
 import android.support.v4.content.res.ResourcesCompat
@@ -221,13 +220,10 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
                 val color = ResourcesCompat.getColor(resources, R.color.WorkingProgessColor, null)
                 refreshTimeSchedule(color, totalTime, lastTime)
                 setHint("稍后进入休息")
-                mCountDownService?.change(CountDownType.REPOSE)
-                mCountDownService?.start()
             }
             CountDownType.REPOSE -> {
                 val color = ResourcesCompat.getColor(resources, R.color.RestProgessColor, null)
                 refreshTimeSchedule(color, totalTime, lastTime)
-                mCountDownService?.change(CountDownType.REPOSE)
                 setHint("点击继续工作")
             }
         }
@@ -390,18 +386,15 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
             CountDownType.WORKING -> {
                 when (status) {
                     CountdownState.STATE_RUNNING_PAUSE, CountdownState.STATE_RUNNING -> {
-                        mCountDownService?.stop()
-                        mCountDownService?.change(CountDownType.REPOSE)
+                        mCountDownService?.reset(CountDownType.REPOSE)
                         mCountDownService?.start()
-                        SystemClock.sleep(2000)
                     }
                 }
             }
             CountDownType.REPOSE -> {
                 when (status) {
                     CountdownState.STATE_RUNNING -> {
-                        mCountDownService?.stop()
-                        mCountDownService?.change(CountDownType.WORKING)
+                        mCountDownService?.reset(CountDownType.WORKING)
                     }
                 }
             }

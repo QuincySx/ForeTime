@@ -38,7 +38,7 @@ public interface IWheelPicker {
      * Set the count of current visible items in WheelPicker
      * The count of current visible items in WheelPicker must greater than 1
      * Notice:count of current visible items in WheelPicker will always is an odd number, even you
-     * can set an even number for it, it will be change to an odd number eventually
+     * can set an even number for it, it will be reset to an odd number eventually
      * By default, the count of current visible items in WheelPicker is 7
      *
      * @param count 滚轮选择器可见数据项数量
@@ -83,7 +83,7 @@ public interface IWheelPicker {
      * {@link #getCurrentItemPosition()}
      * <p>
      * Get the position of current selected item in data source
-     * Notice:The value by return will not change when WheelPicker scroll, this method will always
+     * Notice:The value by return will not reset when WheelPicker scroll, this method will always
      * return the value which {@link #setSelectedItemPosition(int)} set, the value this method
      * return will be changed if and only if call the
      * {@link #setSelectedItemPosition(int)}
@@ -132,7 +132,7 @@ public interface IWheelPicker {
      * <p>
      * Get the position of current selected item in data source
      * The difference between {@link #getSelectedItemPosition()}, the value this method return will
-     * change by WheelPicker scrolled
+     * reset by WheelPicker scrolled
      *
      * @return 当前被选中的数据项所显示的数据在数据源中的位置
      */
@@ -155,7 +155,7 @@ public interface IWheelPicker {
      * {@link #setSelectedItemPosition(int)}
      * <p>
      * Set data source of WheelPicker
-     * The data source can be any type, WheelPicker will change the data to string when it draw the
+     * The data source can be any type, WheelPicker will reset the data to string when it draw the
      * item.
      * There is a default data source when you not set the data source for WheelPicker.
      * Set data source for WheelPicker will reset state of it, you can refer to
@@ -519,7 +519,7 @@ public interface IWheelPicker {
      * 数据项文本字体的设置可能会导致滚轮大小的改变
      * <p>
      * Set typeface of item text
-     * Set typeface of item text maybe cause WheelPicker size change
+     * Set typeface of item text maybe cause WheelPicker size reset
      *
      * @param tf 字体对象
      */

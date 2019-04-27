@@ -72,6 +72,7 @@ class CountDownTick
     }
 
     init {
+        mHandlerThread.priority = Thread.MAX_PRIORITY
         mHandlerThread.start()
         mHandler = Handler(mHandlerThread.looper, this)
     }
@@ -86,31 +87,65 @@ class CountDownTick
         mStartTimeMillis = Date()
         mSurplusTimeMillis = mImplementTimeMillis
         mEndTimeMillis = SystemClock.elapsedRealtime() + mSurplusTimeMillis
-        mHandler.sendEmptyMessageDelayed(0, mIntervalTime)
+
         isRunning = true
         isPause = false
+        isFinish = false
+
+        mHandler.sendEmptyMessageDelayed(0, mIntervalTime)
         return this
     }
 
+    /**
+     * 暂停倒计时
+     */
     fun pause(): CountDownTick {
+        mSurplusTimeMillis = mEndTimeMillis - SystemClock.elapsedRealtime()
+
         isRunning = false
         isPause = true
+        isFinish = false
+
         mHandler.sendEmptyMessage(0)
-        mSurplusTimeMillis = mEndTimeMillis - SystemClock.elapsedRealtime()
         return this
     }
 
+    /**
+     * 继续执行运行
+     * 调用此方法前可以设置状态
+     */
     fun resume(): CountDownTick {
+        mEndTimeMillis = SystemClock.elapsedRealtime() + mSurplusTimeMillis
+
+        isRunning = true
+        isPause = false
+        isFinish = false
+
+        mHandler.sendEmptyMessage(0)
+        return this
+    }
+
+    /**
+     * 重新设置
+     */
+    fun reset(): CountDownTick {
+        mStartTimeMillis = Date()
+        mSurplusTimeMillis = mImplementTimeMillis
+        mEndTimeMillis = SystemClock.elapsedRealtime() + mSurplusTimeMillis
+
         isRunning = false
         isPause = false
-        mEndTimeMillis = SystemClock.elapsedRealtime() + mSurplusTimeMillis
-//        mHandler.sendEmptyMessage(0)
+        isFinish = false
+
+        mHandler.sendEmptyMessage(0)
         return this
     }
 
     fun cancel(): CountDownTick {
         isRunning = false
         isPause = false
+        isFinish = false
+
         mHandler.removeCallbacksAndMessages(null)
         return this
     }
@@ -122,7 +157,7 @@ class CountDownTick
         } else {
             mHandler.sendEmptyMessageDelayed(0, mIntervalTime)
         }
-        if (isRunning) {
+        if (isRunning && !isPause) {
             mSurplusTimeMillis = mEndTimeMillis - SystemClock.elapsedRealtime()
             mOnCountDownTickListener.onCountDownTick(mSurplusTimeMillis)
         }
@@ -134,6 +169,10 @@ class CountDownTick
         return this
     }
 
+    /**
+     * 设置倒计时时长
+     * hint：暂停后才可生效
+     */
     fun setImplementTimeMillis(millis: Long) {
         if (!isRunning) {
             mImplementTimeMillis = millis
