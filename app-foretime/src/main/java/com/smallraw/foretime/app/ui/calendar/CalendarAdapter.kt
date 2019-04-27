@@ -1,6 +1,5 @@
 package com.smallraw.foretime.app.ui.calendar
 
-import android.content.ClipData
 import android.graphics.Color
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.RecyclerView
@@ -8,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.common.adapter.OnItemClickListener
 import com.smallraw.foretime.app.repository.db.entity.MemorialDO
@@ -18,7 +16,6 @@ import com.smallraw.time.utils.differentDays
 import com.smallraw.time.utils.getWeekOfDate
 import org.jetbrains.annotations.NotNull
 import java.util.*
-import android.view.View.DragShadowBuilder
 
 class CalendarAdapter(@NotNull val mCalendars: List<MemorialDO>) : RecyclerView.Adapter<CalendarAdapter.CalenderViewHolder>() {
     private val mCurrentDate = dateParse(dateFormat(Date()))
@@ -41,8 +38,9 @@ class CalendarAdapter(@NotNull val mCalendars: List<MemorialDO>) : RecyclerView.
         viewHolder.itemView.setOnLongClickListener {
             val item = mCalendars[viewHolder.adapterPosition]
             val state = DragData(item, it.width, it.height)
-            val shadow = DragShadowBuilder(it)
-            ViewCompat.startDragAndDrop(it, null, shadow, state, 0)
+//            val shadow = DragShadowBuilder(it)
+//            ViewCompat.startDragAndDrop(it, null, shadow, state, 0)
+            ViewCompat.startDragAndDrop(it, null, View.DragShadowBuilder(it), state, 0)
         }
         return viewHolder
     }
