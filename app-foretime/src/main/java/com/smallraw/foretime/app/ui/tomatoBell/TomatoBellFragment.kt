@@ -15,7 +15,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.R
-import com.smallraw.foretime.app.business.timer.CountdownState
 import com.smallraw.foretime.app.common.widget.OnClickProgressListener
 import com.smallraw.foretime.app.service.CountDownService
 import com.smallraw.foretime.app.service.CountDownStatus
@@ -160,17 +159,17 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
                 when (type) {
                     CountDownType.WORKING -> {
                         when (status) {
-                            CountdownState.STATE_RUNNING_PAUSE -> {
+                            CountDownStatus.PAUSE -> {
                                 isLongClick = true
                             }
-                            CountdownState.STATE_RUNNING -> {
+                            CountDownStatus.RUNNING -> {
                                 isLongClick = true
                             }
                         }
                     }
                     CountDownType.REPOSE -> {
                         when (status) {
-                            CountdownState.STATE_RUNNING -> {
+                            CountDownStatus.RUNNING -> {
                                 isLongClick = true
                             }
                         }
@@ -211,7 +210,7 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
         when (type) {
             CountDownType.WORKING -> {
                 when (status) {
-                    CountdownState.STATE_RUNNING_PAUSE, CountdownState.STATE_RUNNING -> {
+                    CountDownStatus.PAUSE, CountDownStatus.RUNNING -> {
                         mCountDownService?.reset(CountDownType.REPOSE)
                         mCountDownService?.start()
                     }
@@ -219,7 +218,7 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
             }
             CountDownType.REPOSE -> {
                 when (status) {
-                    CountdownState.STATE_RUNNING -> {
+                    CountDownStatus.RUNNING -> {
                         mCountDownService?.reset(CountDownType.WORKING)
                     }
                 }

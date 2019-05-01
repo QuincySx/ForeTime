@@ -8,17 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.base.BaseDialogView
 import com.smallraw.foretime.app.constant.TaskTypeConsts
 import com.smallraw.foretime.app.ui.calendarSetting.CalendarSettingActivity
 import com.smallraw.foretime.app.ui.decoration.SpacesItemDecoration
-import com.smallraw.foretime.app.ui.harvestToday.HarvestTodayActivity
-
-import java.util.ArrayList
-
 import me.jessyan.autosize.utils.AutoSizeUtils
+import java.util.*
 
 class CalendarSettingDialog : BaseDialogView {
 
@@ -97,7 +93,7 @@ class CalendarSettingDialog : BaseDialogView {
         return layoutInflater.inflate(R.layout.dialog_calendar_setting, null, false)
     }
 
-    class Builder(val mContext: Context?) {
+    class Builder(val mContext: Context) {
         var mSelectType: Int = 0
         var mOnShowTypeListener: OnShowTypeListener? = null
 

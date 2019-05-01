@@ -19,7 +19,6 @@ import com.smallraw.foretime.app.repository.db.entity.MemorialDO
 import com.smallraw.time.base.BaseTitleBarActivity
 import kotlinx.android.synthetic.main.activity_add_countdown_day.*
 import org.greenrobot.eventbus.EventBus
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -222,7 +221,7 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
     }
 
     private fun setContentViewData(task: MemorialDO) {
-        mCalendar.timeInMillis = task.targetTime.time
+        mCalendar.timeInMillis = task.targetTime!!.time
         tvTargetDate.text = "${mCalendar.get(Calendar.YEAR)}-${mCalendar.get(Calendar.MONTH) + 1}-${mCalendar.get(Calendar.DAY_OF_MONTH)}"
 
         titleName.setText(task.name)

@@ -2,12 +2,11 @@ package com.smallraw.time.model
 
 import android.support.annotation.DrawableRes
 import android.util.Log
-import com.alibaba.fastjson.JSON
+import com.google.gson.Gson
 import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.entity.Weather
 import com.smallraw.time.http.WeatherRequest
-import java.lang.Exception
 
 public class WeatherModel() {
     companion object {
@@ -77,7 +76,7 @@ public class WeatherModel() {
 
                 val weatherNow = WeatherRequest.getWeatherNow(currentLocation)
                 if (weatherNow != null) {
-                    ConfigModel.set(WeatherNow, JSON.toJSONString(weatherNow), 1000 * 60 * 60 * 24)
+                    ConfigModel.set(WeatherNow, Gson().toJson(weatherNow), 1000 * 60 * 60 * 24)
                     exception.mainThread().execute {
                         callback.onSuccess(weatherNow)
                     }
@@ -97,7 +96,7 @@ public class WeatherModel() {
             try {
                 val get = ConfigModel.get(WeatherNow, false)
                 if (get != "") {
-                    val weather = JSON.parseObject(get, Weather::class.java)
+                    val weather = Gson().fromJson<Weather>(get, Weather::class.java)
                     exception.mainThread().execute {
                         callback.onSuccess(weather)
                     }

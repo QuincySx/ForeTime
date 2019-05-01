@@ -1,8 +1,9 @@
 package com.smallraw.foretime.app.ui.calendar
 
 import android.graphics.Color
-import android.support.v4.view.ViewCompat
 import android.support.v7.widget.RecyclerView
+import android.util.Log
+import android.view.DragEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,8 @@ import java.util.*
 class CalendarAdapter(@NotNull val mCalendars: List<MemorialDO>) : RecyclerView.Adapter<CalendarAdapter.CalenderViewHolder>() {
     private val mCurrentDate = dateParse(dateFormat(Date()))
     private var mOnItemClickListener: OnItemClickListener? = null
+    var oldPosition: Int? = null
+    var preOutPosition: Int? = null
 
     fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
         mOnItemClickListener = onItemClickListener
@@ -35,13 +38,51 @@ class CalendarAdapter(@NotNull val mCalendars: List<MemorialDO>) : RecyclerView.
         viewHolder.itemView.setOnClickListener {
             getOnItemClickListener()?.onClick(it, viewHolder.layoutPosition)
         }
-        viewHolder.itemView.setOnLongClickListener {
-            val item = mCalendars[viewHolder.adapterPosition]
-            val state = DragData(item, it.width, it.height)
-//            val shadow = DragShadowBuilder(it)
-//            ViewCompat.startDragAndDrop(it, null, shadow, state, 0)
-            ViewCompat.startDragAndDrop(it, null, View.DragShadowBuilder(it), state, 0)
-        }
+//        viewHolder.itemView.setOnLongClickListener {
+//            val item = mCalendars[viewHolder.adapterPosition]
+//            val state = DragData(item, it.width, it.height)
+//            ViewCompat.startDragAndDrop(it, null, View.DragShadowBuilder(it), state, 0)
+//        }
+
+        viewHolder.itemView.setOnDragListener(object : View.OnDragListener {
+            override fun onDrag(v: View?, event: DragEvent?): Boolean {
+                if (v == null) {
+                    return false
+                }
+                val dragViewHolder = (parent as RecyclerView).findContainingViewHolder(v)
+                val currentPosition = dragViewHolder?.adapterPosition
+                when (event?.action) {
+                    DragEvent.ACTION_DRAG_ENTERED -> {
+                        Log.e("=====", "== ACTION_DRAG_ENTERED == oldPosition:${oldPosition}, position:$currentPosition, preOutPosition:$preOutPosition,  ${v.hashCode()}")
+                        if (null != preOutPosition && preOutPosition == currentPosition) {
+                            Log.e("=====", "== preOut ==")
+                            preOutPosition = null
+                            return true
+                        }
+                        if (null != currentPosition) {
+                            if (null != oldPosition && oldPosition != currentPosition) {
+                                Collections.swap(mCalendars, oldPosition!!, currentPosition)
+                                notifyItemMoved(oldPosition!!, currentPosition)
+                                Log.e("=====", "== Swap List ${null != oldPosition} == oldPosition:$oldPosition To Position:$currentPosition")
+                            }
+                            oldPosition = currentPosition
+                        }
+                    }
+                    DragEvent.ACTION_DRAG_EXITED -> {
+                        preOutPosition = oldPosition
+                        Log.e("=====", "== ACTION_DRAG_EXITED == oldPosition:$oldPosition  Position:$currentPosition  ${v.hashCode()}")
+                        oldPosition = currentPosition
+                        Log.e("=====", "===============================================================")
+                    }
+                    DragEvent.ACTION_DRAG_ENDED -> {
+                        oldPosition = null
+                        preOutPosition = null
+                        Log.e("=====", "== ACTION_DRAG_ENDED == Position:$currentPosition  ${v.hashCode()}")
+                    }
+                }
+                return true
+            }
+        })
         return viewHolder
     }
 
@@ -53,16 +94,16 @@ class CalendarAdapter(@NotNull val mCalendars: List<MemorialDO>) : RecyclerView.
         val context = holder.itemView.context
 
         if (item.type == 0) {
-            holder.tvWeek.text = getWeekOfDate(context, item.targetTime)
+            holder.tvWeek.text = getWeekOfDate(context, item.targetTime!!)
         } else {
             holder.tvWeek.text = "至"
         }
-        holder.tvData.text = dateFormat(item.targetTime)
+        holder.tvData.text = dateFormat(item.targetTime!!)
 
         holder.tvTimeUnit.text = "天"
 
         if (item.type == 0) {
-            val days = differentDays(Date(), item.targetTime)
+            val days = differentDays(Date(), item.targetTime!!)
             holder.tvTimeNumber.text = "${Math.abs(days)}"
             holder.tvTypeData.text = "累计日"
             holder.tvTimeState.text = "累计"
@@ -72,17 +113,17 @@ class CalendarAdapter(@NotNull val mCalendars: List<MemorialDO>) : RecyclerView.
             holder.tvStatus.text = "止"
             when {
                 mCurrentDate < item.targetTime -> {
-                    val days = differentDays(Date(), item.targetTime)
+                    val days = differentDays(Date(), item.targetTime!!)
                     holder.tvTimeNumber.text = "${Math.abs(days)}"
                     holder.tvTimeState.text = "剩余"
                 }
                 mCurrentDate == item.targetTime -> {
-                    val days = differentDays(Date(), item.targetTime)
+                    val days = differentDays(Date(), item.targetTime!!)
                     holder.tvTimeNumber.text = "${Math.abs(days + 1)}"
                     holder.tvTimeState.text = "活动中"
                 }
                 else -> {
-                    val days = differentDays(item.targetTime, Date())
+                    val days = differentDays(item.targetTime!!, Date())
                     holder.tvTimeNumber.text = "${Math.abs(days)}"
                     holder.tvTimeState.text = "已过"
                 }

@@ -8,12 +8,12 @@ import com.smallraw.foretime.app.repository.db.entity.MemorialTopDO
 
 fun thoroughDeleteTask(app: Application, memorialDO: MemorialDO) {
     memorialDO.isStrike = true
-    (app as App).getRepository().delete(memorialDO.id)
+    (app as App).getRepository().delete(memorialDO.id!!)
 }
 
 fun thoroughDeleteTaskAll(app: Application, memorialDOS: List<MemorialDO>) {
     for (item in memorialDOS) {
-        (app as App).getRepository().deleteTopTaskAll(item.id)
+        (app as App).getRepository().deleteTopTaskAll(item.id!!)
     }
     (app as App).getRepository().deleteTask(memorialDOS)
 }
@@ -46,7 +46,7 @@ fun unArchivingTask(app: Application, memorialDO: MemorialDO) {
 }
 
 fun isTopTask(app: Application, memorialDO: MemorialDO, type: Long): Boolean {
-    return (app as App).getRepository().isTopTask(memorialDO.id, type)
+    return (app as App).getRepository().isTopTask(memorialDO.id!!, type)
 }
 
 fun topTask(app: Application, memorialDO: MemorialDO, type: Long) {
@@ -56,5 +56,5 @@ fun topTask(app: Application, memorialDO: MemorialDO, type: Long) {
 }
 
 fun unTopTask(app: Application, memorialDO: MemorialDO, type: Long) {
-    (app as App).getRepository().deleteTopTask(memorialDO.id, type)
+    (app as App).getRepository().deleteTopTask(memorialDO.id!!, type)
 }

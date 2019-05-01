@@ -57,7 +57,7 @@ class HarvestTodayActivity : BaseTitleBarActivity() {
                 ivWeather.setBackgroundResource(R.drawable.ic_weather_qing)
                 tvWeather.text = "暂无 · 0°C"
             } else {
-                val weatherImage = WeatherModel.getWeatherImage(data.cond_code)
+                val weatherImage = WeatherModel.getWeatherImage(data.cond_code!!)
                 ivWeather.setBackgroundResource(weatherImage)
                 tvWeather.text = "${data.cond_txt} · ${data.tmp}°C"
             }

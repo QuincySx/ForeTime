@@ -69,7 +69,7 @@ class TimeProgressView @JvmOverloads constructor(context: Context, attrs: Attrib
     }
 
     private fun measureHeight(measureSpec: Int): Int {
-        var result = 0
+        var result: Int
         val mode = View.MeasureSpec.getMode(measureSpec)
         val size = View.MeasureSpec.getSize(measureSpec)
 
@@ -85,7 +85,7 @@ class TimeProgressView @JvmOverloads constructor(context: Context, attrs: Attrib
     }
 
     private fun measureWidth(measureSpec: Int): Int {
-        var result = 0
+        var result: Int
         val mode = View.MeasureSpec.getMode(measureSpec)
         val size = View.MeasureSpec.getSize(measureSpec)
 

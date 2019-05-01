@@ -48,7 +48,7 @@ class TaskInfoActivity : BaseTitleBarActivity() {
 
         addRightView(newEditView(View.OnClickListener {
             //编辑
-            AddTaskDayActivity.startEdit(this, mTask!!.id, mTask!!.type)
+            AddTaskDayActivity.startEdit(this, mTask!!.id!!, mTask!!.type)
         }))
         addRightView(newShareView(View.OnClickListener {
             //分享
@@ -118,7 +118,7 @@ class TaskInfoActivity : BaseTitleBarActivity() {
         if (event.changeType == TaskChangeEvent.UPDATE
                 && mTask != null
                 && event.taskID == mTask!!.id) {
-            refreshTask(mTask!!.id)
+            refreshTask(mTask!!.id!!)
         }
     }
 

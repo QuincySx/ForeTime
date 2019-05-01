@@ -102,14 +102,14 @@ class CalendarFragment : BaseFragment() {
         mCalendarVewModel.queryActiveTask(-1, 0)
         mCalendarAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onClick(view: View, position: Int) {
-                TaskInfoActivity.start(activity, mCalendarList[position].id)
+                TaskInfoActivity.start(activity, mCalendarList[position].id!!)
             }
         })
         setDateTime()
         initWeatherNow()
 
         ivSetting.setOnClickListener {
-            CalendarSettingDialog.Builder(context)
+            CalendarSettingDialog.Builder(context!!)
                     .setOnChangeSelectListener(object : CalendarSettingDialog.OnShowTypeListener {
                         override fun onChange(dialog: BaseDialogView, type: Int) {
                             mCalendarVewModel.queryActiveTask(type, 0)
@@ -177,7 +177,7 @@ class CalendarFragment : BaseFragment() {
                 ivWeather.setBackgroundResource(R.drawable.ic_weather_qing)
                 tvWeather.text = "暂无 · 0°C"
             } else {
-                val weatherImage = WeatherModel.getWeatherImage(data.cond_code)
+                val weatherImage = WeatherModel.getWeatherImage(data.cond_code!!)
                 ivWeather.setBackgroundResource(weatherImage)
                 tvWeather.text = "${data.cond_txt} · ${data.tmp}°C"
             }

@@ -1,17 +1,19 @@
 package com.smallraw.foretime.app.ui.calendar.vm
 
-import android.arch.lifecycle.*
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MediatorLiveData
+import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.ViewModel
 import android.util.Log
 import android.util.LongSparseArray
-
 import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.event.TaskChangeEvent
 import com.smallraw.foretime.app.repository.DataRepository
 import com.smallraw.foretime.app.repository.db.entity.MemorialDO
 import com.smallraw.foretime.app.repository.db.entity.MemorialTopDO
 import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.ThreadMode
 import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 class CalendarVewModel : ViewModel() {
@@ -88,7 +90,7 @@ class CalendarVewModel : ViewModel() {
         val topMemorialList = ArrayList<MemorialDO>(memorialMap.size())
 
         for (item in taskTopList) {
-            val get = memorialMap.get(item.memorial_id)
+            val get = memorialMap.get(item.memorial_id!!)
             if (get != null) {
                 topMemorialList.add(get)
                 memorialEntities.remove(get)

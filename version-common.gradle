@@ -37,8 +37,8 @@ ext {
     ]
 
     gradlePlugins = [
-            gradle      : "com.android.tools.build:gradle:${gradlePluginVerion.gradleVersion}",
-            kotlinGradle: "org.jetbrains.kotlin:kotlin-gradle-plugin:${gradlePluginVerion.kotlinVersion}"
+            gradle           : "com.android.tools.build:gradle:${gradlePluginVerion.gradleVersion}",
+            kotlinGradle     : "org.jetbrains.kotlin:kotlin-gradle-plugin:${gradlePluginVerion.kotlinVersion}"
     ]
 
     defaultConfigVersion = [

@@ -33,7 +33,7 @@ class TaskInfoAdapter(private var item: MemorialDO, private val mColors: List<St
         holder.tvUnit.text = "天"
 
         if (item.type == 0) {
-            val days = differentDays(Date(), item.targetTime)
+            val days = differentDays(Date(), item!!.targetTime!!)
             holder.tvNumber.text = "${Math.abs(days)}"
             holder.tvShortState.text = "根据"
             holder.tvAlsoState.text = "累计"
@@ -41,17 +41,17 @@ class TaskInfoAdapter(private var item: MemorialDO, private val mColors: List<St
             holder.tvShortState.text = "距离"
             when {
                 mCurrentDate < item.targetTime -> {
-                    val days = differentDays(Date(), item.targetTime)
+                    val days = differentDays(Date(), item!!.targetTime!!)
                     holder.tvNumber.text = "${Math.abs(days)}"
                     holder.tvAlsoState.text = "还有"
                 }
                 mCurrentDate == item.targetTime -> {
-                    val days = differentDays(Date(), item.targetTime)
+                    val days = differentDays(Date(), item!!.targetTime!!)
                     holder.tvNumber.text = "${Math.abs(days + 1)}"
                     holder.tvAlsoState.text = "活动中"
                 }
                 else -> {
-                    val days = differentDays(item.targetTime, Date())
+                    val days = differentDays(item!!.targetTime!!, Date())
                     holder.tvNumber.text = "${Math.abs(days)}"
                     holder.tvAlsoState.text = "已过"
                 }

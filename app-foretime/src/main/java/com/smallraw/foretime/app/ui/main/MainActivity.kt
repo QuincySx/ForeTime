@@ -1,16 +1,15 @@
 package com.smallraw.foretime.app.ui.main
 
-import android.graphics.Color.*
 import android.graphics.Rect
 import android.os.Bundle
 import android.support.annotation.DrawableRes
-import android.view.DragEvent
+import android.util.Log
 import android.view.TouchDelegate
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.common.adapter.ViewPagerAdapter
+import com.smallraw.foretime.app.config.DefConfig
 import com.smallraw.foretime.app.ui.calendar.CalendarFragment
 import com.smallraw.foretime.app.ui.tomatoBell.TomatoBellFragment
 import com.smallraw.time.base.BaseActivity
@@ -28,6 +27,8 @@ class MainActivity : BaseActivity(), OnMainActivityCallback {
         viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
         initFragment()
         initView()
+
+        Log.e("== read ==", DefConfig.mCalendarConfig.toString())
     }
 
     private fun initFragment() {
@@ -44,37 +45,37 @@ class MainActivity : BaseActivity(), OnMainActivityCallback {
         setTouchDelegate(ivCalendar, 100)
         tomatoBellFragment.showViewAction()
 
-        ivSuspension.setOnDragListener { v, event ->
-            when (event.action) {
-                DragEvent.ACTION_DRAG_ENTERED -> {
-                    v.setBackgroundColor(GREEN)
-                }
-                DragEvent.ACTION_DRAG_EXITED -> {
-                    v.setBackgroundColor(RED)
-                }
-                DragEvent.ACTION_DRAG_ENDED -> {
-                    v.setBackgroundColor(WHITE)
-                }
-                DragEvent.ACTION_DROP -> {
-                    Toast.makeText(applicationContext, "tuodong", Toast.LENGTH_LONG).show()
-//                    val dropX = event.x
-//                    val dropY = event.y
-//                    val state = event.localState as DragData
-//
-//                    val shape = LayoutInflater.from(this).inflate(
-//                            R.layout.view_shape, dropContainer, false) as ImageView
-//                    shape.setImageResource(state.item.getImageDrawable())
-//                    shape.setX(dropX - state.width.toFloat() / 2)
-//                    shape.setY(dropY - state.height.toFloat() / 2)
-//                    shape.getLayoutParams().width = state.width
-//                    shape.getLayoutParams().height = state.height
-//                    dropContainer.addView(shape)
-                }
-                else -> {
-                }
-            }
-            true
-        }
+//        ivSuspension.setOnDragListener { v, event ->
+//            when (event.action) {
+//                DragEvent.ACTION_DRAG_ENTERED -> {
+//                    v.setBackgroundColor(GREEN)
+//                }
+//                DragEvent.ACTION_DRAG_EXITED -> {
+//                    v.setBackgroundColor(RED)
+//                }
+//                DragEvent.ACTION_DRAG_ENDED -> {
+//                    v.setBackgroundColor(WHITE)
+//                }
+//                DragEvent.ACTION_DROP -> {
+//                    Toast.makeText(applicationContext, "tuodong", Toast.LENGTH_LONG).show()
+////                    val dropX = event.x
+////                    val dropY = event.y
+////                    val state = event.localState as DragData
+////
+////                    val shape = LayoutInflater.from(this).inflate(
+////                            R.layout.view_shape, dropContainer, false) as ImageView
+////                    shape.setImageResource(state.item.getImageDrawable())
+////                    shape.setX(dropX - state.width.toFloat() / 2)
+////                    shape.setY(dropY - state.height.toFloat() / 2)
+////                    shape.getLayoutParams().width = state.width
+////                    shape.getLayoutParams().height = state.height
+////                    dropContainer.addView(shape)
+//                }
+//                else -> {
+//                }
+//            }
+//            true
+//        }
     }
 
     fun onClick(view: View) {

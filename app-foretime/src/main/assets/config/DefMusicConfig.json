@@ -1,0 +1,7 @@
+{
+  "focusTime": 25000,
+  "restTime": 5000,
+  "restLongTime": 10000,
+  "restLonginterval": 3,
+  "flipFocus": false
+}

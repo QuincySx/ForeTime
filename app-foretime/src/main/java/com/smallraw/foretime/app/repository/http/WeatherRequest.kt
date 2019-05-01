@@ -1,7 +1,7 @@
 package com.smallraw.time.http
 
 import android.util.Log
-import com.alibaba.fastjson.JSON
+import com.google.gson.Gson
 import com.smallraw.foretime.app.entity.Weather
 import com.smallraw.foretime.app.repository.http.response.WeatherResponse
 import com.smallraw.foretime.app.utils.is2String
@@ -28,8 +28,8 @@ class WeatherRequest {
                     Log.e("==net response==", response)
                     connection.disconnect()
                     inputStream.close()
-                    val baseResponse = JSON.parseObject(response, WeatherResponse::class.java)
-                    if (baseResponse != null && baseResponse.error as Int == 0) {
+                    val baseResponse = Gson().fromJson<WeatherResponse>(response, WeatherResponse::class.java)
+                    if (baseResponse != null && baseResponse.error == 0) {
                         return baseResponse.data
                     } else {
                         return null
