@@ -1,6 +1,6 @@
 package com.smallraw.foretime.app.entity
 
-data class CalendarInfo(
+data class CalendarConfigInfo(
         /**
          * 工作时长
          */

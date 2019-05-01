@@ -3,13 +3,11 @@ package com.smallraw.foretime.app.ui.main
 import android.graphics.Rect
 import android.os.Bundle
 import android.support.annotation.DrawableRes
-import android.util.Log
 import android.view.TouchDelegate
 import android.view.View
 import android.view.ViewGroup
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.common.adapter.ViewPagerAdapter
-import com.smallraw.foretime.app.config.DefConfig
 import com.smallraw.foretime.app.ui.calendar.CalendarFragment
 import com.smallraw.foretime.app.ui.tomatoBell.TomatoBellFragment
 import com.smallraw.time.base.BaseActivity
@@ -28,7 +26,8 @@ class MainActivity : BaseActivity(), OnMainActivityCallback {
         initFragment()
         initView()
 
-        Log.e("== read ==", DefConfig.mCalendarConfig.toString())
+//        Log.e("== read ==", DefConfig.mMusicSettingConfig.get().toString())
+//        Log.e("== read ==", DefConfig.mCalendarSettingConfig.get().toString())
     }
 
     private fun initFragment() {
