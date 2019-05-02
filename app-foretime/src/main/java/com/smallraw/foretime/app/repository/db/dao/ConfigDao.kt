@@ -1,9 +1,6 @@
 package com.smallraw.foretime.app.repository.db.dao
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.Query
-import android.arch.persistence.room.Update
+import android.arch.persistence.room.*
 
 import com.smallraw.foretime.app.repository.db.entity.ConfigDO
 
@@ -12,7 +9,7 @@ interface ConfigDao {
     @Query("SELECT COUNT(*) FROM config")
     fun count(): Int
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(configDO: ConfigDO): Long
 
     @Query("SELECT * FROM config WHERE id = :id")

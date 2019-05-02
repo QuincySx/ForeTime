@@ -1,12 +1,13 @@
 package com.smallraw.foretime.app.repository.db.entity
 
-import android.arch.persistence.room.ColumnInfo
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.Ignore
-import android.arch.persistence.room.PrimaryKey
+import android.arch.persistence.room.*
 import java.util.*
 
-@Entity(tableName = ConfigDO.TABLE_NAME)
+@Entity(tableName = ConfigDO.TABLE_NAME,
+        indices = [
+            Index(value = ["name"], unique = true)
+        ]
+)
 class ConfigDO {
 
     @PrimaryKey(autoGenerate = true)
@@ -32,6 +33,14 @@ class ConfigDO {
     }
 
     @Ignore
+    constructor(name: String, value: String) {
+        this.name = name
+        this.value = value
+        this.overTime = null
+        this.createTime = Date()
+    }
+
+    @Ignore
     constructor(id: Long?, name: String, value: String, overTime: Long?, createTime: Date) {
         this.id = id
         this.name = name
@@ -51,6 +60,6 @@ class ConfigDO {
     }
 
     companion object {
-       const val TABLE_NAME = "config"
+        const val TABLE_NAME = "config"
     }
 }

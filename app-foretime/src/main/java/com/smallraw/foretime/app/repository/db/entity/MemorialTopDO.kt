@@ -3,7 +3,16 @@ package com.smallraw.foretime.app.repository.db.entity
 import android.arch.persistence.room.*
 import java.util.*
 
-@Entity(tableName = MemorialTopDO.TABLE_NAME, foreignKeys = [ForeignKey(entity = MemorialDO::class, parentColumns = ["id"], childColumns = ["memorial_id"])], indices = [Index(value = ["memorial_id"], unique = true)])
+@Entity(tableName = MemorialTopDO.TABLE_NAME,
+        foreignKeys = [
+            ForeignKey(entity = MemorialDO::class,
+                    parentColumns = ["id"],
+                    childColumns = ["memorial_id"])
+        ],
+        indices = [
+            Index(value = ["memorial_id"], unique = true)
+        ]
+)
 class MemorialTopDO {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")

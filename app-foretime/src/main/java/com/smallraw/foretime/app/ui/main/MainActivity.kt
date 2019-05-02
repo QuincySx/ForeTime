@@ -3,11 +3,16 @@ package com.smallraw.foretime.app.ui.main
 import android.graphics.Rect
 import android.os.Bundle
 import android.support.annotation.DrawableRes
+import android.util.Log
 import android.view.TouchDelegate
 import android.view.View
 import android.view.ViewGroup
+import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.common.adapter.ViewPagerAdapter
+import com.smallraw.foretime.app.config.getCalendarSettingConfig
+import com.smallraw.foretime.app.config.getDefCalendarSettingConfig
+import com.smallraw.foretime.app.config.saveConfig
 import com.smallraw.foretime.app.ui.calendar.CalendarFragment
 import com.smallraw.foretime.app.ui.tomatoBell.TomatoBellFragment
 import com.smallraw.time.base.BaseActivity
@@ -26,7 +31,14 @@ class MainActivity : BaseActivity(), OnMainActivityCallback {
         initFragment()
         initView()
 
-//        Log.e("== read ==", DefConfig.mMusicSettingConfig.get().toString())
+        App.getInstance().getAppExecutors().diskIO().execute {
+
+            getDefCalendarSettingConfig().saveConfig()
+            Log.e("== read ==", getDefCalendarSettingConfig().toString())
+            val taskSettingConfig = getCalendarSettingConfig()
+            Log.e("==sss==", taskSettingConfig.toString())
+        }
+//        CalendarConfigInfo().saveConfig()
 //        Log.e("== read ==", DefConfig.mCalendarSettingConfig.get().toString())
     }
 
