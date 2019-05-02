@@ -11,11 +11,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.smallraw.foretime.app.App;
 import com.smallraw.foretime.app.R;
 import com.smallraw.foretime.app.base.BaseDialogView;
+import com.smallraw.foretime.app.config.ConfigManagerKt;
 import com.smallraw.foretime.app.ui.decoration.SpacesItemDecoration;
 import com.smallraw.foretime.app.ui.harvestToday.HarvestTodayActivity;
 import com.smallraw.foretime.app.ui.tomatoSetting.TomatoSettingActivity;
+import com.smallraw.support.switchcompat.SwitchButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +40,8 @@ public class TomatoSettingDialog extends BaseDialogView {
     private MyAdapter mMyAdapter;
 
     private boolean isShowTime = false;
+    private SwitchButton swbMusic;
+    private SwitchButton swbImmerse;
 
     public TomatoSettingDialog(Context context) {
         super(context);
@@ -57,6 +62,8 @@ public class TomatoSettingDialog extends BaseDialogView {
         mTimeList.add(40);
         mTimeList.add(50);
 
+        swbMusic = findViewById(R.id.swb_music);
+        swbImmerse = findViewById(R.id.swb_immerse);
         mLayoutShare = findViewById(R.id.layoutShare);
         mLayoutTime = findViewById(R.id.layout_time);
         mTvTimeText = findViewById(R.id.tv_time_text);
@@ -70,6 +77,8 @@ public class TomatoSettingDialog extends BaseDialogView {
             @Override
             public void onItemClick(View view, int time, int position) {
                 mMyAdapter.select(position);
+                App.getInstance().getCalendarConfig().setFocusTime(time * 60 * 1000L);
+                mTvTimeText.setText(time + " 分钟");
                 mTvTimeText.setVisibility(View.VISIBLE);
                 mTvTimeHint.setVisibility(View.VISIBLE);
                 mIvTimeArrow.setVisibility(View.VISIBLE);
@@ -79,7 +88,10 @@ public class TomatoSettingDialog extends BaseDialogView {
         });
         mRvTime.setAdapter(mMyAdapter);
 
-        mMyAdapter.select(2);
+        Double l = App.getInstance().getCalendarConfig().getFocusTime() / 1000 / 60 / 10.0 - 1;
+        if (l % 1 == 0) {
+            mMyAdapter.select(l.intValue());
+        }
 
         mTvTimeText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +121,26 @@ public class TomatoSettingDialog extends BaseDialogView {
                 dismiss();
             }
         });
+        mTvTimeText.setText((App.getInstance().getCalendarConfig().getFocusTime() / 1000 / 60) + " 分钟");
 
+        swbMusic.setChecked(App.getInstance().getMusicConfig().getPlayMusic());
+        swbImmerse.setChecked(App.getInstance().getCalendarConfig().getAutomatic());
+
+        swbMusic.setOnCheckedChangeListener((buttonView, isChecked) ->
+                App.getInstance().getMusicConfig().setPlayMusic(isChecked)
+        );
+        swbImmerse.setOnCheckedChangeListener((buttonView, isChecked) ->
+                App.getInstance().getCalendarConfig().setAutomatic(isChecked)
+        );
+    }
+
+    @Override
+    public void dismiss() {
+        App.getInstance().getAppExecutors().diskIO().execute(() -> {
+            ConfigManagerKt.saveConfig(App.getInstance().getCalendarConfig());
+            ConfigManagerKt.saveConfig(App.getInstance().getMusicConfig());
+        });
+        super.dismiss();
     }
 
     public static class MyAdapter extends RecyclerView.Adapter<ViewHolder> {
@@ -137,7 +168,7 @@ public class TomatoSettingDialog extends BaseDialogView {
                 @Override
                 public void onClick(View v) {
                     if (mOnItemClickListener != null) {
-                        mOnItemClickListener.onItemClick(v, mTimeList.get(i), viewHolder.getAdapterPosition());
+                        mOnItemClickListener.onItemClick(v, mTimeList.get(viewHolder.getAdapterPosition()), viewHolder.getAdapterPosition());
                     }
                 }
             });

@@ -2,6 +2,10 @@ package com.smallraw.foretime.app.entity
 
 data class CalendarConfigInfo(
         /**
+         * 沉浸模式
+         */
+        var automatic: Boolean = false,
+        /**
          * 工作时长
          */
         var focusTime: Long = 25 * 60 * 1000,
