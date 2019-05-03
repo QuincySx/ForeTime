@@ -43,6 +43,8 @@ public class TomatoSettingDialog extends BaseDialogView {
     private SwitchButton swbMusic;
     private SwitchButton swbImmerse;
 
+    private OnChangeListener onChangeListener;
+
     public TomatoSettingDialog(Context context) {
         super(context);
     }
@@ -51,6 +53,11 @@ public class TomatoSettingDialog extends BaseDialogView {
     protected View setRootView() {
         View inflate = getLayoutInflater().inflate(R.layout.dialog_tomato_timer_setting, null, false);
         return inflate;
+    }
+
+    public TomatoSettingDialog setOnChangeListener(OnChangeListener listener) {
+        onChangeListener = listener;
+        return this;
     }
 
     @Override
@@ -84,6 +91,7 @@ public class TomatoSettingDialog extends BaseDialogView {
                 mIvTimeArrow.setVisibility(View.VISIBLE);
                 mRvTime.setVisibility(View.GONE);
                 isShowTime = false;
+                onChangeListener.onFocusTimeChange();
             }
         });
         mRvTime.setAdapter(mMyAdapter);
@@ -203,5 +211,9 @@ public class TomatoSettingDialog extends BaseDialogView {
             super(itemView);
             mContent = itemView.findViewById(R.id.tv_time_content);
         }
+    }
+
+    public interface OnChangeListener {
+        void onFocusTimeChange();
     }
 }

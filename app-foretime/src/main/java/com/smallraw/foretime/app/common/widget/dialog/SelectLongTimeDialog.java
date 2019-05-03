@@ -14,6 +14,7 @@ import java.util.List;
 public class SelectLongTimeDialog extends BaseDialogView {
     private String mTitle;
     private String mUnit;
+    private int mSelect;
 
     private TextView mTvTitle;
     private WheelPicker mViewWheel;
@@ -23,7 +24,7 @@ public class SelectLongTimeDialog extends BaseDialogView {
     private static List<String> hourList = new ArrayList<>();
 
     static {
-        for (int i = 10; i <= 60; i++) {
+        for (int i = 5; i <= 60; i++) {
             hourList.add(i + "");
         }
     }
@@ -36,7 +37,12 @@ public class SelectLongTimeDialog extends BaseDialogView {
         super(builder.mContext);
         mTitle = builder.mTitle;
         mUnit = builder.mUnit;
+        mSelect = builder.mSelect - 5;
         mOnWheelCallback = builder.mOnWheelCallback;
+
+        if (mSelect >= 0 && mViewWheel != null) {
+            mViewWheel.setSelectedItemPosition(mSelect, false);
+        }
     }
 
     @Override
@@ -62,11 +68,11 @@ public class SelectLongTimeDialog extends BaseDialogView {
         });
     }
 
-
     public static final class Builder {
         private Context mContext;
         private String mTitle;
         private String mUnit;
+        private int mSelect = -1;
         private OnWheelCallback mOnWheelCallback;
 
         public Builder(Context context) {
@@ -80,6 +86,11 @@ public class SelectLongTimeDialog extends BaseDialogView {
 
         public Builder setUnit(String val) {
             mUnit = val;
+            return this;
+        }
+
+        public Builder select(int val) {
+            mSelect = val;
             return this;
         }
 

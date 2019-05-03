@@ -187,10 +187,12 @@
                     app:layout_constraintLeft_toLeftOf="parent" />
 
                 <TextView
+                    android:id="@+id/tvLongTimeRest"
                     style="@style/TextVice"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
+                    android:onClick="onClick"
                     android:paddingLeft="24dp"
                     android:paddingRight="24dp"
                     android:text="5 分钟"
@@ -283,8 +285,7 @@
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:layout_marginTop="22dp"
-                android:visibility="gone">
+                android:layout_marginTop="22dp">
 
                 <TextView
                     style="@style/TextNormal"
@@ -296,6 +297,7 @@
                     app:layout_constraintLeft_toLeftOf="parent" />
 
                 <com.smallraw.support.switchcompat.SwitchButton
+                    android:id="@+id/swbPlayMusic"
                     style="@style/SwitchButtonDef"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -341,12 +343,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
-
                     android:paddingLeft="4dp"
                     android:text="休息时停止播放音乐"
                     app:layout_constraintLeft_toLeftOf="parent" />
 
                 <com.smallraw.support.switchcompat.SwitchButton
+                    android:id="@+id/swbRestPlayMusic"
                     style="@style/SwitchButtonDef"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -379,6 +381,7 @@
                     app:layout_constraintLeft_toLeftOf="parent" />
 
                 <com.smallraw.support.switchcompat.SwitchButton
+                    android:id="@+id/swbScreenAlwaysOn"
                     style="@style/SwitchButtonDef"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

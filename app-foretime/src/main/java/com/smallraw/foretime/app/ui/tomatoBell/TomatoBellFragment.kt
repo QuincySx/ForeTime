@@ -53,7 +53,13 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
         super.onViewCreated(view, savedInstanceState)
 
         ivSetting.setOnClickListener {
-            TomatoSettingDialog(context).showAtViewAuto(it)
+            TomatoSettingDialog(context)
+                    .setOnChangeListener(object : TomatoSettingDialog.OnChangeListener {
+                        override fun onFocusTimeChange() {
+                            mCountDownService?.refreshTimeMillis()
+                        }
+                    })
+                    .showAtViewAuto(it)
         }
 
         layoutMusic.setOnClickListener {
@@ -66,6 +72,7 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
         super.onResume()
         isDisplay = true
         dispatchRefresh()
+        mCountDownService?.refreshTimeMillis()
     }
 
     override fun onServiceConnected(name: ComponentName?, service: IBinder?) {

@@ -12,6 +12,7 @@ import android.os.Build
 import android.os.IBinder
 import android.support.annotation.RequiresApi
 import android.util.Log
+import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.model.CountDownTick
 import com.smallraw.foretime.app.service.CountDownType.Companion.REPOSE
 import com.smallraw.foretime.app.service.CountDownType.Companion.WORKING
@@ -119,6 +120,14 @@ class CountDownService : Service(), CountDownTick.OnCountDownTickListener {
 
     fun getImplementTimeMillis() = mCountTickTimer.getImplementTimeMillis()
 
+    fun refreshTimeMillis() {
+        if (getStatus() == CountDownStatus.SPARE || getStatus() == CountDownStatus.FINISH) {
+            mCountTickTimer.setImplementTimeMillis(getCurrentTypeTime())
+            mCountTickTimer.reset()
+            onCountDownServiceListener?.onCountDownChange()
+        }
+    }
+
     private fun startCountDown() {
         mCountTickTimer.setImplementTimeMillis(getCurrentTypeTime())
         mCountTickTimer.start()
@@ -190,8 +199,10 @@ class CountDownService : Service(), CountDownTick.OnCountDownTickListener {
      */
     private fun getCurrentTypeTime(): Long {
         return when (mType) {
-            WORKING -> 15 * 1000
-            REPOSE -> 10 * 1000
+//            WORKING -> 15 * 1000
+//            REPOSE -> 10 * 1000
+            WORKING -> App.getInstance().getCalendarConfig().focusTime
+            REPOSE -> App.getInstance().getCalendarConfig().restTime
             else -> 0
         }
     }

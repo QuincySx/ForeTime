@@ -4,5 +4,6 @@
   "restTime": 300000,
   "restLongTime": 600000,
   "restLonginterval": 3,
-  "flipFocus": false
+  "flipFocus": false,
+  "screenAlwaysOn": false
 }

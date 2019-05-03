@@ -28,5 +28,10 @@ data class CalendarConfigInfo(
         /**
          * 翻转自动专注
          */
-        var flipFocus: Boolean = false
+        var flipFocus: Boolean = false,
+
+        /**
+         * 屏幕常亮
+         */
+        var screenAlwaysOn: Boolean = false
 )
