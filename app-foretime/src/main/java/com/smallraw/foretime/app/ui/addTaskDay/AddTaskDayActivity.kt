@@ -143,8 +143,9 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
                         tvTargetDate.text = mSimpleDateFormat.format(date)
                     }
                     .setTime(date)
+                    .atViewAuto(tvTargetDate)
                     .build()
-                    .showAtViewAuto(tvTargetDate)
+                    .show()
         }
 
         tvRepeat.setOnClickListener {
@@ -156,8 +157,9 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
                         tvRepeat.text = REPEAT_LIST[i]
                         dialog.dismiss()
                     }
+                    .atViewAuto(tvRepeat)
                     .build()
-                    .showAtViewAuto(tvRepeat)
+                    .show()
         }
 
         colorRecyclerView.setColors(COLOR_LIST)

@@ -9,11 +9,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.FrameLayout
+import android.widget.LinearLayout
 import com.smallraw.foretime.app.R
+import me.jessyan.autosize.utils.AutoSizeUtils
 import me.jessyan.autosize.utils.ScreenUtils
+import com.smallraw.foretime.app.base.BaseDialogView as BaseDialogView1
 
 abstract class BaseDialogView : Dialog {
     private var mWindowManager: WindowManager? = null
+    private var mBuilder: Builder? = null
+
+    constructor(builder: Builder) : super(builder.context) {
+        mWindowManager = builder.windowManager
+        mBuilder = builder
+        init()
+    }
 
     constructor(context: Context) : super(context) {
         init()
@@ -28,11 +38,23 @@ abstract class BaseDialogView : Dialog {
     }
 
     private fun init() {
-        mWindowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        if (mWindowManager == null) {
+            mWindowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        }
         setContentView(R.layout.base_dialog)
+        val patentView = findViewById<LinearLayout>(R.id.patent_view)
+
+        mBuilder?.let {
+            patentView.layoutParams = FrameLayout.LayoutParams(it.parentWidth, patentView.layoutParams.height)
+        }
         val rootView = findViewById<FrameLayout>(R.id.root_view)
         rootView.addView(setRootView())
         initView()
+        mBuilder?.apply {
+            atView?.let {
+                showAtView(rootView, it, atViewPadding, isUp)
+            }
+        }
     }
 
     protected abstract fun initView()
@@ -44,40 +66,68 @@ abstract class BaseDialogView : Dialog {
      */
     protected abstract fun setRootView(): View
 
-    fun showAtViewDown(view: View) {
-        showAtView(view, 0, false)
-    }
+    abstract class Builder {
+        var context: Context
+        var atView: View? = null
+        var atViewPadding: Int = 0
+        var parentWidth: Int = 0
+        /**
+         * 三角显示方向 0：向上 1：向下 2：auto
+         */
+        var isUp: Boolean = false
+        var windowManager: WindowManager? = null
 
-    fun showAtViewDown(view: View, padding: Int) {
-        showAtView(view, padding, false)
-    }
-
-    fun showAtViewUp(view: View, padding: Int) {
-        showAtView(view, padding, true)
-    }
-
-    fun showAtViewUp(view: View) {
-        showAtView(view, 0, true)
-    }
-
-    @JvmOverloads
-    fun showAtViewAuto(view: View, padding: Int = 0) {
-        val dm = DisplayMetrics()
-        mWindowManager!!.defaultDisplay.getMetrics(dm)
-        val screenHeight = dm.heightPixels
-
-        val location = IntArray(2)
-        view.getLocationOnScreen(location)
-        val viewY = location[1]
-
-        var isUp = false
-        if (viewY > screenHeight / 2) {
-            isUp = true
+        constructor(context: Context) {
+            this.context = context
+            windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            parentWidth = AutoSizeUtils.dp2px(context, 336.toFloat())
         }
-        showAtView(view, padding, isUp)
+
+        fun atViewDown(view: View): Builder {
+            return showAtView(view, 0, false)
+        }
+
+        fun atViewDown(view: View, padding: Int): Builder {
+            return showAtView(view, padding, false)
+        }
+
+        fun atViewUp(view: View, padding: Int): Builder {
+            return showAtView(view, padding, true)
+        }
+
+        fun atViewUp(view: View): Builder {
+            return showAtView(view, 0, true)
+        }
+
+        @JvmOverloads
+        fun atViewAuto(view: View, padding: Int = 0): Builder {
+            val dm = DisplayMetrics()
+            windowManager!!.defaultDisplay.getMetrics(dm)
+            val screenHeight = dm.heightPixels
+
+            val location = IntArray(2)
+            view.getLocationOnScreen(location)
+            val viewY = location[1]
+
+            var isUp = false
+            if (viewY > screenHeight / 2) {
+                isUp = true
+            }
+            return showAtView(view, padding, isUp)
+        }
+
+        fun showAtView(view: View, padding: Int, isUp: Boolean): Builder {
+            atView = view
+            atViewPadding = padding
+            this.isUp = isUp
+            return this
+        }
+
+        abstract fun build(): com.smallraw.foretime.app.base.BaseDialogView
     }
 
-    fun showAtView(view: View, padding: Int, isUp: Boolean) {
+
+    private fun showAtView(parentView: ViewGroup, view: View, padding: Int, isUp: Boolean) {
         val location = IntArray(2)
         view.getLocationOnScreen(location)
         val viewX = location[0]
@@ -85,47 +135,44 @@ abstract class BaseDialogView : Dialog {
         val viewWidthHalf = view.measuredWidth / 2
         val viewHeight = view.measuredHeight
         window!!.setDimAmount(0.3f)
-        show()
 
-        val parentView = findViewById<ViewGroup>(R.id.patent_view)
         val arrow: View
         if (isUp) {
-            arrow = parentView.findViewById(R.id.doalog_arrow_bottom)
+            arrow = findViewById(R.id.doalog_arrow_bottom)
         } else {
-            arrow = parentView.findViewById(R.id.doalog_arrow_up)
+            arrow = findViewById(R.id.doalog_arrow_up)
         }
 
         arrow.visibility = View.VISIBLE
-        arrow.post {
-            val layoutParams = arrow.layoutParams
 
-            val marginParams: ViewGroup.MarginLayoutParams
-            if (layoutParams is ViewGroup.MarginLayoutParams) {
-                marginParams = layoutParams
-            } else {
-                marginParams = ViewGroup.MarginLayoutParams(layoutParams)
-            }
+        val layoutParams = arrow.layoutParams
+
+        val marginParams: ViewGroup.MarginLayoutParams
+        if (layoutParams is ViewGroup.MarginLayoutParams) {
+            marginParams = layoutParams
+        } else {
+            marginParams = ViewGroup.MarginLayoutParams(layoutParams)
+        }
 
 
-            val dm = DisplayMetrics()
-            mWindowManager!!.defaultDisplay.getMetrics(dm)
-            val screenWidth = dm.widthPixels
+        val dm = DisplayMetrics()
+        mWindowManager!!.defaultDisplay.getMetrics(dm)
+        val screenWidth = dm.widthPixels
 
-            val windowViewX = (screenWidth - parentView.measuredWidth) / 2
+        val windowViewX = (screenWidth - mBuilder?.parentWidth!!) / 2
 
-            val arrowWidthHalf = arrow.width / 2
+        val arrowWidthHalf = AutoSizeUtils.dp2px(context, 10.toFloat()) / 2
 
-            marginParams.setMargins(viewX - windowViewX + viewWidthHalf - arrowWidthHalf, 0, 0, 0)
+        marginParams.setMargins(viewX - windowViewX + viewWidthHalf - arrowWidthHalf, 0, 0, 0)
 
-            arrow.layoutParams = marginParams
+        arrow.layoutParams = marginParams
 
-            if (isUp) {
-                val screenHeight = dm.heightPixels - viewY
-                windowDeploy(0, screenHeight + padding, Gravity.BOTTOM)
-            } else {
-                val statusBarHeight = ScreenUtils.getStatusBarHeight()
-                windowDeploy(0, viewY - statusBarHeight + viewHeight + padding, Gravity.TOP)
-            }
+        if (isUp) {
+            val screenHeight = dm.heightPixels - viewY
+            windowDeploy(0, screenHeight + padding, Gravity.BOTTOM)
+        } else {
+            val statusBarHeight = ScreenUtils.getStatusBarHeight()
+            windowDeploy(0, viewY - statusBarHeight + viewHeight + padding, Gravity.TOP)
         }
     }
 

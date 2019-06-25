@@ -37,7 +37,7 @@ class CalendarSettingDialog : BaseDialogView {
 
     constructor(context: Context) : super(context) {}
 
-    constructor(builder: Builder) : super(builder.mContext) {
+    constructor(builder: Builder) : super(builder) {
         mOnShowTypeListener = builder.mOnShowTypeListener
         mSelectType = builder.mSelectType
         setSelect(builder.mSelectType)
@@ -93,7 +93,7 @@ class CalendarSettingDialog : BaseDialogView {
         return layoutInflater.inflate(R.layout.dialog_calendar_setting, null, false)
     }
 
-    class Builder(val mContext: Context) {
+    class Builder(val mContext: Context) : BaseDialogView.Builder(mContext) {
         var mSelectType: Int = 0
         var mOnShowTypeListener: OnShowTypeListener? = null
 
@@ -107,7 +107,7 @@ class CalendarSettingDialog : BaseDialogView {
             return this
         }
 
-        fun build(): CalendarSettingDialog {
+        override fun build(): CalendarSettingDialog {
             return CalendarSettingDialog(this)
         }
     }

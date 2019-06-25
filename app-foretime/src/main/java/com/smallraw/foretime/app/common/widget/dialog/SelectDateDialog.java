@@ -26,7 +26,7 @@ public class SelectDateDialog extends BaseDialogView {
     }
 
     public SelectDateDialog(Builder builder) {
-        super(builder.mContext);
+        super(builder);
         mOnDateWheelCallback = builder.mOnWheelCallback;
         mTime = builder.mTime;
 
@@ -61,13 +61,14 @@ public class SelectDateDialog extends BaseDialogView {
         return view;
     }
 
-    public static final class Builder {
+    public static final class Builder extends BaseDialogView.Builder {
         private Context mContext;
         private long mTime = System.currentTimeMillis();
 
         private OnDateWheelCallback mOnWheelCallback;
 
         public Builder(Context context) {
+            super(context);
             mContext = context;
         }
 

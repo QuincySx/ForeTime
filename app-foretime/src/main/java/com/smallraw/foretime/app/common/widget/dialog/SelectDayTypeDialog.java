@@ -6,13 +6,20 @@ import android.view.View;
 import com.smallraw.foretime.app.R;
 import com.smallraw.foretime.app.base.BaseDialogView;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * 添加倒数日任务选择器
  */
 public class SelectDayTypeDialog extends BaseDialogView {
     private OnBaseDialogClickCallback mOnClickCallback;
 
-    public SelectDayTypeDialog(Context context) {
+    public SelectDayTypeDialog(Builder builder) {
+        super(builder);
+        mOnClickCallback = builder.onClickCallback;
+    }
+
+    private SelectDayTypeDialog(Context context) {
         super(context);
     }
 
@@ -21,10 +28,6 @@ public class SelectDayTypeDialog extends BaseDialogView {
 
     }
 
-    public SelectDayTypeDialog setOnClickCallback(OnBaseDialogClickCallback onClickCallback) {
-        mOnClickCallback = onClickCallback;
-        return this;
-    }
 
     @Override
     protected View setRootView() {
@@ -52,5 +55,24 @@ public class SelectDayTypeDialog extends BaseDialogView {
 
     public interface OnBaseDialogClickCallback {
         void onClick(BaseDialogView view, int index);
+    }
+
+    public static class Builder extends BaseDialogView.Builder {
+        private OnBaseDialogClickCallback onClickCallback;
+
+        public Builder(@NotNull Context context) {
+            super(context);
+        }
+
+        public Builder setOnClickCallback(OnBaseDialogClickCallback onClickCallback) {
+            this.onClickCallback = onClickCallback;
+            return this;
+        }
+
+        @NotNull
+        @Override
+        public SelectDayTypeDialog build() {
+            return new SelectDayTypeDialog(this);
+        }
     }
 }

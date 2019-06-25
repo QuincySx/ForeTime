@@ -53,13 +53,13 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
         super.onViewCreated(view, savedInstanceState)
 
         ivSetting.setOnClickListener {
-            TomatoSettingDialog(context)
-                    .setOnChangeListener(object : TomatoSettingDialog.OnChangeListener {
-                        override fun onFocusTimeChange() {
-                            mCountDownService?.refreshTimeMillis()
-                        }
-                    })
-                    .showAtViewAuto(it)
+            context?.let { context ->
+                TomatoSettingDialog.Builder(context)
+                        .setOnChangeListener { mCountDownService?.refreshTimeMillis() }
+                        .atViewAuto(it)
+                        .build()
+                        .show()
+            }
         }
 
         layoutMusic.setOnClickListener {
@@ -148,11 +148,7 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
      * 处理底部按钮长按事件
      */
     private fun onLongClickListener() {
-        onMainActivityCallback?.setOnLongClickListener(object : View.OnLongClickListener {
-            override fun onLongClick(v: View?): Boolean {
-                return true
-            }
-        })
+        onMainActivityCallback?.setOnLongClickListener(View.OnLongClickListener { true })
         onMainActivityCallback?.setOnTouchEventListener(object : OnClickProgressListener() {
             override fun onStart() {
                 val type = mCountDownService?.getType()

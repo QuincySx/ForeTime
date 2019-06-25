@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,16 +19,16 @@ public class MultipleItemDialog extends BaseDialogView {
     private MyAdapter mMyAdapter;
     private OnDialogChangeSelectListener mOnChangeSelectListener;
 
-    private MultipleItemDialog(Builder context) {
-        super(context.mContext);
-        mOnChangeSelectListener = context.mOnChangeSelectListener;
-        mMyAdapter = new MyAdapter(context.list, new OnChangeSelectListener() {
+    private MultipleItemDialog(Builder builder) {
+        super(builder);
+        mOnChangeSelectListener = builder.mOnChangeSelectListener;
+        mMyAdapter = new MyAdapter(builder.list, new OnChangeSelectListener() {
             @Override
             public void onChange(int index) {
                 mOnChangeSelectListener.onChange(MultipleItemDialog.this, index);
             }
         });
-        mMyAdapter.mCurrentSelect = context.mSelectItem;
+        mMyAdapter.mCurrentSelect = builder.mSelectItem;
         mRecyclerView.setAdapter(mMyAdapter);
     }
 
@@ -45,13 +44,14 @@ public class MultipleItemDialog extends BaseDialogView {
         return view;
     }
 
-    public static final class Builder {
+    public static final class Builder extends BaseDialogView.Builder {
         private Context mContext;
         private List<String> list;
         private int mSelectItem;
         private OnDialogChangeSelectListener mOnChangeSelectListener;
 
         public Builder(Context context) {
+            super(context);
             mContext = context;
         }
 

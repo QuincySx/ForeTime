@@ -20,6 +20,8 @@ import com.smallraw.foretime.app.ui.harvestToday.HarvestTodayActivity;
 import com.smallraw.foretime.app.ui.tomatoSetting.TomatoSettingActivity;
 import com.smallraw.support.switchcompat.SwitchButton;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +47,12 @@ public class TomatoSettingDialog extends BaseDialogView {
 
     private OnChangeListener onChangeListener;
 
-    public TomatoSettingDialog(Context context) {
+    public TomatoSettingDialog(Builder builder) {
+        super(builder);
+        onChangeListener = builder.onChangeListener;
+    }
+
+    private TomatoSettingDialog(Context context) {
         super(context);
     }
 
@@ -53,11 +60,6 @@ public class TomatoSettingDialog extends BaseDialogView {
     protected View setRootView() {
         View inflate = getLayoutInflater().inflate(R.layout.dialog_tomato_timer_setting, null, false);
         return inflate;
-    }
-
-    public TomatoSettingDialog setOnChangeListener(OnChangeListener listener) {
-        onChangeListener = listener;
-        return this;
     }
 
     @Override
@@ -215,5 +217,24 @@ public class TomatoSettingDialog extends BaseDialogView {
 
     public interface OnChangeListener {
         void onFocusTimeChange();
+    }
+
+    public static class Builder extends BaseDialogView.Builder {
+        private OnChangeListener onChangeListener;
+
+        public Builder(@NotNull Context context) {
+            super(context);
+        }
+
+        public TomatoSettingDialog.Builder setOnChangeListener(OnChangeListener listener) {
+            this.onChangeListener = listener;
+            return this;
+        }
+
+        @NotNull
+        @Override
+        public TomatoSettingDialog build() {
+            return new TomatoSettingDialog(this);
+        }
     }
 }

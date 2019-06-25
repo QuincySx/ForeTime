@@ -109,16 +109,19 @@ class CalendarFragment : BaseFragment() {
         initWeatherNow()
 
         ivSetting.setOnClickListener {
-            CalendarSettingDialog.Builder(context!!)
-                    .setOnChangeSelectListener(object : CalendarSettingDialog.OnShowTypeListener {
-                        override fun onChange(dialog: BaseDialogView, type: Int) {
-                            mCalendarVewModel.queryActiveTask(type, 0)
-                            dialog.dismiss()
-                        }
-                    })
-                    .setSelectType(mCalendarVewModel.getDisplay())
-                    .build()
-                    .showAtViewAuto(it)
+            context?.let { context ->
+                CalendarSettingDialog.Builder(context)
+                        .setOnChangeSelectListener(object : CalendarSettingDialog.OnShowTypeListener {
+                            override fun onChange(dialog: BaseDialogView, type: Int) {
+                                mCalendarVewModel.queryActiveTask(type, 0)
+                                dialog.dismiss()
+                            }
+                        })
+                        .setSelectType(mCalendarVewModel.getDisplay())
+                        .atViewAuto(it)
+                        .build()
+                        .show()
+            }
         }
     }
 
@@ -134,18 +137,20 @@ class CalendarFragment : BaseFragment() {
         onMainActivityCallback?.onChangeIvSuspension(R.drawable.ic_tab_suspension_add)
         onMainActivityCallback?.setOnLongClickListener(null)
         onMainActivityCallback?.setOnClickListener(View.OnClickListener { v ->
-            SelectDayTypeDialog(context)
-                    .setOnClickCallback { view, index ->
-                        if (context != null) {
+            context?.let { context ->
+                SelectDayTypeDialog.Builder(context)
+                        .setOnClickCallback { view, index ->
                             if (index == 0) {
-                                AddTaskDayActivity.startAdd(context!!, AddTaskDayActivity.DaysMatter)
+                                AddTaskDayActivity.startAdd(context, AddTaskDayActivity.DaysMatter)
                             } else {
-                                AddTaskDayActivity.startAdd(context!!, AddTaskDayActivity.DaysCumulative)
+                                AddTaskDayActivity.startAdd(context, AddTaskDayActivity.DaysCumulative)
                             }
                             view?.dismiss()
                         }
-                    }
-                    .showAtViewAuto(v, AutoSizeUtils.dp2px(context, 55F))
+                        .atViewAuto(v, AutoSizeUtils.dp2px(context, 55F))
+                        .build()
+                        .show()
+            }
         })
     }
 

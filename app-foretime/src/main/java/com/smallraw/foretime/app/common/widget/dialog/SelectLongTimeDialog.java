@@ -34,7 +34,7 @@ public class SelectLongTimeDialog extends BaseDialogView {
     }
 
     private SelectLongTimeDialog(Builder builder) {
-        super(builder.mContext);
+        super(builder);
         mTitle = builder.mTitle;
         mUnit = builder.mUnit;
         mSelect = builder.mSelect - 5;
@@ -68,7 +68,7 @@ public class SelectLongTimeDialog extends BaseDialogView {
         });
     }
 
-    public static final class Builder {
+    public static final class Builder extends BaseDialogView.Builder {
         private Context mContext;
         private String mTitle;
         private String mUnit;
@@ -76,6 +76,7 @@ public class SelectLongTimeDialog extends BaseDialogView {
         private OnWheelCallback mOnWheelCallback;
 
         public Builder(Context context) {
+            super(context);
             mContext = context;
         }
 

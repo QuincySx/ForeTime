@@ -52,8 +52,9 @@ class TomatoSettingActivity : BaseTitleBarActivity() {
                             tvLongTimeAbsorbed.text = "$it 分钟"
                             App.getInstance().getCalendarConfig().focusTime = it.toInt() * 60 * 1000L
                         }
+                        .atViewAuto(tvLongTimeAbsorbed)
                         .build()
-                        .showAtViewAuto(tvLongTimeAbsorbed)
+                        .show()
             }
             R.id.tvLongTimeRest -> {
                 SelectLongTimeDialog.Builder(this)
@@ -64,8 +65,9 @@ class TomatoSettingActivity : BaseTitleBarActivity() {
                             tvLongTimeRest.text = "$it 分钟"
                             App.getInstance().getCalendarConfig().restTime = it.toInt() * 60 * 1000L
                         }
+                        .atViewAuto(tvLongTimeAbsorbed)
                         .build()
-                        .showAtViewAuto(tvLongTimeAbsorbed)
+                        .show()
             }
             else -> {
             }
