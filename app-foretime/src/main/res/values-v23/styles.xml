@@ -7,6 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/colorWhite</item>
-        <item name="android:hyphenationFrequency"></item>
+        <!-- 该选项 Android 6.0 开始默认开始，会影响 TextView 绘制效率，Android Q 开始默认关闭-->
+        <item name="android:hyphenationFrequency">none</item>
     </style>
 </resources>
