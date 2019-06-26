@@ -40,6 +40,6 @@ dependencies {
     implementation this.libs.kotlinStdlib
 
     implementation this.libs.constraintLayout
-    implementation this.libs.appcompatV7
+    implementation this.libs.appcompat
 
 }

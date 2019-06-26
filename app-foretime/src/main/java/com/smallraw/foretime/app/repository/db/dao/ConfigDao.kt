@@ -1,6 +1,6 @@
 package com.smallraw.foretime.app.repository.db.dao
 
-import android.arch.persistence.room.*
+import androidx.room.*
 
 import com.smallraw.foretime.app.repository.db.entity.ConfigDO
 

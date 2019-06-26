@@ -10,7 +10,7 @@ import android.content.Intent
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
-import android.support.annotation.RequiresApi
+import androidx.annotation.RequiresApi
 import android.util.Log
 import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.model.CountDownTick

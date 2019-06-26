@@ -1,8 +1,8 @@
 package com.smallraw.foretime.app.repository.db.dao
 
-import android.arch.lifecycle.LiveData
-import android.arch.persistence.db.SupportSQLiteQuery
-import android.arch.persistence.room.*
+import androidx.lifecycle.LiveData
+import androidx.sqlite.db.SupportSQLiteQuery
+import androidx.room.*
 import com.smallraw.foretime.app.repository.db.entity.MemorialTopDO
 
 @Dao

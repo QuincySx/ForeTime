@@ -1,6 +1,6 @@
 package com.smallraw.foretime.app.repository.db.entity
 
-import android.arch.persistence.room.*
+import androidx.room.*
 import java.util.*
 
 @Entity(tableName = MemorialTopDO.TABLE_NAME,

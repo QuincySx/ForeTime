@@ -1,7 +1,7 @@
 package com.smallraw.foretime.app.config
 
-import android.support.annotation.StringDef
-import android.support.annotation.WorkerThread
+import androidx.annotation.StringDef
+import androidx.annotation.WorkerThread
 import android.util.Log
 import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.config.ConfigName.Companion.CalendarConfig

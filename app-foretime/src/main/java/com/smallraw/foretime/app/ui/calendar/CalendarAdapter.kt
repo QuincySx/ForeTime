@@ -1,7 +1,7 @@
 package com.smallraw.foretime.app.ui.calendar
 
 import android.graphics.Color
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 import android.view.DragEvent
 import android.view.LayoutInflater
@@ -18,7 +18,7 @@ import com.smallraw.time.utils.getWeekOfDate
 import org.jetbrains.annotations.NotNull
 import java.util.*
 
-class CalendarAdapter(@NotNull val mCalendars: List<MemorialDO>) : RecyclerView.Adapter<CalendarAdapter.CalenderViewHolder>() {
+class CalendarAdapter(@NotNull val mCalendars: List<MemorialDO>) : androidx.recyclerview.widget.RecyclerView.Adapter<CalendarAdapter.CalenderViewHolder>() {
     private val mCurrentDate = dateParse(dateFormat(Date()))
     private var mOnItemClickListener: OnItemClickListener? = null
     var oldPosition: Int? = null
@@ -49,7 +49,7 @@ class CalendarAdapter(@NotNull val mCalendars: List<MemorialDO>) : RecyclerView.
                 if (v == null) {
                     return false
                 }
-                val dragViewHolder = (parent as RecyclerView).findContainingViewHolder(v)
+                val dragViewHolder = (parent as androidx.recyclerview.widget.RecyclerView).findContainingViewHolder(v)
                 val currentPosition = dragViewHolder?.adapterPosition
                 when (event?.action) {
                     DragEvent.ACTION_DRAG_ENTERED -> {
@@ -138,7 +138,7 @@ class CalendarAdapter(@NotNull val mCalendars: List<MemorialDO>) : RecyclerView.
         return mCalendars.size
     }
 
-    class CalenderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class CalenderViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         val viewStatus: View = itemView.findViewById(R.id.viewStatus)
         val tvCalendarTitle: TextView = itemView.findViewById(R.id.tvCalendarTitle)
         val tvTypeData: TextView = itemView.findViewById(R.id.tvTypeData)

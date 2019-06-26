@@ -1,7 +1,7 @@
 package com.smallraw.foretime.app.repository.db.dao
 
-import android.arch.persistence.db.SupportSQLiteQuery
-import android.arch.persistence.room.*
+import androidx.sqlite.db.SupportSQLiteQuery
+import androidx.room.*
 import com.smallraw.foretime.app.repository.db.entity.MemorialDO
 
 @Dao

@@ -1,7 +1,7 @@
 package com.smallraw.foretime.app.ui.musicListActivity
 
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import com.smallraw.foretime.app.R
 import com.smallraw.time.base.BaseTitleBarActivity
@@ -26,7 +26,7 @@ class MusicListActivity : BaseTitleBarActivity() {
     }
 
     private fun initRecyclerView() {
-        recyclerViewMusic.layoutManager = LinearLayoutManager(this)
+        recyclerViewMusic.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
         recyclerViewMusic.adapter = mAdapter
         recyclerView.setHasFixedSize(true)
     }

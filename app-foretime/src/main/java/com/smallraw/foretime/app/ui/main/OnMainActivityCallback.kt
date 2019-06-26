@@ -1,6 +1,6 @@
 package com.smallraw.foretime.app.ui.main
 
-import android.support.annotation.DrawableRes
+import androidx.annotation.DrawableRes
 import android.view.View
 
 interface OnMainActivityCallback {

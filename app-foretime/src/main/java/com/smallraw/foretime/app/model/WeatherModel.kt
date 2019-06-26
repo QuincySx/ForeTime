@@ -1,6 +1,6 @@
 package com.smallraw.time.model
 
-import android.support.annotation.DrawableRes
+import androidx.annotation.DrawableRes
 import android.util.Log
 import com.google.gson.Gson
 import com.smallraw.foretime.app.App

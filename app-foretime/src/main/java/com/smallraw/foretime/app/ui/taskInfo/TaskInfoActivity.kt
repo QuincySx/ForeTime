@@ -3,9 +3,9 @@ package com.smallraw.foretime.app.ui.taskInfo
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.content.res.ResourcesCompat
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.PagerSnapHelper
+import androidx.core.content.res.ResourcesCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -38,7 +38,7 @@ class TaskInfoActivity : BaseTitleBarActivity() {
 
     private var mTask: MemorialDO? = null
     private var taskInfoAdapter: TaskInfoAdapter? = null
-    private var pagerSnapHelper = PagerSnapHelper()
+    private var pagerSnapHelper = androidx.recyclerview.widget.PagerSnapHelper()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,7 +89,7 @@ class TaskInfoActivity : BaseTitleBarActivity() {
     }
 
     private fun initRecyclerView() {
-        val linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        val linearLayoutManager = androidx.recyclerview.widget.LinearLayoutManager(this, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.setHasFixedSize(true)
         pagerSnapHelper.attachToRecyclerView(recyclerView)

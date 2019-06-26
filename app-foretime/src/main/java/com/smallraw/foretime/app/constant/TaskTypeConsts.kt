@@ -1,6 +1,6 @@
 package com.smallraw.foretime.app.constant
 
-import android.support.annotation.IntDef
+import androidx.annotation.IntDef
 
 import com.smallraw.foretime.app.constant.TaskTypeConsts.Companion.ALL
 import com.smallraw.foretime.app.constant.TaskTypeConsts.Companion.COUNTDOWN_DAY

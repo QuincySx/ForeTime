@@ -2,11 +2,11 @@ package com.smallraw.time.base
 
 import android.os.Handler
 import android.os.Message
-import android.support.annotation.StringRes
-import android.support.v4.app.Fragment
+import androidx.annotation.StringRes
+import androidx.fragment.app.Fragment
 import android.view.View
 
-abstract class BaseFragment : Fragment() {
+abstract class BaseFragment : androidx.fragment.app.Fragment() {
     companion object {
         private val HANDLER_MSG_PROMPT = 1
     }

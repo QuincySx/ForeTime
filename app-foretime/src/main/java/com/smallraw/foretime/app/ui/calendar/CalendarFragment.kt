@@ -1,11 +1,11 @@
 package com.smallraw.foretime.app.ui.calendar
 
 import android.annotation.SuppressLint
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ItemTouchHelper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -47,14 +47,14 @@ class CalendarFragment : BaseFragment() {
     private val mCalendarAdapter = CalendarAdapter(mCalendarList)
 
     private val mItemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.Callback() {
-        override fun getMovementFlags(p0: RecyclerView, p1: RecyclerView.ViewHolder): Int {
+        override fun getMovementFlags(p0: androidx.recyclerview.widget.RecyclerView, p1: androidx.recyclerview.widget.RecyclerView.ViewHolder): Int {
             val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN or
                     ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
             val swipeFlags = 0
             return makeMovementFlags(dragFlags, swipeFlags)
         }
 
-        override fun onMove(p0: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+        override fun onMove(p0: androidx.recyclerview.widget.RecyclerView, viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder, target: androidx.recyclerview.widget.RecyclerView.ViewHolder): Boolean {
             val fromPosition = viewHolder.adapterPosition
             //拿到当前拖拽到的item的viewHolder
             val toPosition = target.adapterPosition
@@ -72,13 +72,13 @@ class CalendarFragment : BaseFragment() {
             return true
         }
 
-        override fun onSwiped(p0: RecyclerView.ViewHolder, p1: Int) {
+        override fun onSwiped(p0: androidx.recyclerview.widget.RecyclerView.ViewHolder, p1: Int) {
             if (p1 != ItemTouchHelper.ACTION_STATE_IDLE) {
                 p0.itemView.visibility = View.GONE
             }
         }
 
-        override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+        override fun clearView(recyclerView: androidx.recyclerview.widget.RecyclerView, viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder) {
             super.clearView(recyclerView, viewHolder)
             viewHolder.itemView.visibility = View.VISIBLE
         }
@@ -93,7 +93,7 @@ class CalendarFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         mCalendarVewModel = ViewModelProviders.of(this).get(CalendarVewModel::class.java)
         initView()
-        mCalendarVewModel.mActiveTaskListLiveData.observe(this, android.arch.lifecycle.Observer {
+        mCalendarVewModel.mActiveTaskListLiveData.observe(this, androidx.lifecycle.Observer {
             Log.e("LiveData", "任务卡列表收到变化")
             mCalendarList.clear()
             mCalendarList.addAll(it!!.distinct())
@@ -126,7 +126,7 @@ class CalendarFragment : BaseFragment() {
     }
 
     private fun initView() {
-        recyclerView.layoutManager = LinearLayoutManager(activity?.applicationContext)
+        recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(activity?.applicationContext)
         recyclerView.adapter = mCalendarAdapter
         recyclerView.setHasFixedSize(true)
         mCalendarAdapter.notifyDataSetChanged()

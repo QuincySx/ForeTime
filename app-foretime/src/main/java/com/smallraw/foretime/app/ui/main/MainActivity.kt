@@ -2,7 +2,7 @@ package com.smallraw.foretime.app.ui.main
 
 import android.graphics.Rect
 import android.os.Bundle
-import android.support.annotation.DrawableRes
+import androidx.annotation.DrawableRes
 import android.util.Log
 import android.view.TouchDelegate
 import android.view.View

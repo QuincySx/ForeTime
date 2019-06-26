@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -35,7 +35,7 @@
                 android:textColorHint="@color/TextColorHint"
                 android:textCursorDrawable="@drawable/shape_edittext_cursor" />
 
-            <android.support.constraint.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginLeft="42dp"
@@ -67,9 +67,9 @@
                     android:layout_height="1dp"
                     android:background="#EDEDED"
                     app:layout_constraintBottom_toBottomOf="parent" />
-            </android.support.constraint.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <android.support.constraint.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginLeft="42dp"
@@ -98,9 +98,9 @@
                     android:layout_height="1dp"
                     android:background="#EDEDED"
                     app:layout_constraintBottom_toBottomOf="parent" />
-            </android.support.constraint.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <android.support.constraint.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layoutCyclePeriod"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
@@ -130,9 +130,9 @@
                     android:layout_height="1dp"
                     android:background="#EDEDED"
                     app:layout_constraintBottom_toBottomOf="parent" />
-            </android.support.constraint.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <android.support.constraint.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="136dp"
                 android:layout_marginLeft="42dp"
@@ -172,7 +172,7 @@
                     android:layout_height="1dp"
                     android:background="#EDEDED"
                     app:layout_constraintBottom_toBottomOf="parent" />
-            </android.support.constraint.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.smallraw.foretime.app.common.widget.colorRecyclerView.ColorRecyclerView
                 android:id="@+id/colorRecyclerView"
@@ -197,4 +197,4 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:srcCompat="@drawable/ic_tab_suspension_next" />
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

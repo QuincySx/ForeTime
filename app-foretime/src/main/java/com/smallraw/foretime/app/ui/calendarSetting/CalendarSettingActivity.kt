@@ -1,7 +1,7 @@
 package com.smallraw.foretime.app.ui.calendarSetting
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
 import com.smallraw.foretime.app.R

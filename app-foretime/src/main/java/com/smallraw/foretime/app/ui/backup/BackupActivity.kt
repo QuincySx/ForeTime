@@ -1,6 +1,6 @@
 package com.smallraw.foretime.app.ui.backup
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
 import com.smallraw.foretime.app.R

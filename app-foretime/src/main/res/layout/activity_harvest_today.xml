@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.harvestToday.HarvestTodayActivity">
 
-    <android.support.v7.widget.AppCompatImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivWeather"
         android:layout_width="64dp"
         android:layout_height="64dp"
@@ -49,7 +49,7 @@
         app:layout_constraintLeft_toRightOf="@+id/ivWeather"
         app:layout_constraintTop_toBottomOf="@+id/tvDate" />
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="288dp"
         android:layout_height="354dp"
         app:cardBackgroundColor="#333333"
@@ -69,7 +69,7 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/bg_shape_background" />
 
-            <android.support.constraint.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -161,9 +161,9 @@
                     app:layout_constraintLeft_toRightOf="@+id/tvHarvestHint"
                     app:layout_constraintTop_toTopOf="@+id/tvHarvestHint"
                     app:srcCompat="@drawable/ic_sapling_white" />
-            </android.support.constraint.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </FrameLayout>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 
     <ImageView
@@ -175,4 +175,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

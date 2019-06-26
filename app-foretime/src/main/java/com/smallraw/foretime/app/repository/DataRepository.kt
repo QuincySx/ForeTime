@@ -1,7 +1,7 @@
 package com.smallraw.foretime.app.repository
 
-import android.arch.lifecycle.LiveData
-import android.arch.persistence.db.SimpleSQLiteQuery
+import androidx.lifecycle.LiveData
+import androidx.sqlite.db.SimpleSQLiteQuery
 import com.smallraw.foretime.app.repository.db.AppDatabase
 import com.smallraw.foretime.app.repository.db.entity.MemorialDO
 import com.smallraw.foretime.app.repository.db.entity.MemorialTopDO

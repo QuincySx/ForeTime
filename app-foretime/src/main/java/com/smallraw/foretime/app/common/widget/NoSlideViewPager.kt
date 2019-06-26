@@ -1,11 +1,11 @@
 package com.smallraw.foretime.app.common.widget
 
 import android.content.Context
-import android.support.v4.view.ViewPager
+import androidx.viewpager.widget.ViewPager
 import android.util.AttributeSet
 import android.view.MotionEvent
 
-class NoSlideViewPager : ViewPager {
+class NoSlideViewPager : androidx.viewpager.widget.ViewPager {
     private var isCanScroll = false
 
     constructor(context: Context) : super(context) {}

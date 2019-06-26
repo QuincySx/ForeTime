@@ -1,6 +1,6 @@
 package com.smallraw.foretime.app.event;
 
-import android.support.annotation.IntDef;
+import androidx.annotation.IntDef;
 
 /**
  * 添加、修改、删除任务 发出的全局事件

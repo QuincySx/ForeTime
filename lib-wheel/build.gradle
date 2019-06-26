@@ -31,6 +31,6 @@ dependencies {
     testImplementation this.libs.junit
     androidTestImplementation this.libs.runner
     androidTestImplementation this.libs.espressoCore
-    implementation this.libs.appcompatV7
-    implementation this.libs.recyclerviewV7
+    implementation this.libs.appcompat
+    implementation this.libs.recyclerview
 }

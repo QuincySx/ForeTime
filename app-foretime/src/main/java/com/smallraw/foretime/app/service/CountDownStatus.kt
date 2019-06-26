@@ -1,6 +1,6 @@
 package com.smallraw.foretime.app.service
 
-import android.support.annotation.IntDef
+import androidx.annotation.IntDef
 import com.smallraw.foretime.app.service.CountDownStatus.Companion.FINISH
 import com.smallraw.foretime.app.service.CountDownStatus.Companion.PAUSE
 import com.smallraw.foretime.app.service.CountDownStatus.Companion.RUNNING

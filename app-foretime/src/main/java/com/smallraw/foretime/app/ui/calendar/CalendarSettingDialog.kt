@@ -2,8 +2,8 @@ package com.smallraw.foretime.app.ui.calendar
 
 import android.content.Context
 import android.content.Intent
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -23,7 +23,7 @@ class CalendarSettingDialog : BaseDialogView {
     private var mCalendarHint: TextView? = null
     private var mCalendarText: TextView? = null
     private var mCalendarArrow: ImageView? = null
-    private var mCalendarType: RecyclerView? = null
+    private var mCalendarType: androidx.recyclerview.widget.RecyclerView? = null
     private var mMyAdapter: MyAdapter? = null
 
     private var isShowType = false
@@ -54,7 +54,7 @@ class CalendarSettingDialog : BaseDialogView {
         mCalendarHint = findViewById(R.id.tv_calendar_hint)
         mCalendarText = findViewById(R.id.tv_calendar_text)
         mCalendarType = findViewById(R.id.recycler_calendar_type)
-        mCalendarType!!.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        mCalendarType!!.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false)
         mCalendarType!!.addItemDecoration(SpacesItemDecoration(AutoSizeUtils.dp2px(context, 50f)))
 
         mMyAdapter = MyAdapter(mArrayShowTypeText, object : MyAdapter.OnItemClickListener {
@@ -112,7 +112,7 @@ class CalendarSettingDialog : BaseDialogView {
         }
     }
 
-    private class MyAdapter(private val arrayShowType: Array<String>, private val mOnItemClickListener: MyAdapter.OnItemClickListener?) : RecyclerView.Adapter<ViewHolder>() {
+    private class MyAdapter(private val arrayShowType: Array<String>, private val mOnItemClickListener: MyAdapter.OnItemClickListener?) : androidx.recyclerview.widget.RecyclerView.Adapter<ViewHolder>() {
         private var mSelectPosition = -1
 
         fun select(position: Int) {
@@ -148,7 +148,7 @@ class CalendarSettingDialog : BaseDialogView {
         }
     }
 
-    private class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private class ViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         val mContent: TextView = itemView.findViewById(R.id.tv_time_content)
     }
 

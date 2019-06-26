@@ -1,7 +1,7 @@
 package com.smallraw.foretime.app.ui.taskInfo
 
 import android.graphics.Color
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +14,7 @@ import com.smallraw.time.utils.dateParse
 import com.smallraw.time.utils.differentDays
 import java.util.*
 
-class TaskInfoAdapter(private var item: MemorialDO, private val mColors: List<String>?) : RecyclerView.Adapter<TaskInfoAdapter.ViewHolder>() {
+class TaskInfoAdapter(private var item: MemorialDO, private val mColors: List<String>?) : androidx.recyclerview.widget.RecyclerView.Adapter<TaskInfoAdapter.ViewHolder>() {
     private val mCurrentDate = dateParse(dateFormat(Date()))
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
@@ -63,7 +63,7 @@ class TaskInfoAdapter(private var item: MemorialDO, private val mColors: List<St
         return mColors?.size ?: 0
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         var layoutInfo = itemView.findViewById<View>(R.id.layoutInfo)!!
         var tvShortState = itemView.findViewById<TextView>(R.id.tvShortState)!!
         var tvTaskName = itemView.findViewById<TextView>(R.id.tvTaskName)!!

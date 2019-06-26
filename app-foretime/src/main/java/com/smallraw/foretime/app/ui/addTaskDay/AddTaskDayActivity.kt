@@ -4,8 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.annotation.IntDef
-import android.support.v4.content.ContextCompat
+import androidx.annotation.IntDef
+import androidx.core.content.ContextCompat
 import android.text.TextUtils
 import android.view.View
 import android.widget.Toast
