@@ -147,7 +147,8 @@ class CalendarFragment : BaseFragment() {
                             }
                             view?.dismiss()
                         }
-                        .atViewAuto(v, AutoSizeUtils.dp2px(context, 55F))
+                        .atViewAuto(v, AutoSizeUtils.dp2px(context, 14F))
+                        .setWidth(300.toFloat())
                         .build()
                         .show()
             }

@@ -83,6 +83,11 @@ abstract class BaseDialogView : Dialog {
             parentWidth = AutoSizeUtils.dp2px(context, 336.toFloat())
         }
 
+        fun setWidth(dp: Float): Builder {
+            parentWidth = AutoSizeUtils.dp2px(context, dp)
+            return this
+        }
+
         fun atViewDown(view: View): Builder {
             return showAtView(view, 0, false)
         }
@@ -167,6 +172,7 @@ abstract class BaseDialogView : Dialog {
 
         arrow.layoutParams = marginParams
 
+
         if (isUp) {
             val screenHeight = dm.heightPixels - viewY
             windowDeploy(0, screenHeight + padding, Gravity.BOTTOM)
@@ -178,7 +184,7 @@ abstract class BaseDialogView : Dialog {
 
     fun windowDeploy(x: Int, y: Int, gravity: Int) {
         val window = window ?: return
-        window.setWindowAnimations(R.style.baseDialogWindowAnim)
+//        window.setWindowAnimations(R.style.baseDialogWindowAnim)
         window.setBackgroundDrawableResource(R.color.vifrification)
         val wl = window.attributes
         wl.x = x
