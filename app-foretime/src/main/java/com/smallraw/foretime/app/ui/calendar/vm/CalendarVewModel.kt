@@ -1,11 +1,11 @@
 package com.smallraw.foretime.app.ui.calendar.vm
 
+import android.util.Log
+import android.util.LongSparseArray
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import android.util.Log
-import android.util.LongSparseArray
 import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.event.TaskChangeEvent
 import com.smallraw.foretime.app.repository.DataRepository
@@ -51,15 +51,15 @@ class CalendarVewModel : ViewModel() {
             }
         }
 
-        mActiveTaskListLiveData.addSource(App.getInstance().getDatabase().databaseCreated) {
-            Log.e("LiveData", "数据库创建状态")
-            App.getInstance().getAppExecutors().diskIO().execute {
-                val memorialEntities = mRepository.getActiveTask(mDisplay, mOrder)
-                val taskTopList = mActiveTaskTopLiveData.value
-
-                settleMemorialList(memorialEntities as ArrayList<MemorialDO>?, taskTopList)
-            }
-        }
+//        mActiveTaskListLiveData.addSource(App.getInstance().getDatabase().databaseCreated) {
+//            Log.e("LiveData", "数据库创建状态")
+//            App.getInstance().getAppExecutors().diskIO().execute {
+//                val memorialEntities = mRepository.getActiveTask(mDisplay, mOrder)
+//                val taskTopList = mActiveTaskTopLiveData.value
+//
+//                settleMemorialList(memorialEntities as ArrayList<MemorialDO>?, taskTopList)
+//            }
+//        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

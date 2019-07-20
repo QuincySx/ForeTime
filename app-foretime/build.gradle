@@ -40,6 +40,11 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    // work-runtime-ktx 2.1.0 and above now requires Java 8
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
     dexOptions {
         dexInProcess = true
 
@@ -67,11 +72,6 @@ dependencies {
     androidTestImplementation "androidx.test:runner:$versions.test_runner"
     androidTestImplementation "androidx.test.espresso:espresso-core:$versions.test_espresso"
 
-    // arch
-    implementation "androidx.arch.core:core-common:$versions.androidxArch"
-    implementation "androidx.arch.core:core-runtime:$versions.androidxArch"
-    implementation "androidx.arch.core:core-testing:$versions.androidxArch"
-
     // jetpack see https://developer.android.google.cn/jetpack
     // see AndroidX version update https://developer.android.google.cn/jetpack/androidx/releases
     implementation "androidx.constraintlayout:constraintlayout:$versions.constraintLayout"
@@ -82,11 +82,14 @@ dependencies {
 
     // ktx see https://developer.android.com/kotlin/ktx.html
     implementation "androidx.core:core-ktx:$versions.coreKtx"
+    implementation "androidx.fragment:fragment-ktx:$versions.fragment"
 
     // AndroidX lifecycle see https://developer.android.com/jetpack/docs/guide
     implementation "androidx.lifecycle:lifecycle-viewmodel:$versions.androidxLifecycle"
-    implementation "androidx.lifecycle:lifecycle-extensions:$versions.androidxLifecycle"
+    implementation "androidx.lifecycle:lifecycle-livedata:$versions.androidxLifecycle"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.androidxLifecycle"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$versions.androidxLifecycle"
+    implementation "androidx.lifecycle:lifecycle-extensions:$versions.androidxLifecycle"
     implementation "androidx.lifecycle:lifecycle-runtime:$versions.androidxLifecycle"
     kapt "androidx.lifecycle:lifecycle-compiler:$versions.androidxLifecycle"
 
@@ -98,7 +101,12 @@ dependencies {
     // see https://medium.com/google-developers/7-pro-tips-for-room-fbadea4bfbd1#4785
     implementation "androidx.room:room-runtime:$versions.room"
     implementation "androidx.room:room-ktx:$versions.room"
+    implementation "androidx.sqlite:sqlite-ktx:$versions.sqlite"
     kapt "androidx.room:room-compiler:$versions.room"
+
+    // work
+    implementation "androidx.work:work-runtime:$versions.work"
+    implementation "androidx.work:work-runtime-ktx:$versions.work"
 
     // kotlin see https://www.kotlincn.net/docs/reference/
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin"

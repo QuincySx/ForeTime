@@ -1,11 +1,11 @@
 package com.smallraw.foretime.app.repository.db.entity
 
+import android.os.Parcel
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import android.os.Parcel
-import android.os.Parcelable
 import java.util.*
 
 @Entity(tableName = MemorialDO.TABLE_NAME)
@@ -46,7 +46,7 @@ class MemorialDO : Parcelable {
 
     @Ignore
     constructor(name: String, description: String, type: Int, color: String,
-                targetTime: Date, repeatTime: String, createTime: Date) {
+                targetTime: Date, repeatTime: String?, createTime: Date) {
         this.name = name
         this.description = description
         this.type = type

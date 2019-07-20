@@ -63,7 +63,7 @@ class App : Application() {
     fun getTaskConfig() = mTaskConfigInfo
 
     fun getDatabase(): AppDatabase {
-        return AppDatabase.getInstance(this, mAppExecutors)
+        return AppDatabase.getInstance(this)
     }
 
     fun getRepository(): DataRepository {
