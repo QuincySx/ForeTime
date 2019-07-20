@@ -7,15 +7,15 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion this.compile.compileSdkVersion
+    compileSdkVersion versions.compileSdk
 
     defaultConfig {
-        minSdkVersion this.defaultConfigVersion.minSdkVersion
-        targetSdkVersion this.defaultConfigVersion.targetSdkVersion
-        versionCode this.defaultConfigVersion.versionCode
-        versionName this.defaultConfigVersion.versionName
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+        versionCode rootProject.gitCommitCount
+        versionName names.versionName
 
-        testInstrumentationRunner this.defaultConfigVersion.testInstrumentationRunner
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
     buildTypes {
@@ -26,20 +26,19 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = '1.8'
-        targetCompatibility = '1.8'
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    testImplementation this.libs.junit
-    androidTestImplementation this.libs.runner
-    androidTestImplementation this.libs.espressoCore
+    testImplementation "junit:junit:$versions.test_junit"
+    androidTestImplementation "androidx.test:runner:$versions.test_runner"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$versions.test_espresso"
 
-    implementation this.libs.kotlinStdlib
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$versions.kotlin"
 
-    implementation this.libs.constraintLayout
-    implementation this.libs.appcompat
-
+    implementation "androidx.constraintlayout:constraintlayout:$versions.constraintLayout"
+    implementation "androidx.appcompat:appcompat:$versions.appcompat"
 }

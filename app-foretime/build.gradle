@@ -7,18 +7,22 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion this.compile.compileSdkVersion
+    compileSdkVersion versions.compileSdk
 
     defaultConfig {
-        applicationId "com.smallraw.foretime.app"
-        minSdkVersion this.defaultConfigVersion.minSdkVersion
-        targetSdkVersion this.defaultConfigVersion.targetSdkVersion
-        versionCode this.defaultConfigVersion.versionCode
-        versionName this.defaultConfigVersion.versionName
+        applicationId names.applicationId
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+        versionCode rootProject.gitCommitCount
+        versionName names.versionName
 
-        testInstrumentationRunner this.defaultConfigVersion.testInstrumentationRunner
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
         vectorDrawables.useSupportLibrary = true
+    }
+
+    dataBinding {
+        enabled true
     }
 
     buildTypes {
@@ -26,11 +30,14 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            ext.alwaysUpdateBuildId = false
+        }
     }
 
     compileOptions {
-        sourceCompatibility = '1.8'
-        targetCompatibility = '1.8'
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     dexOptions {
@@ -50,37 +57,86 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    testImplementation this.libs.junit
-    androidTestImplementation this.libs.runner
-    androidTestImplementation this.libs.espressoCore
-
-    implementation this.libs.kotlinStdlib
-    implementation this.libs.ktxlib
-
-    implementation this.libs.constraintLayout
-    implementation this.libs.appcompat
-    implementation this.libs.material
-    implementation this.libs.cardview
-    implementation this.libs.recyclerview
-    implementation this.libs.lifecycleExtensions
-
-    implementation this.libs.roomRuntime
-    kapt this.libs.roomCompiler
-
-    implementation this.libs.autosize
-    implementation this.libs.gsonLib
-    implementation this.libs.glide
-    kapt this.libs.glideProcessor
-    implementation this.libs.glideTransformations
-
-    implementation this.libs.eventbus
-
-    implementation(this.libs.StatusBarCompat, {
-        exclude group: 'com.android.support'
-    })
 
     implementation project(":lib-core")
     implementation project(":lib-switch")
     implementation project(":lib-wheel")
 
+    // Test
+    testImplementation "junit:junit:$versions.test_junit"
+    androidTestImplementation "androidx.test:runner:$versions.test_runner"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$versions.test_espresso"
+
+    // arch
+    implementation "androidx.arch.core:core-common:$versions.androidxArch"
+    implementation "androidx.arch.core:core-runtime:$versions.androidxArch"
+    implementation "androidx.arch.core:core-testing:$versions.androidxArch"
+
+    // jetpack see https://developer.android.google.cn/jetpack
+    // see AndroidX version update https://developer.android.google.cn/jetpack/androidx/releases
+    implementation "androidx.constraintlayout:constraintlayout:$versions.constraintLayout"
+    implementation "com.google.android.material:material:$versions.material"
+    implementation "androidx.appcompat:appcompat:$versions.appcompat"
+    implementation "androidx.cardview:cardview:$versions.cardview"
+    implementation "androidx.recyclerview:recyclerview:$versions.recyclerview"
+
+    // ktx see https://developer.android.com/kotlin/ktx.html
+    implementation "androidx.core:core-ktx:$versions.coreKtx"
+
+    // AndroidX lifecycle see https://developer.android.com/jetpack/docs/guide
+    implementation "androidx.lifecycle:lifecycle-viewmodel:$versions.androidxLifecycle"
+    implementation "androidx.lifecycle:lifecycle-extensions:$versions.androidxLifecycle"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.androidxLifecycle"
+    implementation "androidx.lifecycle:lifecycle-runtime:$versions.androidxLifecycle"
+    kapt "androidx.lifecycle:lifecycle-compiler:$versions.androidxLifecycle"
+
+    // Android优化的集合
+    implementation "androidx.collection:collection:$versions.androidxCollection"
+    implementation "androidx.collection:collection-ktx:$versions.androidxCollection"
+
+    // room database
+    // see https://medium.com/google-developers/7-pro-tips-for-room-fbadea4bfbd1#4785
+    implementation "androidx.room:room-runtime:$versions.room"
+    implementation "androidx.room:room-ktx:$versions.room"
+    kapt "androidx.room:room-compiler:$versions.room"
+
+    // kotlin see https://www.kotlincn.net/docs/reference/
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$versions.kotlin"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$versions.kotlin"
+
+    // kotlin coroutines 协程
+    // see https://www.kotlincn.net/docs/reference/coroutines/coroutines-guide.html
+    // see version update https://github.com/hltj/kotlinx.coroutines-cn/blob/master/README.md#using-in-your-projects
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.kotlinxCoroutinesCore"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.kotlinxCoroutinesCore"
+
+    // 屏幕适配
+    // see https://github.com/JessYanCoding/AndroidAutoSize
+    implementation "me.jessyan:autosize:$versions.autoSize"
+
+    // 状态栏适配
+    // see https://github.com/niorgai/StatusBarCompat
+    implementation("com.github.niorgai:StatusBarCompat:$versions.statusBarCompat", {
+        exclude group: 'androidx.appcompat:appcompat'
+        exclude group: 'com.google.android.material:material'
+    })
+
+    // json library see https://github.com/google/gson
+    implementation "com.google.code.gson:gson:$versions.gson"
+
+    // image handler
+    // see https://github.com/bumptech/glide
+    implementation "com.github.bumptech.glide:glide:$versions.glide"
+    kapt "com.github.bumptech.glide:compiler:$versions.glide"
+
+    // glide image transformations see https://github.com/wasabeef/glide-transformations
+    implementation "jp.wasabeef:glide-transformations:$versions.glideTransformations"
+
+    // 事件总线 see https://github.com/greenrobot/EventBus
+    implementation "org.greenrobot:eventbus:$versions.eventbus"
+}
+
+kapt {
+    useBuildCache = true
 }

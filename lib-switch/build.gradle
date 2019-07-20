@@ -1,15 +1,15 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion this.compile.compileSdkVersion
+    compileSdkVersion versions.compileSdk
 
     defaultConfig {
-        minSdkVersion this.defaultConfigVersion.minSdkVersion
-        targetSdkVersion this.defaultConfigVersion.targetSdkVersion
-        versionCode this.defaultConfigVersion.versionCode
-        versionName this.defaultConfigVersion.versionName
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+        versionCode rootProject.gitCommitCount
+        versionName names.versionName
 
-        testInstrumentationRunner this.defaultConfigVersion.testInstrumentationRunner
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
     buildTypes {
@@ -18,18 +18,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions {
-        sourceCompatibility = '1.8'
-        targetCompatibility = '1.8'
-    }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation "junit:junit:$versions.test_junit"
+    androidTestImplementation "androidx.test:runner:$versions.test_runner"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$versions.test_espresso"
 
-    testImplementation this.libs.junit
-    androidTestImplementation this.libs.runner
-    androidTestImplementation this.libs.espressoCore
-    implementation this.libs.appcompat
+    implementation "androidx.appcompat:appcompat:$versions.appcompat"
 }
