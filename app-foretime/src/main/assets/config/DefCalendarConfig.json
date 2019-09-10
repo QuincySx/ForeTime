@@ -1,0 +1,9 @@
+{
+  "automatic": false,
+  "focusTime": 1500000,
+  "restTime": 300000,
+  "restLongTime": 600000,
+  "restLonginterval": 3,
+  "flipFocus": false,
+  "screenAlwaysOn": false
+}

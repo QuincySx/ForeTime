@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@null"
+    android:paddingLeft="40dp"
+    android:paddingTop="20dp"
+    android:paddingRight="40dp"
+    android:paddingBottom="20dp">
+
+    <com.smallraw.foretime.app.common.widget.wheel.WheelDatePicker
+        android:id="@+id/viewWheelDataPicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/patent_view"
+    android:layout_width="336dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.smallraw.foretime.app.common.widget.TriangleView
+        android:id="@+id/doalog_arrow_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:triangleDirection="top" />
+
+    <FrameLayout
+        android:id="@+id/root_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_base_dialog_background">
+
+    </FrameLayout>
+
+    <com.smallraw.foretime.app.common.widget.TriangleView
+        android:id="@+id/doalog_arrow_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:triangleDirection="bottom" />
+</LinearLayout>

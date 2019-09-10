@@ -1,0 +1,10 @@
+{
+  "expireReminder": false,
+  "expireReminderDays": 1,
+  "autoArchiving": false,
+  "autoArchivingDays": 3,
+  "DaysMatterShowLimit": 1,
+  "DayCountdownSort": 1,
+  "DaysCumulativeReminder": false,
+  "DaysCumulativeSort": 0
+}
