@@ -7,22 +7,22 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion versions.compileSdk
+    compileSdkVersion Versions.compileSdk
 
     defaultConfig {
-        applicationId names.applicationId
-        minSdkVersion versions.minSdk
-        targetSdkVersion versions.targetSdk
+        applicationId Names.applicationId
+        minSdkVersion Versions.minSdk
+        targetSdkVersion Versions.targetSdk
         versionCode rootProject.gitCommitCount
-        versionName names.versionName
+        versionName Names.versionName
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
         vectorDrawables.useSupportLibrary = true
     }
 
-    dataBinding {
-        enabled true
+    buildFeatures{
+        dataBinding true
     }
 
     buildTypes {
@@ -48,7 +48,7 @@ android {
     dexOptions {
         dexInProcess = true
 
-        javaMaxHeapSize = "2g"
+        javaMaxHeapSize = "4g"
 
         //是否支持大工程模式
         jumboMode = true
@@ -68,81 +68,82 @@ dependencies {
     implementation project(":lib-wheel")
 
     // Test
-    testImplementation "junit:junit:$versions.test_junit"
-    androidTestImplementation "androidx.test:runner:$versions.test_runner"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$versions.test_espresso"
+    testImplementation Deps.test_junit
+    androidTestImplementation Deps.test_runner
+    androidTestImplementation Deps.test_espresso
 
     // jetpack see https://developer.android.google.cn/jetpack
     // see AndroidX version update https://developer.android.google.cn/jetpack/androidx/releases
-    implementation "androidx.constraintlayout:constraintlayout:$versions.constraintLayout"
-    implementation "com.google.android.material:material:$versions.material"
-    implementation "androidx.appcompat:appcompat:$versions.appcompat"
-    implementation "androidx.cardview:cardview:$versions.cardview"
-    implementation "androidx.recyclerview:recyclerview:$versions.recyclerview"
+    implementation Deps.constraintlayout
+    implementation Deps.material
+    implementation Deps.appcompat
+    implementation Deps.cardview
+    implementation Deps.recyclerview
 
     // ktx see https://developer.android.com/kotlin/ktx.html
-    implementation "androidx.core:core-ktx:$versions.coreKtx"
-    implementation "androidx.fragment:fragment-ktx:$versions.fragment"
+    implementation "androidx.core:core-ktx:${Versions.coreKtx}"
+    implementation "androidx.fragment:fragment-ktx:${Versions.fragment}"
 
     // AndroidX lifecycle see https://developer.android.com/jetpack/docs/guide
-    implementation "androidx.lifecycle:lifecycle-viewmodel:$versions.androidxLifecycle"
-    implementation "androidx.lifecycle:lifecycle-livedata:$versions.androidxLifecycle"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.androidxLifecycle"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$versions.androidxLifecycle"
-    implementation "androidx.lifecycle:lifecycle-extensions:$versions.androidxLifecycle"
-    implementation "androidx.lifecycle:lifecycle-runtime:$versions.androidxLifecycle"
-    kapt "androidx.lifecycle:lifecycle-compiler:$versions.androidxLifecycle"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:${Versions.androidxLifecycle}"
+    implementation "androidx.lifecycle:lifecycle-livedata:${Versions.androidxLifecycle}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.androidxLifecycle}"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.androidxLifecycle}"
+    implementation "androidx.lifecycle:lifecycle-extensions:${Versions.androidxLifecycle}"
+    implementation "androidx.lifecycle:lifecycle-runtime:${Versions.androidxLifecycle}"
+//    kapt "androidx.lifecycle:lifecycle-compiler:${Versions.androidxLifecycle}"
+    kapt "androidx.lifecycle:lifecycle-common:${Versions.androidxLifecycle}"
 
     // Android优化的集合
-    implementation "androidx.collection:collection:$versions.androidxCollection"
-    implementation "androidx.collection:collection-ktx:$versions.androidxCollection"
+    implementation "androidx.collection:collection:${Versions.androidxCollection}"
+    implementation "androidx.collection:collection-ktx:${Versions.androidxCollection}"
 
     // room database
     // see https://medium.com/google-developers/7-pro-tips-for-room-fbadea4bfbd1#4785
-    implementation "androidx.room:room-runtime:$versions.room"
-    implementation "androidx.room:room-ktx:$versions.room"
-    implementation "androidx.sqlite:sqlite-ktx:$versions.sqlite"
-    kapt "androidx.room:room-compiler:$versions.room"
+    implementation "androidx.room:room-runtime:${Versions.room}"
+    implementation "androidx.room:room-ktx:${Versions.room}"
+    implementation "androidx.sqlite:sqlite-ktx:${Versions.sqlite}"
+    kapt "androidx.room:room-compiler:${Versions.room}"
 
     // work
-    implementation "androidx.work:work-runtime:$versions.work"
-    implementation "androidx.work:work-runtime-ktx:$versions.work"
+    implementation "androidx.work:work-runtime:${Versions.work}"
+    implementation "androidx.work:work-runtime-ktx:${Versions.work}"
 
     // kotlin see https://www.kotlincn.net/docs/reference/
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin"
-    implementation "org.jetbrains.kotlin:kotlin-reflect:$versions.kotlin"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$versions.kotlin"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlin}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlin}"
 
     // kotlin coroutines 协程
     // see https://www.kotlincn.net/docs/reference/coroutines/coroutines-guide.html
     // see version update https://github.com/hltj/kotlinx.coroutines-cn/blob/master/README.md#using-in-your-projects
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.kotlinxCoroutinesCore"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.kotlinxCoroutinesCore"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinxCoroutinesCore}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.kotlinxCoroutinesCore}"
 
     // 屏幕适配
     // see https://github.com/JessYanCoding/AndroidAutoSize
-    implementation "me.jessyan:autosize:$versions.autoSize"
+    implementation "me.jessyan:autosize:${Versions.autoSize}"
 
     // 状态栏适配
     // see https://github.com/niorgai/StatusBarCompat
-    implementation("com.github.niorgai:StatusBarCompat:$versions.statusBarCompat", {
+    implementation("com.github.niorgai:StatusBarCompat:${Versions.statusBarCompat}", {
         exclude group: 'androidx.appcompat:appcompat'
         exclude group: 'com.google.android.material:material'
     })
 
     // json library see https://github.com/google/gson
-    implementation "com.google.code.gson:gson:$versions.gson"
+    implementation "com.google.code.gson:gson:${Versions.gson}"
 
     // image handler
     // see https://github.com/bumptech/glide
-    implementation "com.github.bumptech.glide:glide:$versions.glide"
-    kapt "com.github.bumptech.glide:compiler:$versions.glide"
+    implementation "com.github.bumptech.glide:glide:${Versions.glide}"
+    kapt "com.github.bumptech.glide:compiler:${Versions.glide}"
 
     // glide image transformations see https://github.com/wasabeef/glide-transformations
-    implementation "jp.wasabeef:glide-transformations:$versions.glideTransformations"
+    implementation "jp.wasabeef:glide-transformations:${Versions.glideTransformations}"
 
     // 事件总线 see https://github.com/greenrobot/EventBus
-    implementation "org.greenrobot:eventbus:$versions.eventbus"
+    implementation "org.greenrobot:eventbus:${Versions.eventbus}"
 }
 
 kapt {
