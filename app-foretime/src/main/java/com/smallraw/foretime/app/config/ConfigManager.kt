@@ -10,7 +10,7 @@ import com.smallraw.foretime.app.config.ConfigName.Companion.TaskConfig
 import com.smallraw.foretime.app.entity.CalendarConfigInfo
 import com.smallraw.foretime.app.entity.MusicConfigInfo
 import com.smallraw.foretime.app.entity.TaskConfigInfo
-import com.smallraw.foretime.app.repository.db.entity.ConfigDO
+import com.smallraw.foretime.app.repository.database.entity.ConfigDO
 
 @StringDef(TaskConfig, CalendarConfig, MusicConfig)
 annotation class ConfigName {

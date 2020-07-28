@@ -1,6 +1,5 @@
 package com.smallraw.foretime.app.service
 
-import android.R
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -239,7 +238,7 @@ class CountDownService : Service(), CountDownTick.OnCountDownTickListener {
         // Create a notification and set the notification channel.
         val notification = Notification.Builder(this, CHANNEL_ID)
                 .setContentTitle("New Message").setContentText("You've received new messages.")
-                .setSmallIcon(R.mipmap.sym_def_app_icon)
+                .setSmallIcon(android.R.mipmap.sym_def_app_icon)
                 .build()
         startForeground(notifyID, notification)
     }

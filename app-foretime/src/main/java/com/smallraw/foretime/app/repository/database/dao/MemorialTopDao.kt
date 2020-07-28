@@ -1,9 +1,9 @@
-package com.smallraw.foretime.app.repository.db.dao
+package com.smallraw.foretime.app.repository.database.dao
 
 import androidx.lifecycle.LiveData
 import androidx.sqlite.db.SupportSQLiteQuery
 import androidx.room.*
-import com.smallraw.foretime.app.repository.db.entity.MemorialTopDO
+import com.smallraw.foretime.app.repository.database.entity.MemorialTopDO
 
 @Dao
 interface MemorialTopDao {

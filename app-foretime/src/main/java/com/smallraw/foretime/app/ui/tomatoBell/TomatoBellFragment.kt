@@ -22,7 +22,7 @@ import com.smallraw.foretime.app.service.CountDownType
 import com.smallraw.foretime.app.ui.main.OnMainActivityCallback
 import com.smallraw.foretime.app.ui.musicListActivity.MusicListActivity
 import com.smallraw.time.base.BaseFragment
-import com.smallraw.time.utils.ms2Minutes
+import com.smallraw.foretime.app.utils.ms2Minutes
 import kotlinx.android.synthetic.main.fragment_tomato_bell.*
 import java.util.concurrent.LinkedBlockingQueue
 

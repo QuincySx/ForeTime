@@ -5,8 +5,8 @@ import android.util.Log
 import androidx.room.withTransaction
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.smallraw.foretime.app.repository.db.entity.MemorialDO
-import com.smallraw.foretime.app.repository.db.entity.MemorialTopDO
+import com.smallraw.foretime.app.repository.database.entity.MemorialDO
+import com.smallraw.foretime.app.repository.database.entity.MemorialTopDO
 import java.util.*
 
 class InitDatabaseWorker(

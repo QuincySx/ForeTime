@@ -1,4 +1,4 @@
-package com.smallraw.foretime.app.repository.db.entity
+package com.smallraw.foretime.app.repository.database.entity
 
 import android.os.Parcel
 import android.os.Parcelable

@@ -8,13 +8,13 @@ import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import com.smallraw.foretime.app.repository.db.dao.ConfigDao
-import com.smallraw.foretime.app.repository.db.dao.MemorialDao
-import com.smallraw.foretime.app.repository.db.dao.MemorialTopDao
-import com.smallraw.foretime.app.repository.db.entity.ConfigDO
-import com.smallraw.foretime.app.repository.db.entity.MemorialDO
-import com.smallraw.foretime.app.repository.db.entity.MemorialTopDO
-import com.smallraw.time.db.converter.DateConverter
+import com.smallraw.foretime.app.repository.database.dao.ConfigDao
+import com.smallraw.foretime.app.repository.database.dao.MemorialDao
+import com.smallraw.foretime.app.repository.database.dao.MemorialTopDao
+import com.smallraw.foretime.app.repository.database.entity.ConfigDO
+import com.smallraw.foretime.app.repository.database.entity.MemorialDO
+import com.smallraw.foretime.app.repository.database.entity.MemorialTopDO
+import com.smallraw.time.database.converter.DateConverter
 
 @Database(entities = [ConfigDO::class, MemorialDO::class, MemorialTopDO::class], version = 1, exportSchema = false)
 @TypeConverters(DateConverter::class)

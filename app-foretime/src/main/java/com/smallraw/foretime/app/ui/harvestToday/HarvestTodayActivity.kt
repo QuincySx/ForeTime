@@ -10,7 +10,7 @@ import com.smallraw.time.base.BaseTitleBarActivity
 import com.smallraw.time.model.BaseCallback
 import com.smallraw.time.model.WeatherModel
 import com.smallraw.time.utils.getWeekOfDate
-import com.smallraw.time.utils.monthDayFormat
+import com.smallraw.foretime.app.utils.monthDayFormat
 import kotlinx.android.synthetic.main.activity_harvest_today.*
 import java.util.*
 

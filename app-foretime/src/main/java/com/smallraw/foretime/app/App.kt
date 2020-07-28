@@ -10,7 +10,7 @@ import com.smallraw.foretime.app.entity.MusicConfigInfo
 import com.smallraw.foretime.app.entity.TaskConfigInfo
 import com.smallraw.foretime.app.executors.AppExecutors
 import com.smallraw.foretime.app.repository.DataRepository
-import com.smallraw.foretime.app.repository.db.AppDatabase
+import com.smallraw.foretime.app.repository.database.AppDatabase
 import com.smallraw.library.core.utils.AppUtils
 
 class App : Application() {

@@ -1,8 +1,7 @@
-package com.smallraw.foretime.app.repository.db.dao
+package com.smallraw.foretime.app.repository.database.dao
 
 import androidx.room.*
-
-import com.smallraw.foretime.app.repository.db.entity.ConfigDO
+import com.smallraw.foretime.app.repository.database.entity.ConfigDO
 
 @Dao
 interface ConfigDao {

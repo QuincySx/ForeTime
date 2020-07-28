@@ -1,4 +1,4 @@
-package com.smallraw.time.utils
+package com.smallraw.foretime.app.utils
 
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -17,15 +17,15 @@ private val df1 = object : ThreadLocal<DateFormat>() {
 }
 
 fun dateFormat(date: Date): String {
-    return df.get().format(date)
+    return df.get()?.format(date) ?: ""
 }
 
 fun monthDayFormat(date: Date): String {
-    return df1.get().format(date)
+    return df1.get()?.format(date) ?: ""
 }
 
 fun dateParse(date: String): Date {
-    return df.get().parse(date)
+    return df.get()?.parse(date) ?: Date()
 }
 
 fun differentDays(date1: Date, date2: Date): Int {

@@ -2,9 +2,9 @@ package com.smallraw.foretime.app.repository
 
 import androidx.lifecycle.LiveData
 import androidx.sqlite.db.SimpleSQLiteQuery
-import com.smallraw.foretime.app.repository.db.AppDatabase
-import com.smallraw.foretime.app.repository.db.entity.MemorialDO
-import com.smallraw.foretime.app.repository.db.entity.MemorialTopDO
+import com.smallraw.foretime.app.repository.database.AppDatabase
+import com.smallraw.foretime.app.repository.database.entity.MemorialDO
+import com.smallraw.foretime.app.repository.database.entity.MemorialTopDO
 
 class DataRepository(database: AppDatabase) {
     private val mDatabase: AppDatabase = database

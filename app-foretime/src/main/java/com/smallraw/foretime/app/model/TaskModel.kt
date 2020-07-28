@@ -1,9 +1,9 @@
-package com.smallraw.time.model
+package com.smallraw.foretime.app.model
 
 import android.app.Application
 import com.smallraw.foretime.app.App
-import com.smallraw.foretime.app.repository.db.entity.MemorialDO
-import com.smallraw.foretime.app.repository.db.entity.MemorialTopDO
+import com.smallraw.foretime.app.repository.database.entity.MemorialDO
+import com.smallraw.foretime.app.repository.database.entity.MemorialTopDO
 
 
 fun thoroughDeleteTask(app: Application, memorialDO: MemorialDO) {

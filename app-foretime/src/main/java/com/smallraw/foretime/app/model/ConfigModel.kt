@@ -2,7 +2,7 @@ package com.smallraw.time.model
 
 
 import com.smallraw.foretime.app.App
-import com.smallraw.foretime.app.repository.db.entity.ConfigDO
+import com.smallraw.foretime.app.repository.database.entity.ConfigDO
 import java.util.*
 
 public class ConfigModel {

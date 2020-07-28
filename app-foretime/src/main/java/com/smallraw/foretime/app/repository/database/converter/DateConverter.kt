@@ -1,4 +1,4 @@
-package com.smallraw.time.db.converter
+package com.smallraw.time.database.converter
 
 import androidx.room.TypeConverter
 import java.util.*

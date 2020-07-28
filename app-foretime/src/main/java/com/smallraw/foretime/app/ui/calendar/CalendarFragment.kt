@@ -3,8 +3,6 @@ package com.smallraw.foretime.app.ui.calendar
 import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.ItemTouchHelper
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,7 +13,7 @@ import com.smallraw.foretime.app.base.BaseDialogView
 import com.smallraw.foretime.app.common.adapter.OnItemClickListener
 import com.smallraw.foretime.app.common.widget.dialog.SelectDayTypeDialog
 import com.smallraw.foretime.app.entity.Weather
-import com.smallraw.foretime.app.repository.db.entity.MemorialDO
+import com.smallraw.foretime.app.repository.database.entity.MemorialDO
 import com.smallraw.foretime.app.ui.addTaskDay.AddTaskDayActivity
 import com.smallraw.foretime.app.ui.calendar.vm.CalendarVewModel
 import com.smallraw.foretime.app.ui.main.OnMainActivityCallback
@@ -24,7 +22,7 @@ import com.smallraw.time.base.BaseFragment
 import com.smallraw.time.model.BaseCallback
 import com.smallraw.time.model.WeatherModel
 import com.smallraw.time.utils.getWeekOfDate
-import com.smallraw.time.utils.monthDayFormat
+import com.smallraw.foretime.app.utils.monthDayFormat
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import me.jessyan.autosize.utils.AutoSizeUtils
 import java.util.*

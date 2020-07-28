@@ -9,8 +9,8 @@ import androidx.lifecycle.ViewModel
 import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.event.TaskChangeEvent
 import com.smallraw.foretime.app.repository.DataRepository
-import com.smallraw.foretime.app.repository.db.entity.MemorialDO
-import com.smallraw.foretime.app.repository.db.entity.MemorialTopDO
+import com.smallraw.foretime.app.repository.database.entity.MemorialDO
+import com.smallraw.foretime.app.repository.database.entity.MemorialTopDO
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
