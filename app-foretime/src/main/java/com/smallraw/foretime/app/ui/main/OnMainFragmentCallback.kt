@@ -3,7 +3,7 @@ package com.smallraw.foretime.app.ui.main
 import androidx.annotation.DrawableRes
 import android.view.View
 
-interface OnMainActivityCallback {
+interface OnMainFragmentCallback {
     fun onChangeIvSuspension(@DrawableRes id: Int)
 
     fun setOnLongClickListener(onLongClickListener: View.OnLongClickListener?)

@@ -4,6 +4,7 @@ import android.graphics.Rect
 import android.os.Bundle
 import androidx.annotation.DrawableRes
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.TouchDelegate
 import android.view.View
 import android.view.ViewGroup
@@ -15,19 +16,26 @@ import com.smallraw.foretime.app.config.getDefCalendarSettingConfig
 import com.smallraw.foretime.app.config.saveConfig
 import com.smallraw.foretime.app.ui.calendar.CalendarFragment
 import com.smallraw.foretime.app.ui.tomatoBell.TomatoBellFragment
-import com.smallraw.time.base.BaseActivity
-import kotlinx.android.synthetic.main.activity_main.*
+import com.smallraw.time.base.BaseFragment
+import kotlinx.android.synthetic.main.fragment_main.*
 
 
-class MainActivity : BaseActivity(), OnMainActivityCallback {
+class MainFragment : BaseFragment(), OnMainFragmentCallback {
     private lateinit var viewPagerAdapter: ViewPagerAdapter
     private lateinit var tomatoBellFragment: TomatoBellFragment
     private lateinit var calendarFragment: CalendarFragment
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_main, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewPagerAdapter = ViewPagerAdapter(parentFragmentManager)
         initFragment()
         initView()
 

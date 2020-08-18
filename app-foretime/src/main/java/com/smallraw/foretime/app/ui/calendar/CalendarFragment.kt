@@ -16,7 +16,7 @@ import com.smallraw.foretime.app.entity.Weather
 import com.smallraw.foretime.app.repository.database.entity.MemorialDO
 import com.smallraw.foretime.app.ui.addTaskDay.AddTaskDayActivity
 import com.smallraw.foretime.app.ui.calendar.vm.CalendarVewModel
-import com.smallraw.foretime.app.ui.main.OnMainActivityCallback
+import com.smallraw.foretime.app.ui.main.OnMainFragmentCallback
 import com.smallraw.foretime.app.ui.taskInfo.TaskInfoActivity
 import com.smallraw.time.base.BaseFragment
 import com.smallraw.time.model.BaseCallback
@@ -31,16 +31,16 @@ import java.util.*
 class CalendarFragment : BaseFragment() {
     companion object {
         @JvmStatic
-        fun newInstance(onMainActivityCallback: OnMainActivityCallback): CalendarFragment {
+        fun newInstance(onMainFragmentCallback: OnMainFragmentCallback): CalendarFragment {
             val fragment = CalendarFragment()
-            fragment.onMainActivityCallback = onMainActivityCallback
+            fragment.onMainFragmentCallback = onMainFragmentCallback
             return fragment
         }
     }
 
     private lateinit var mCalendarVewModel: CalendarVewModel
 
-    private var onMainActivityCallback: OnMainActivityCallback? = null
+    private var onMainFragmentCallback: OnMainFragmentCallback? = null
     private val mCalendarList = ArrayList<MemorialDO>()
     private val mCalendarAdapter = CalendarAdapter(mCalendarList)
 
@@ -132,9 +132,9 @@ class CalendarFragment : BaseFragment() {
     }
 
     fun showViewAction() {
-        onMainActivityCallback?.onChangeIvSuspension(R.drawable.ic_tab_suspension_add)
-        onMainActivityCallback?.setOnLongClickListener(null)
-        onMainActivityCallback?.setOnClickListener(View.OnClickListener { v ->
+        onMainFragmentCallback?.onChangeIvSuspension(R.drawable.ic_tab_suspension_add)
+        onMainFragmentCallback?.setOnLongClickListener(null)
+        onMainFragmentCallback?.setOnClickListener(View.OnClickListener { v ->
             context?.let { context ->
                 SelectDayTypeDialog.Builder(context)
                         .setOnClickCallback { view, index ->

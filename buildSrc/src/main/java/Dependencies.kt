@@ -8,6 +8,7 @@ object Versions {
     val coreKtx = "1.5.0-alpha01"
     val androidxLifecycle = "2.2.0"
     val appcompat = "1.2.0-rc02"
+    val navigation = "2.3.0"
     val fragment = "1.3.0-alpha07"
     val recyclerview = "1.1.0"
     val cardview = "1.0.0"
@@ -57,4 +58,13 @@ object Deps {
     val kotlin_gradle_plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
     val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
     val retrofit_rxjava = "com.squareup.retrofit2:adapter-rxjava2:${Versions.retrofit}"
+
+    val navigation_runtime = "androidx.navigation:navigation-runtime:${Versions.navigation}"
+    val navigation_runtime_ktx = "androidx.navigation:navigation-runtime-ktx:${Versions.navigation}"
+    val navigation_fragment = "androidx.navigation:navigation-fragment:${Versions.navigation}"
+    val navigation_fragment_ktx = "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
+    val navigation_testing = "androidx.navigation:navigation-testing:${Versions.navigation}"
+    val navigation_ui = "androidx.navigation:navigation-ui:${Versions.navigation}"
+    val navigation_ui_ktx = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
+    val navigation_safe_args_plugin = "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation}"
 }

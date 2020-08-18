@@ -21,7 +21,7 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
 
-    buildFeatures{
+    buildFeatures {
         dataBinding true
     }
 
@@ -83,6 +83,13 @@ dependencies {
     // ktx see https://developer.android.com/kotlin/ktx.html
     implementation "androidx.core:core-ktx:${Versions.coreKtx}"
     implementation "androidx.fragment:fragment-ktx:${Versions.fragment}"
+
+    // Fragment Navigation
+    // see https://developer.android.com/jetpack/androidx/releases/navigation?hl=zh-CN
+    implementation Deps.navigation_ui_ktx
+    implementation Deps.navigation_fragment_ktx
+    kapt Deps.navigation_runtime_ktx
+    androidTestImplementation Deps.navigation_testing
 
     // AndroidX lifecycle see https://developer.android.com/jetpack/docs/guide
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.androidxLifecycle}"

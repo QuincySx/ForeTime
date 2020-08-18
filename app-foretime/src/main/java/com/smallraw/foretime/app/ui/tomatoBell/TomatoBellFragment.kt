@@ -19,7 +19,7 @@ import com.smallraw.foretime.app.common.widget.OnClickProgressListener
 import com.smallraw.foretime.app.service.CountDownService
 import com.smallraw.foretime.app.service.CountDownStatus
 import com.smallraw.foretime.app.service.CountDownType
-import com.smallraw.foretime.app.ui.main.OnMainActivityCallback
+import com.smallraw.foretime.app.ui.main.OnMainFragmentCallback
 import com.smallraw.foretime.app.ui.musicListActivity.MusicListActivity
 import com.smallraw.time.base.BaseFragment
 import com.smallraw.foretime.app.utils.ms2Minutes
@@ -30,9 +30,9 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
 
     companion object {
         @JvmStatic
-        fun newInstance(onMainActivityCallback: OnMainActivityCallback): TomatoBellFragment {
+        fun newInstance(onMainFragmentCallback: OnMainFragmentCallback): TomatoBellFragment {
             val fragment = TomatoBellFragment()
-            fragment.onMainActivityCallback = onMainActivityCallback
+            fragment.onMainFragmentCallback = onMainFragmentCallback
             return fragment
         }
     }
@@ -40,7 +40,7 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
     private var mCountDownService: CountDownService? = null
     private var isDisplay = false
     private var mSuspensionHandleQueue = LinkedBlockingQueue<Int>(1)
-    var onMainActivityCallback: OnMainActivityCallback? = null
+    var onMainFragmentCallback: OnMainFragmentCallback? = null
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -148,8 +148,8 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
      * 处理底部按钮长按事件
      */
     private fun onLongClickListener() {
-        onMainActivityCallback?.setOnLongClickListener(View.OnLongClickListener { true })
-        onMainActivityCallback?.setOnTouchEventListener(object : OnClickProgressListener() {
+        onMainFragmentCallback?.setOnLongClickListener(View.OnLongClickListener { true })
+        onMainFragmentCallback?.setOnTouchEventListener(object : OnClickProgressListener() {
             override fun onStart() {
                 val type = mCountDownService?.getType()
                 val status = mCountDownService?.getStatus()
@@ -236,7 +236,7 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
         isDisplay = true
         changeSuspensionIcon()
         onLongClickListener()
-        onMainActivityCallback?.setOnClickListener(View.OnClickListener {
+        onMainFragmentCallback?.setOnClickListener(View.OnClickListener {
             onClickListener()
         })
     }
@@ -368,12 +368,12 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
             val res = mSuspensionHandleQueue.poll()
             if (resId == -1) {
                 if (res == null) {
-                    onMainActivityCallback?.onChangeIvSuspension(getSuspensionIcon())
+                    onMainFragmentCallback?.onChangeIvSuspension(getSuspensionIcon())
                 } else {
-                    onMainActivityCallback?.onChangeIvSuspension(res)
+                    onMainFragmentCallback?.onChangeIvSuspension(res)
                 }
             } else {
-                onMainActivityCallback?.onChangeIvSuspension(resId)
+                onMainFragmentCallback?.onChangeIvSuspension(resId)
             }
         } else {
             addSuspensionHandle(resId)
