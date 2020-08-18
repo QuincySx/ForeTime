@@ -8,22 +8,23 @@ import android.view.LayoutInflater
 import android.view.TouchDelegate
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.R
-import com.smallraw.foretime.app.common.adapter.ViewPagerAdapter
 import com.smallraw.foretime.app.config.getCalendarSettingConfig
 import com.smallraw.foretime.app.config.getDefCalendarSettingConfig
 import com.smallraw.foretime.app.config.saveConfig
-import com.smallraw.foretime.app.ui.calendar.CalendarFragment
-import com.smallraw.foretime.app.ui.tomatoBell.TomatoBellFragment
+import com.smallraw.foretime.app.ui.main.calendar.CalendarFragment
+import com.smallraw.foretime.app.ui.main.tomatoBell.TomatoBellFragment
+import com.smallraw.library.core.extensions.expandTouchArea
 import com.smallraw.time.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_main.*
 
 
 class MainFragment : BaseFragment(), OnMainFragmentCallback {
-    private lateinit var viewPagerAdapter: ViewPagerAdapter
-    private lateinit var tomatoBellFragment: TomatoBellFragment
-    private lateinit var calendarFragment: CalendarFragment
+    private lateinit var viewPagerAdapter: FragmentStateAdapter
+    private val mTotalCount = 2
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,8 +36,20 @@ class MainFragment : BaseFragment(), OnMainFragmentCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewPagerAdapter = ViewPagerAdapter(parentFragmentManager)
-        initFragment()
+        viewPagerAdapter = object : FragmentStateAdapter(this) {
+            override fun getItemCount(): Int {
+                return mTotalCount
+            }
+
+            override fun createFragment(position: Int): Fragment {
+                when (position) {
+                    0 -> TomatoBellFragment.newInstance(this@MainFragment)
+                    1 -> CalendarFragment.newInstance(this@MainFragment)
+                }
+                throw RuntimeException("Fragment State Adapter TotalCount error")
+            }
+        }
+
         initView()
 
         App.getInstance().getAppExecutors().diskIO().execute {
@@ -50,19 +63,14 @@ class MainFragment : BaseFragment(), OnMainFragmentCallback {
 //        Log.e("== read ==", DefConfig.mCalendarSettingConfig.get().toString())
     }
 
-    private fun initFragment() {
-        tomatoBellFragment = TomatoBellFragment.newInstance(this)
-        calendarFragment = CalendarFragment.newInstance(this)
-    }
 
     private fun initView() {
-        viewPagerAdapter.addFragment(tomatoBellFragment)
-        viewPagerAdapter.addFragment(calendarFragment)
         viewPager.adapter = viewPagerAdapter
         ivTomatoBell.isChecked = true
 
-        setTouchDelegate(ivCalendar, 100)
-        tomatoBellFragment.showViewAction()
+        ivCalendar.expandTouchArea(100)
+
+//        tomatoBellFragment.showViewAction()
 
 //        ivSuspension.setOnDragListener { v, event ->
 //            when (event.action) {
@@ -103,17 +111,17 @@ class MainFragment : BaseFragment(), OnMainFragmentCallback {
                 viewPager.currentItem = 0
                 ivTomatoBell.isChecked = true
                 ivCalendar.isChecked = false
-                setTouchDelegate(ivCalendar, 100)
-                calendarFragment.hiddenViewAction()
-                tomatoBellFragment.showViewAction()
+                ivCalendar.expandTouchArea(100)
+//                calendarFragment.hiddenViewAction()
+//                tomatoBellFragment.showViewAction()
             }
             R.id.ivCalendar -> {
                 viewPager.currentItem = 1
                 ivTomatoBell.isChecked = false
                 ivCalendar.isChecked = true
-                setTouchDelegate(ivTomatoBell, 100)
-                tomatoBellFragment.hiddenViewAction()
-                calendarFragment.showViewAction()
+                ivTomatoBell.expandTouchArea(100)
+//                tomatoBellFragment.hiddenViewAction()
+//                calendarFragment.showViewAction()
             }
         }
     }
@@ -132,7 +140,6 @@ class MainFragment : BaseFragment(), OnMainFragmentCallback {
     }
 
     override fun onDestroy() {
-        viewPagerAdapter.clear()
         super.onDestroy()
     }
 

@@ -1,4 +1,4 @@
-package com.smallraw.foretime.app.ui.calendar
+package com.smallraw.foretime.app.ui.main.calendar
 
 import android.graphics.Color
 import android.util.Log

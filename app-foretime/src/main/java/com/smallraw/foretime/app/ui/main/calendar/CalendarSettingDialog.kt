@@ -1,9 +1,7 @@
-package com.smallraw.foretime.app.ui.calendar
+package com.smallraw.foretime.app.ui.main.calendar
 
 import android.content.Context
 import android.content.Intent
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView

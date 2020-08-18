@@ -1,4 +1,4 @@
-package com.smallraw.foretime.app.ui.calendar
+package com.smallraw.foretime.app.ui.main.calendar
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModelProviders
@@ -15,7 +15,7 @@ import com.smallraw.foretime.app.common.widget.dialog.SelectDayTypeDialog
 import com.smallraw.foretime.app.entity.Weather
 import com.smallraw.foretime.app.repository.database.entity.MemorialDO
 import com.smallraw.foretime.app.ui.addTaskDay.AddTaskDayActivity
-import com.smallraw.foretime.app.ui.calendar.vm.CalendarVewModel
+import com.smallraw.foretime.app.ui.main.calendar.vm.CalendarVewModel
 import com.smallraw.foretime.app.ui.main.OnMainFragmentCallback
 import com.smallraw.foretime.app.ui.taskInfo.TaskInfoActivity
 import com.smallraw.time.base.BaseFragment

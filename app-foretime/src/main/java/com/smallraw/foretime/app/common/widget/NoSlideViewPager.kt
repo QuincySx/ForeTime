@@ -5,7 +5,7 @@ import androidx.viewpager.widget.ViewPager
 import android.util.AttributeSet
 import android.view.MotionEvent
 
-class NoSlideViewPager : androidx.viewpager.widget.ViewPager {
+class NoSlideViewPager : ViewPager {
     private var isCanScroll = false
 
     constructor(context: Context) : super(context) {}

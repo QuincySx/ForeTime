@@ -1,4 +1,4 @@
-package com.smallraw.foretime.app.ui.tomatoBell;
+package com.smallraw.foretime.app.ui.main.tomatoBell;
 
 import android.content.Context;
 import android.content.Intent;

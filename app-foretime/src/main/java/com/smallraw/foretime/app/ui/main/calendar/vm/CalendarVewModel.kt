@@ -1,4 +1,4 @@
-package com.smallraw.foretime.app.ui.calendar.vm
+package com.smallraw.foretime.app.ui.main.calendar.vm
 
 import android.util.Log
 import android.util.LongSparseArray

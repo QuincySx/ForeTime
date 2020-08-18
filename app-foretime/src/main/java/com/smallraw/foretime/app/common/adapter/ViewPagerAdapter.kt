@@ -1,29 +1,29 @@
 package com.smallraw.foretime.app.common.adapter
 
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import java.util.*
 
-class ViewPagerAdapter(manager: androidx.fragment.app.FragmentManager) : androidx.fragment.app.FragmentPagerAdapter(manager) {
+class ViewPagerAdapter(manager: Fragment) :
+    FragmentStateAdapter(manager) {
 
-    private val mFragmentList = ArrayList<androidx.fragment.app.Fragment>()
+    private val mFragmentList = ArrayList<Fragment>()
 
-    override fun getItem(position: Int): androidx.fragment.app.Fragment {
-        return mFragmentList[position]
-    }
-
-    override fun getCount(): Int {
-        return mFragmentList.size
-    }
-
-    fun addFragment(fragment: androidx.fragment.app.Fragment) {
+    fun addFragment(fragment: Fragment) {
         mFragmentList.add(fragment)
     }
 
     fun clear() {
         mFragmentList.clear()
         notifyDataSetChanged()
+    }
+
+    override fun getItemCount(): Int {
+        return mFragmentList.size
+    }
+
+    override fun createFragment(position: Int): Fragment {
+        return mFragmentList[position]
     }
 
 }
