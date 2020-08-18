@@ -2,13 +2,13 @@ package com.smallraw.foretime.app.ui.main
 
 import android.graphics.Rect
 import android.os.Bundle
-import androidx.annotation.DrawableRes
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.TouchDelegate
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.R
@@ -18,13 +18,16 @@ import com.smallraw.foretime.app.config.saveConfig
 import com.smallraw.foretime.app.ui.main.calendar.CalendarFragment
 import com.smallraw.foretime.app.ui.main.tomatoBell.TomatoBellFragment
 import com.smallraw.library.core.extensions.expandTouchArea
-import com.smallraw.time.base.BaseFragment
+import com.smallraw.foretime.app.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_main.*
 
 
-class MainFragment : BaseFragment(), OnMainFragmentCallback {
+class MainFragment : BaseFragment(), OnMainFragmentCallback, View.OnClickListener {
     private lateinit var viewPagerAdapter: FragmentStateAdapter
     private val mTotalCount = 2
+    private val mMainScreenViewModel by lazy {
+        ViewModelProvider(requireActivity()).get(MainScreenViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,11 +45,11 @@ class MainFragment : BaseFragment(), OnMainFragmentCallback {
             }
 
             override fun createFragment(position: Int): Fragment {
-                when (position) {
-                    0 -> TomatoBellFragment.newInstance(this@MainFragment)
-                    1 -> CalendarFragment.newInstance(this@MainFragment)
+                return when (position) {
+                    MainPageIndex.TOMATO_BELL -> TomatoBellFragment.newInstance(this@MainFragment)
+                    MainPageIndex.CALENDAR -> CalendarFragment.newInstance(this@MainFragment)
+                    else -> throw RuntimeException("Fragment State Adapter TotalCount error")
                 }
-                throw RuntimeException("Fragment State Adapter TotalCount error")
             }
         }
 
@@ -65,11 +68,22 @@ class MainFragment : BaseFragment(), OnMainFragmentCallback {
 
 
     private fun initView() {
+        viewPager.setUserInputEnabled(false)
         viewPager.adapter = viewPagerAdapter
+        
         ivTomatoBell.isChecked = true
+
+        ivTomatoBell.setOnClickListener(this)
+        ivCalendar.setOnClickListener(this)
 
         ivCalendar.expandTouchArea(100)
 
+        mMainScreenViewModel.mMainPageIndex.observe(viewLifecycleOwner) {
+            viewPager.currentItem = it
+        }
+        mMainScreenViewModel.mMainSuspensionButtonResource.observe(viewLifecycleOwner) {
+            ivSuspension?.setBackgroundResource(it)
+        }
 //        tomatoBellFragment.showViewAction()
 
 //        ivSuspension.setOnDragListener { v, event ->
@@ -105,13 +119,14 @@ class MainFragment : BaseFragment(), OnMainFragmentCallback {
 //        }
     }
 
-    fun onClick(view: View) {
+    override fun onClick(view: View) {
         when (view.id) {
             R.id.ivTomatoBell -> {
                 viewPager.currentItem = 0
                 ivTomatoBell.isChecked = true
                 ivCalendar.isChecked = false
                 ivCalendar.expandTouchArea(100)
+                mMainScreenViewModel.mMainPageIndex.value = MainPageIndex.TOMATO_BELL
 //                calendarFragment.hiddenViewAction()
 //                tomatoBellFragment.showViewAction()
             }
@@ -120,32 +135,10 @@ class MainFragment : BaseFragment(), OnMainFragmentCallback {
                 ivTomatoBell.isChecked = false
                 ivCalendar.isChecked = true
                 ivTomatoBell.expandTouchArea(100)
+                mMainScreenViewModel.mMainPageIndex.value = MainPageIndex.CALENDAR
 //                tomatoBellFragment.hiddenViewAction()
 //                calendarFragment.showViewAction()
             }
-        }
-    }
-
-    private fun setTouchDelegate(view: View, expandTouchWidth: Int) {
-        val parentView = view.parent as ViewGroup
-        view.post {
-            val rect = Rect()
-            view.getHitRect(rect)
-            rect.top -= expandTouchWidth
-            rect.bottom += expandTouchWidth
-            rect.left -= expandTouchWidth
-            rect.right += expandTouchWidth
-            parentView.touchDelegate = TouchDelegate(rect, view)
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
-    override fun onChangeIvSuspension(@DrawableRes id: Int) {
-        if (ivSuspension != null) {
-            ivSuspension.setBackgroundResource(id)
         }
     }
 

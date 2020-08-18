@@ -7,9 +7,8 @@ import jp.wasabeef.glide.transformations.BlurTransformation
 import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.bitmap.TransformationUtils.centerCrop
 import com.bumptech.glide.request.RequestOptions
-import com.smallraw.time.base.BaseActivity
+import com.smallraw.foretime.app.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_shape.*
 
 

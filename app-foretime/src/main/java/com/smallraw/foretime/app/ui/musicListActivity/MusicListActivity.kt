@@ -1,10 +1,9 @@
 package com.smallraw.foretime.app.ui.musicListActivity
 
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import com.smallraw.foretime.app.R
-import com.smallraw.time.base.BaseTitleBarActivity
+import com.smallraw.foretime.app.base.BaseTitleBarActivity
 import kotlinx.android.synthetic.main.activity_music_list.*
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import me.jessyan.autosize.utils.AutoSizeUtils

@@ -14,15 +14,16 @@ class CountDownTick
  * @param intervalTime        刷新间隔
  */
 @JvmOverloads constructor(
-        /**
-         * 要执行的时间
-         */
-        private var mImplementTimeMillis: Long,
-        private var mOnCountDownTickListener: OnCountDownTickListener,
-        /**
-         * 刷新间隔
-         */
-        private val mIntervalTime: Long = 20) : Handler.Callback {
+    /**
+     * 要执行的时间
+     */
+    private var mImplementTimeMillis: Long,
+    private var mOnCountDownTickListener: OnCountDownTickListener,
+    /**
+     * 刷新间隔
+     */
+    private val mIntervalTime: Long = 20
+) : Handler.Callback {
 
     private val mHandlerThread = HandlerThread("CountDownTick-Thread")
     private val mHandler: Handler

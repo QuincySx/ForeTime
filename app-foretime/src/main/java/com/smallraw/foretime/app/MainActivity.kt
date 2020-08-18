@@ -1,7 +1,7 @@
 package com.smallraw.foretime.app
 
 import android.os.Bundle
-import com.smallraw.time.base.BaseActivity
+import com.smallraw.foretime.app.base.BaseActivity
 
 class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

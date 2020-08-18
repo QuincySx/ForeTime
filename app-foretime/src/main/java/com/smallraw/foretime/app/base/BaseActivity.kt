@@ -1,4 +1,4 @@
-package com.smallraw.time.base
+package com.smallraw.foretime.app.base
 
 import android.app.Activity
 import android.os.Build

@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.base.BaseDialogView
 import com.smallraw.foretime.app.common.adapter.OnItemClickListener
@@ -18,7 +19,8 @@ import com.smallraw.foretime.app.ui.addTaskDay.AddTaskDayActivity
 import com.smallraw.foretime.app.ui.main.calendar.vm.CalendarVewModel
 import com.smallraw.foretime.app.ui.main.OnMainFragmentCallback
 import com.smallraw.foretime.app.ui.taskInfo.TaskInfoActivity
-import com.smallraw.time.base.BaseFragment
+import com.smallraw.foretime.app.base.BaseFragment
+import com.smallraw.foretime.app.ui.main.MainScreenViewModel
 import com.smallraw.time.model.BaseCallback
 import com.smallraw.time.model.WeatherModel
 import com.smallraw.time.utils.getWeekOfDate
@@ -38,21 +40,33 @@ class CalendarFragment : BaseFragment() {
         }
     }
 
-    private lateinit var mCalendarVewModel: CalendarVewModel
-
     private var onMainFragmentCallback: OnMainFragmentCallback? = null
     private val mCalendarList = ArrayList<MemorialDO>()
     private val mCalendarAdapter = CalendarAdapter(mCalendarList)
 
+    private val mMainScreenViewModel by lazy {
+        ViewModelProvider(requireActivity()).get(MainScreenViewModel::class.java)
+    }
+    private val mCalendarVewModel by lazy {
+        ViewModelProvider(this).get(CalendarVewModel::class.java)
+    }
+
     private val mItemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.Callback() {
-        override fun getMovementFlags(p0: androidx.recyclerview.widget.RecyclerView, p1: androidx.recyclerview.widget.RecyclerView.ViewHolder): Int {
+        override fun getMovementFlags(
+            p0: androidx.recyclerview.widget.RecyclerView,
+            p1: androidx.recyclerview.widget.RecyclerView.ViewHolder
+        ): Int {
             val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN or
                     ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
             val swipeFlags = 0
             return makeMovementFlags(dragFlags, swipeFlags)
         }
 
-        override fun onMove(p0: androidx.recyclerview.widget.RecyclerView, viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder, target: androidx.recyclerview.widget.RecyclerView.ViewHolder): Boolean {
+        override fun onMove(
+            p0: androidx.recyclerview.widget.RecyclerView,
+            viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder,
+            target: androidx.recyclerview.widget.RecyclerView.ViewHolder
+        ): Boolean {
             val fromPosition = viewHolder.adapterPosition
             //拿到当前拖拽到的item的viewHolder
             val toPosition = target.adapterPosition
@@ -76,22 +90,29 @@ class CalendarFragment : BaseFragment() {
             }
         }
 
-        override fun clearView(recyclerView: androidx.recyclerview.widget.RecyclerView, viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder) {
+        override fun clearView(
+            recyclerView: androidx.recyclerview.widget.RecyclerView,
+            viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder
+        ) {
             super.clearView(recyclerView, viewHolder)
             viewHolder.itemView.visibility = View.VISIBLE
         }
 
     })
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_calendar, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mCalendarVewModel = ViewModelProviders.of(this).get(CalendarVewModel::class.java)
+
         initView()
-        mCalendarVewModel.mActiveTaskListLiveData.observe(this, androidx.lifecycle.Observer {
+        mCalendarVewModel.mActiveTaskListLiveData.observe(viewLifecycleOwner, {
             Log.e("LiveData", "任务卡列表收到变化")
             mCalendarList.clear()
             mCalendarList.addAll(it!!.distinct())
@@ -109,46 +130,52 @@ class CalendarFragment : BaseFragment() {
         ivSetting.setOnClickListener {
             context?.let { context ->
                 CalendarSettingDialog.Builder(context)
-                        .setOnChangeSelectListener(object : CalendarSettingDialog.OnShowTypeListener {
-                            override fun onChange(dialog: BaseDialogView, type: Int) {
-                                mCalendarVewModel.queryActiveTask(type, 0)
-                                dialog.dismiss()
-                            }
-                        })
-                        .setSelectType(mCalendarVewModel.getDisplay())
-                        .atViewAuto(it)
-                        .build()
-                        .show()
+                    .setOnChangeSelectListener(object : CalendarSettingDialog.OnShowTypeListener {
+                        override fun onChange(dialog: BaseDialogView, type: Int) {
+                            mCalendarVewModel.queryActiveTask(type, 0)
+                            dialog.dismiss()
+                        }
+                    })
+                    .setSelectType(mCalendarVewModel.getDisplay())
+                    .atViewAuto(it)
+                    .build()
+                    .show()
             }
         }
     }
 
     private fun initView() {
-        recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(activity?.applicationContext)
+        recyclerView.layoutManager =
+            androidx.recyclerview.widget.LinearLayoutManager(activity?.applicationContext)
         recyclerView.adapter = mCalendarAdapter
         recyclerView.setHasFixedSize(true)
         mCalendarAdapter.notifyDataSetChanged()
 //        mItemTouchHelper.attachToRecyclerView(recyclerView)
     }
 
-    fun showViewAction() {
-        onMainFragmentCallback?.onChangeIvSuspension(R.drawable.ic_tab_suspension_add)
+    override fun onResume() {
+        super.onResume()
+        showViewAction()
+    }
+
+    private fun showViewAction() {
+        mMainScreenViewModel.mMainSuspensionButtonResource.value = R.drawable.ic_tab_suspension_add
         onMainFragmentCallback?.setOnLongClickListener(null)
         onMainFragmentCallback?.setOnClickListener(View.OnClickListener { v ->
             context?.let { context ->
                 SelectDayTypeDialog.Builder(context)
-                        .setOnClickCallback { view, index ->
-                            if (index == 0) {
-                                AddTaskDayActivity.startAdd(context, AddTaskDayActivity.DaysMatter)
-                            } else {
-                                AddTaskDayActivity.startAdd(context, AddTaskDayActivity.DaysCumulative)
-                            }
-                            view?.dismiss()
+                    .setOnClickCallback { view, index ->
+                        if (index == 0) {
+                            AddTaskDayActivity.startAdd(context, AddTaskDayActivity.DaysMatter)
+                        } else {
+                            AddTaskDayActivity.startAdd(context, AddTaskDayActivity.DaysCumulative)
                         }
-                        .atViewAuto(v, AutoSizeUtils.dp2px(context, 14F))
-                        .setWidth(300.toFloat())
-                        .build()
-                        .show()
+                        view?.dismiss()
+                    }
+                    .atViewAuto(v, AutoSizeUtils.dp2px(context, 14F))
+                    .setWidth(300.toFloat())
+                    .build()
+                    .show()
             }
         })
     }
@@ -192,7 +219,7 @@ class CalendarFragment : BaseFragment() {
 
     private fun setDateTime() {
         tvDate.text = monthDayFormat(Date())
-        tvWeek.text = getWeekOfDate(activity!!.applicationContext, Date())
+        tvWeek.text = getWeekOfDate(requireActivity().applicationContext, Date())
     }
 
     fun hiddenViewAction() {

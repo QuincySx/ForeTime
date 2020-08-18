@@ -1,8 +1,8 @@
-package com.smallraw.foretime.app.service
+package com.smallraw.foretime.app.tomatoBell
 
 import androidx.annotation.IntDef
-import com.smallraw.foretime.app.service.CountDownType.Companion.REPOSE
-import com.smallraw.foretime.app.service.CountDownType.Companion.WORKING
+import com.smallraw.foretime.app.tomatoBell.CountDownType.Companion.REPOSE
+import com.smallraw.foretime.app.tomatoBell.CountDownType.Companion.WORKING
 
 
 @IntDef(WORKING, REPOSE)

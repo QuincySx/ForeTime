@@ -13,24 +13,13 @@ import androidx.annotation.RequiresApi
 import android.util.Log
 import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.model.CountDownTick
-import com.smallraw.foretime.app.service.CountDownType.Companion.REPOSE
-import com.smallraw.foretime.app.service.CountDownType.Companion.WORKING
+import com.smallraw.foretime.app.tomatoBell.CountDownType.Companion.REPOSE
+import com.smallraw.foretime.app.tomatoBell.CountDownType.Companion.WORKING
+import com.smallraw.foretime.app.tomatoBell.CountDownStatus
+import com.smallraw.foretime.app.tomatoBell.CountDownType
 
 
-class CountDownService : Service(), CountDownTick.OnCountDownTickListener {
-    private var TAG = CountDownService::class.java.simpleName
-    private var mType = CountDownType.WORKING
-    private var onCountDownServiceListener: OnCountDownServiceListener? = null
-
-    //刷新间隔
-    private val mRefreshIntervalTime: Long = 25
-
-    private var mCountTickTimer = CountDownTick(1000 * 15, this, mRefreshIntervalTime)
-
-    override fun onCreate() {
-        super.onCreate()
-        reset(WORKING)
-    }
+class CountDownService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val notifyID = 1
@@ -48,162 +37,8 @@ class CountDownService : Service(), CountDownTick.OnCountDownTickListener {
         return super.onUnbind(intent)
     }
 
-    override fun onDestroy() {
-        stop()
-        super.onDestroy()
-    }
-
-    override fun onCountDownTick(millisUntilFinished: Long) {
-        if (millisUntilFinished < 1000) {
-            Log.d(TAG, "Countdown Residual $millisUntilFinished second")
-        }
-        onCountDownServiceListener?.onCountDownTick(millisUntilFinished)
-    }
-
-    override fun onCountDownFinish() {
-        Log.d(TAG, "finish")
-        changeType()
-        onCountDownServiceListener?.onCountDownFinish()
-    }
-
-    /**
-     * 修改状态
-     */
-    private fun changeType() {
-        when (mType) {
-            WORKING -> {
-                reset(REPOSE)
-                start()
-            }
-            REPOSE -> {
-                reset(WORKING)
-            }
-        }
-    }
-
     inner class CountDownBinder : Binder() {
         fun getService() = this@CountDownService
-    }
-
-    fun start() {
-        startCountDown()
-    }
-
-    fun pause() {
-        pauseCountDown()
-    }
-
-    fun resume() {
-        resumeCountDown()
-    }
-
-    fun reset(type: Int) {
-        resetCountDown(type)
-    }
-
-    fun stop() {
-        stopCountDown()
-    }
-
-    fun setCountDownTickListener(listener: OnCountDownServiceListener) {
-        onCountDownServiceListener = listener
-    }
-
-    fun getType() = getCountDownType()
-
-    fun getStatus() = getCountDownStatus()
-
-    fun getCountDownType() = mType
-
-    fun getSurplusTimeMillis() = mCountTickTimer.getSurplusTimeMillis()
-
-    fun getImplementTimeMillis() = mCountTickTimer.getImplementTimeMillis()
-
-    fun refreshTimeMillis() {
-        if (getStatus() == CountDownStatus.SPARE || getStatus() == CountDownStatus.FINISH) {
-            mCountTickTimer.setImplementTimeMillis(getCurrentTypeTime())
-            mCountTickTimer.reset()
-            onCountDownServiceListener?.onCountDownChange()
-        }
-    }
-
-    private fun startCountDown() {
-        mCountTickTimer.setImplementTimeMillis(getCurrentTypeTime())
-        mCountTickTimer.start()
-        Log.d(TAG, "CountDown start")
-        onCountDownServiceListener?.onCountDownChange()
-    }
-
-    private fun pauseCountDown() {
-        mCountTickTimer.pause()
-        onCountDownServiceListener?.onCountDownChange()
-        Log.d(TAG, "CountDown pause")
-    }
-
-    private fun resumeCountDown() {
-        mCountTickTimer.resume()
-        onCountDownServiceListener?.onCountDownChange()
-        Log.d(TAG, "CountDown resume")
-    }
-
-    private fun stopCountDown() {
-        mCountTickTimer.cancel()
-        onCountDownServiceListener?.onCountDownChange()
-        Log.d(TAG, "CountDown stop")
-    }
-
-    private fun resetCountDown(type: Int) {
-        mType = type
-        if (mCountTickTimer.isRuning()) {
-            mCountTickTimer.pause()
-        }
-        mCountTickTimer.setImplementTimeMillis(getCurrentTypeTime())
-        mCountTickTimer.reset()
-        Log.d(TAG, "CountDown Type reset ")
-        printCallStatck()
-        onCountDownServiceListener?.onCountDownChange()
-    }
-
-    fun printCallStatck() {
-        val ex = Throwable()
-        val stackElements = ex.stackTrace
-        if (stackElements != null) {
-            Log.e("Statck", "-----------------------------------")
-            for (i in stackElements.indices) {
-                val buffer = StringBuffer()
-                buffer.append(stackElements[i].className).append("\t")
-                buffer.append(stackElements[i].fileName).append("\t")
-                buffer.append(stackElements[i].lineNumber).append("\t")
-                buffer.append(stackElements[i].methodName)
-
-                Log.e("Statck", buffer.toString())
-            }
-            Log.e("Statck", "-----------------------------------")
-        }
-    }
-
-    private fun getCountDownStatus(): Int {
-        return if (mCountTickTimer.isPause())
-            CountDownStatus.PAUSE
-        else if (mCountTickTimer.isRuning())
-            CountDownStatus.RUNNING
-        else if (mCountTickTimer.isFinish())
-            CountDownStatus.FINISH
-        else
-            CountDownStatus.SPARE
-    }
-
-    /**
-     * 根据类型获取时间
-     */
-    private fun getCurrentTypeTime(): Long {
-        return when (mType) {
-//            WORKING -> 15 * 1000
-//            REPOSE -> 10 * 1000
-            WORKING -> App.getInstance().getCalendarConfig().focusTime
-            REPOSE -> App.getInstance().getCalendarConfig().restTime
-            else -> 0
-        }
     }
 
     private fun createErrorNotification(notifyID: Int) {
@@ -241,24 +76,5 @@ class CountDownService : Service(), CountDownTick.OnCountDownTickListener {
                 .setSmallIcon(android.R.mipmap.sym_def_app_icon)
                 .build()
         startForeground(notifyID, notification)
-    }
-
-    interface OnCountDownServiceListener {
-
-        /**
-         * CountDownService 时间变化触发的事件
-         */
-        fun onCountDownTick(millisUntilFinished: Long)
-
-        /**
-         * CountDownService 变更任务时触发的事件
-         */
-        fun onCountDownChange()
-
-        /**
-         * CountDownService 完成任务时触发的事件
-         */
-        fun onCountDownFinish()
-
     }
 }

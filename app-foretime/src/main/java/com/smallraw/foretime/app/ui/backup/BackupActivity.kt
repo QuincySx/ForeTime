@@ -1,10 +1,9 @@
 package com.smallraw.foretime.app.ui.backup
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
 import com.smallraw.foretime.app.R
-import com.smallraw.time.base.BaseTitleBarActivity
+import com.smallraw.foretime.app.base.BaseTitleBarActivity
 
 class BackupActivity : BaseTitleBarActivity() {
 

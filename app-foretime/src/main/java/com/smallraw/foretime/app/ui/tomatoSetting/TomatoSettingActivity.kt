@@ -7,7 +7,7 @@ import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.common.widget.dialog.SelectLongTimeDialog
 import com.smallraw.foretime.app.config.saveConfig
-import com.smallraw.time.base.BaseTitleBarActivity
+import com.smallraw.foretime.app.base.BaseTitleBarActivity
 import kotlinx.android.synthetic.main.activity_tomato_setting.*
 
 class TomatoSettingActivity : BaseTitleBarActivity() {

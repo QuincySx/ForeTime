@@ -12,7 +12,7 @@ import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.event.TaskChangeEvent
 import com.smallraw.foretime.app.repository.database.entity.MemorialDO
 import com.smallraw.foretime.app.ui.addTaskDay.AddTaskDayActivity
-import com.smallraw.time.base.BaseTitleBarActivity
+import com.smallraw.foretime.app.base.BaseTitleBarActivity
 import kotlinx.android.synthetic.main.activity_task_info.*
 import me.jessyan.autosize.utils.AutoSizeUtils
 import org.greenrobot.eventbus.EventBus

@@ -1,4 +1,4 @@
-package com.smallraw.time.base
+package com.smallraw.foretime.app.base
 
 import android.os.Handler
 import android.os.Message
@@ -6,7 +6,7 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import android.view.View
 
-abstract class BaseFragment : androidx.fragment.app.Fragment() {
+abstract class BaseFragment : Fragment() {
     companion object {
         private val HANDLER_MSG_PROMPT = 1
     }
@@ -20,9 +20,9 @@ abstract class BaseFragment : androidx.fragment.app.Fragment() {
 
     fun showPrompt(msg: String) {
         mHandler.sendMessage(
-                Message.obtain().apply {
-                    what = BaseFragment.HANDLER_MSG_PROMPT
-                    obj = msg
-                })
+            Message.obtain().apply {
+                what = HANDLER_MSG_PROMPT
+                obj = msg
+            })
     }
 }

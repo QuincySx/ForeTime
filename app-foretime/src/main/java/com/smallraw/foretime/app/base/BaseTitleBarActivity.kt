@@ -1,4 +1,4 @@
-package com.smallraw.time.base
+package com.smallraw.foretime.app.base
 
 import android.graphics.Color
 import android.os.Bundle
@@ -13,6 +13,7 @@ import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import com.smallraw.foretime.app.R
+import com.smallraw.foretime.app.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_base_title_activity.*
 
 

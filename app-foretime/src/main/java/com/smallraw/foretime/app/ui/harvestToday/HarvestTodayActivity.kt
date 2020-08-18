@@ -6,7 +6,7 @@ import android.os.Bundle
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.entity.Weather
 import com.smallraw.foretime.app.ui.shape.ShapeActivity
-import com.smallraw.time.base.BaseTitleBarActivity
+import com.smallraw.foretime.app.base.BaseTitleBarActivity
 import com.smallraw.time.model.BaseCallback
 import com.smallraw.time.model.WeatherModel
 import com.smallraw.time.utils.getWeekOfDate

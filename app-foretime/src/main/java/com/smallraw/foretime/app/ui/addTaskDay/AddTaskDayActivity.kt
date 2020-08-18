@@ -16,7 +16,7 @@ import com.smallraw.foretime.app.common.widget.dialog.SelectDateDialog
 import com.smallraw.foretime.app.constant.TaskTypeConsts
 import com.smallraw.foretime.app.event.TaskChangeEvent
 import com.smallraw.foretime.app.repository.database.entity.MemorialDO
-import com.smallraw.time.base.BaseTitleBarActivity
+import com.smallraw.foretime.app.base.BaseTitleBarActivity
 import kotlinx.android.synthetic.main.activity_add_countdown_day.*
 import org.greenrobot.eventbus.EventBus
 import java.text.SimpleDateFormat
