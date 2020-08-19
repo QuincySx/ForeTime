@@ -1,30 +1,29 @@
 package com.smallraw.foretime.app.ui.main.calendar
 
 import android.annotation.SuppressLint
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.recyclerview.widget.ItemTouchHelper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.base.BaseDialogView
+import com.smallraw.foretime.app.base.BaseFragment
 import com.smallraw.foretime.app.common.adapter.OnItemClickListener
 import com.smallraw.foretime.app.common.widget.dialog.SelectDayTypeDialog
 import com.smallraw.foretime.app.entity.Weather
 import com.smallraw.foretime.app.repository.database.entity.MemorialDO
 import com.smallraw.foretime.app.ui.addTaskDay.AddTaskDayActivity
-import com.smallraw.foretime.app.ui.main.calendar.vm.CalendarVewModel
-import com.smallraw.foretime.app.ui.main.OnMainFragmentCallback
-import com.smallraw.foretime.app.ui.taskInfo.TaskInfoActivity
-import com.smallraw.foretime.app.base.BaseFragment
 import com.smallraw.foretime.app.ui.main.MainScreenViewModel
+import com.smallraw.foretime.app.ui.main.OnMainCalendarFragmentCallback
+import com.smallraw.foretime.app.ui.main.calendar.vm.CalendarVewModel
+import com.smallraw.foretime.app.ui.taskInfo.TaskInfoActivity
+import com.smallraw.foretime.app.utils.monthDayFormat
 import com.smallraw.time.model.BaseCallback
 import com.smallraw.time.model.WeatherModel
 import com.smallraw.time.utils.getWeekOfDate
-import com.smallraw.foretime.app.utils.monthDayFormat
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import me.jessyan.autosize.utils.AutoSizeUtils
 import java.util.*
@@ -33,14 +32,14 @@ import java.util.*
 class CalendarFragment : BaseFragment() {
     companion object {
         @JvmStatic
-        fun newInstance(onMainFragmentCallback: OnMainFragmentCallback): CalendarFragment {
+        fun newInstance(onMainCalendarFragmentCallback: OnMainCalendarFragmentCallback): CalendarFragment {
             val fragment = CalendarFragment()
-            fragment.onMainFragmentCallback = onMainFragmentCallback
+            fragment.onMainCalendarFragmentCallback = onMainCalendarFragmentCallback
             return fragment
         }
     }
 
-    private var onMainFragmentCallback: OnMainFragmentCallback? = null
+    private var onMainCalendarFragmentCallback: OnMainCalendarFragmentCallback? = null
     private val mCalendarList = ArrayList<MemorialDO>()
     private val mCalendarAdapter = CalendarAdapter(mCalendarList)
 
@@ -158,10 +157,14 @@ class CalendarFragment : BaseFragment() {
         showViewAction()
     }
 
+    override fun onPause() {
+        hiddenViewAction()
+        super.onPause()
+    }
+
     private fun showViewAction() {
-        mMainScreenViewModel.mMainSuspensionButtonResource.value = R.drawable.ic_tab_suspension_add
-        onMainFragmentCallback?.setOnLongClickListener(null)
-        onMainFragmentCallback?.setOnClickListener(View.OnClickListener { v ->
+        mMainScreenViewModel.mCalendarSuspensionButtonResource.value = R.drawable.ic_tab_suspension_add
+        onMainCalendarFragmentCallback?.setOnClickListener(View.OnClickListener { v ->
             context?.let { context ->
                 SelectDayTypeDialog.Builder(context)
                     .setOnClickCallback { view, index ->

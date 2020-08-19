@@ -27,13 +27,23 @@
         app:layout_constraintRight_toRightOf="parent" />
 
     <ImageView
-        android:id="@+id/ivSuspension"
+        android:id="@+id/ivTomatoBellSuspension"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_marginBottom="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivCalendarSuspension"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="25dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:srcCompat="@drawable/ic_tab_suspension_add" />
 
     <RadioButton
         android:id="@+id/ivTomatoBell"

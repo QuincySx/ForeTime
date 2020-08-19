@@ -14,6 +14,7 @@ annotation class MainPageIndex {
 }
 
 class MainScreenViewModel : ViewModel() {
-    var mMainSuspensionButtonResource = MutableLiveData<@DrawableRes Int>()
+    var mTomatoBellSuspensionButtonResource = MutableLiveData<@DrawableRes Int>()
+    var mCalendarSuspensionButtonResource = MutableLiveData<@DrawableRes Int>()
     var mMainPageIndex = MutableLiveData<@MainPageIndex Int>(MainPageIndex.TOMATO_BELL)
 }

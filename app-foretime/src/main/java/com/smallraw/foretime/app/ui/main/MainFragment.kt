@@ -1,28 +1,30 @@
 package com.smallraw.foretime.app.ui.main
 
-import android.graphics.Rect
+import android.animation.ValueAnimator
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.TouchDelegate
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.R
+import com.smallraw.foretime.app.base.BaseFragment
 import com.smallraw.foretime.app.config.getCalendarSettingConfig
 import com.smallraw.foretime.app.config.getDefCalendarSettingConfig
 import com.smallraw.foretime.app.config.saveConfig
 import com.smallraw.foretime.app.ui.main.calendar.CalendarFragment
 import com.smallraw.foretime.app.ui.main.tomatoBell.TomatoBellFragment
+import com.smallraw.library.core.extensions.awaitEnd
 import com.smallraw.library.core.extensions.expandTouchArea
-import com.smallraw.foretime.app.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.coroutines.launch
 
 
-class MainFragment : BaseFragment(), OnMainFragmentCallback, View.OnClickListener {
+class MainFragment : BaseFragment(), View.OnClickListener {
     private lateinit var viewPagerAdapter: FragmentStateAdapter
     private val mTotalCount = 2
     private val mMainScreenViewModel by lazy {
@@ -46,8 +48,12 @@ class MainFragment : BaseFragment(), OnMainFragmentCallback, View.OnClickListene
 
             override fun createFragment(position: Int): Fragment {
                 return when (position) {
-                    MainPageIndex.TOMATO_BELL -> TomatoBellFragment.newInstance(this@MainFragment)
-                    MainPageIndex.CALENDAR -> CalendarFragment.newInstance(this@MainFragment)
+                    MainPageIndex.TOMATO_BELL -> TomatoBellFragment.newInstance(
+                        mOnMainTomatoBellFragmentCallback
+                    )
+                    MainPageIndex.CALENDAR -> CalendarFragment.newInstance(
+                        mOnMainCalendarFragmentCallback
+                    )
                     else -> throw RuntimeException("Fragment State Adapter TotalCount error")
                 }
             }
@@ -67,10 +73,33 @@ class MainFragment : BaseFragment(), OnMainFragmentCallback, View.OnClickListene
     }
 
 
+    private val mCalendarSuspensionAnim by lazy {
+        val translate = ValueAnimator.ofFloat(0f, 1f)
+        translate.addUpdateListener { animation ->
+            val scale = animation.animatedValue.toString().toFloat()
+            ivCalendarSuspension.setScaleX(scale)
+            ivCalendarSuspension.setScaleY(scale)
+        }
+        translate.duration = 140
+        translate
+    }
+
+    private val mTomatoBellSuspensionAnim by lazy {
+        val translate = ValueAnimator.ofFloat(0f, 1f)
+        translate.addUpdateListener { animation ->
+            val scale = animation.animatedValue.toString().toFloat()
+            ivTomatoBellSuspension.setScaleX(scale)
+            ivTomatoBellSuspension.setScaleY(scale)
+        }
+        translate.duration = 140
+        translate
+    }
+
     private fun initView() {
         viewPager.setUserInputEnabled(false)
         viewPager.adapter = viewPagerAdapter
-        
+        viewPager.offscreenPageLimit = 2
+
         ivTomatoBell.isChecked = true
 
         ivTomatoBell.setOnClickListener(this)
@@ -79,10 +108,43 @@ class MainFragment : BaseFragment(), OnMainFragmentCallback, View.OnClickListene
         ivCalendar.expandTouchArea(100)
 
         mMainScreenViewModel.mMainPageIndex.observe(viewLifecycleOwner) {
+            if (viewPager.currentItem == it) {
+                return@observe
+            }
             viewPager.currentItem = it
+            when (it) {
+                MainPageIndex.TOMATO_BELL -> {
+                    lifecycleScope.launch {
+                        ivTomatoBell.isChecked = true
+                        ivCalendar.isChecked = false
+                        mCalendarSuspensionAnim.cancel()
+                        mTomatoBellSuspensionAnim.cancel()
+                        mCalendarSuspensionAnim.reverse()
+                        mCalendarSuspensionAnim.awaitEnd()
+                        mTomatoBellSuspensionAnim.start()
+                        mTomatoBellSuspensionAnim.awaitEnd()
+                        ivCalendarSuspension.visibility = View.GONE
+                    }
+                }
+                MainPageIndex.CALENDAR -> {
+                    lifecycleScope.launch {
+                        ivTomatoBell.isChecked = false
+                        ivCalendar.isChecked = true
+                        ivCalendarSuspension.visibility = View.VISIBLE
+                        mCalendarSuspensionAnim.cancel()
+                        mTomatoBellSuspensionAnim.cancel()
+                        mTomatoBellSuspensionAnim.reverse()
+                        mTomatoBellSuspensionAnim.awaitEnd()
+                        mCalendarSuspensionAnim.start()
+                    }
+                }
+            }
         }
-        mMainScreenViewModel.mMainSuspensionButtonResource.observe(viewLifecycleOwner) {
-            ivSuspension?.setBackgroundResource(it)
+        mMainScreenViewModel.mTomatoBellSuspensionButtonResource.observe(viewLifecycleOwner) {
+            ivTomatoBellSuspension?.setBackgroundResource(it)
+        }
+        mMainScreenViewModel.mCalendarSuspensionButtonResource.observe(viewLifecycleOwner) {
+            ivCalendarSuspension?.setBackgroundResource(it)
         }
 //        tomatoBellFragment.showViewAction()
 
@@ -122,41 +184,41 @@ class MainFragment : BaseFragment(), OnMainFragmentCallback, View.OnClickListene
     override fun onClick(view: View) {
         when (view.id) {
             R.id.ivTomatoBell -> {
-                viewPager.currentItem = 0
-                ivTomatoBell.isChecked = true
-                ivCalendar.isChecked = false
                 ivCalendar.expandTouchArea(100)
                 mMainScreenViewModel.mMainPageIndex.value = MainPageIndex.TOMATO_BELL
-//                calendarFragment.hiddenViewAction()
-//                tomatoBellFragment.showViewAction()
             }
             R.id.ivCalendar -> {
-                viewPager.currentItem = 1
-                ivTomatoBell.isChecked = false
-                ivCalendar.isChecked = true
                 ivTomatoBell.expandTouchArea(100)
                 mMainScreenViewModel.mMainPageIndex.value = MainPageIndex.CALENDAR
-//                tomatoBellFragment.hiddenViewAction()
-//                calendarFragment.showViewAction()
             }
         }
     }
 
-    override fun setOnTouchEventListener(onTouchListener: View.OnTouchListener?) {
-        if (ivSuspension != null) {
-            ivSuspension.setOnTouchListener(onTouchListener)
+    private val mOnMainTomatoBellFragmentCallback = object : OnMainTomatoBellFragmentCallback {
+        override fun setOnTouchEventListener(onTouchListener: View.OnTouchListener?) {
+            if (ivTomatoBellSuspension != null) {
+                ivTomatoBellSuspension.setOnTouchListener(onTouchListener)
+            }
+        }
+
+        override fun setOnLongClickListener(onLongClickListener: View.OnLongClickListener?) {
+            if (ivTomatoBellSuspension != null) {
+                ivTomatoBellSuspension.setOnLongClickListener(onLongClickListener)
+            }
+        }
+
+        override fun setOnClickListener(onClickListener: View.OnClickListener?) {
+            if (ivTomatoBellSuspension != null) {
+                ivTomatoBellSuspension.setOnClickListener(onClickListener)
+            }
         }
     }
 
-    override fun setOnLongClickListener(onLongClickListener: View.OnLongClickListener?) {
-        if (ivSuspension != null) {
-            ivSuspension.setOnLongClickListener(onLongClickListener)
-        }
-    }
-
-    override fun setOnClickListener(onClickListener: View.OnClickListener?) {
-        if (ivSuspension != null) {
-            ivSuspension.setOnClickListener(onClickListener)
+    private val mOnMainCalendarFragmentCallback = object : OnMainCalendarFragmentCallback {
+        override fun setOnClickListener(onClickListener: View.OnClickListener?) {
+            if (ivCalendarSuspension != null) {
+                ivCalendarSuspension.setOnClickListener(onClickListener)
+            }
         }
     }
 }

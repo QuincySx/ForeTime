@@ -164,7 +164,7 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
 
         colorRecyclerView.setColors(COLOR_LIST)
 
-        ivSuspension.setOnClickListener {
+        ivTomatoBellSuspension.setOnClickListener {
             val titleName = titleName.text.toString()
             val note = tvNote.text.toString()
             val date = mSimpleDateFormat.parse(tvTargetDate.text.toString())

@@ -10,13 +10,6 @@ import android.os.Binder
 import android.os.Build
 import android.os.IBinder
 import androidx.annotation.RequiresApi
-import android.util.Log
-import com.smallraw.foretime.app.App
-import com.smallraw.foretime.app.model.CountDownTick
-import com.smallraw.foretime.app.tomatoBell.CountDownType.Companion.REPOSE
-import com.smallraw.foretime.app.tomatoBell.CountDownType.Companion.WORKING
-import com.smallraw.foretime.app.tomatoBell.CountDownStatus
-import com.smallraw.foretime.app.tomatoBell.CountDownType
 
 
 class CountDownService : Service() {

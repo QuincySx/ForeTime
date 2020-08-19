@@ -4,27 +4,28 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.content.res.Configuration
 import android.os.Bundle
 import android.os.IBinder
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.R
+import com.smallraw.foretime.app.base.BaseFragment
 import com.smallraw.foretime.app.common.widget.OnClickProgressListener
 import com.smallraw.foretime.app.service.CountDownService
 import com.smallraw.foretime.app.tomatoBell.CountDownStatus
 import com.smallraw.foretime.app.tomatoBell.CountDownType
-import com.smallraw.foretime.app.ui.main.OnMainFragmentCallback
-import com.smallraw.foretime.app.ui.musicListActivity.MusicListActivity
-import com.smallraw.foretime.app.base.BaseFragment
 import com.smallraw.foretime.app.tomatoBell.TomatoBellKit
 import com.smallraw.foretime.app.ui.main.MainScreenViewModel
+import com.smallraw.foretime.app.ui.main.OnMainTomatoBellFragmentCallback
+import com.smallraw.foretime.app.ui.musicListActivity.MusicListActivity
 import com.smallraw.foretime.app.utils.ms2Minutes
 import kotlinx.android.synthetic.main.fragment_tomato_bell.*
 import java.util.concurrent.LinkedBlockingQueue
@@ -33,9 +34,9 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
 
     companion object {
         @JvmStatic
-        fun newInstance(onMainFragmentCallback: OnMainFragmentCallback): TomatoBellFragment {
+        fun newInstance(onMainTomatoBellFragmentCallback: OnMainTomatoBellFragmentCallback): TomatoBellFragment {
             val fragment = TomatoBellFragment()
-            fragment.onMainFragmentCallback = onMainFragmentCallback
+            fragment.onMainTomatoBellFragmentCallback = onMainTomatoBellFragmentCallback
             return fragment
         }
     }
@@ -43,7 +44,7 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
     private var mCountDownService: CountDownService? = null
     private var isDisplay = false
     private var mSuspensionHandleQueue = LinkedBlockingQueue<Int>(1)
-    var onMainFragmentCallback: OnMainFragmentCallback? = null
+    var onMainTomatoBellFragmentCallback: OnMainTomatoBellFragmentCallback? = null
     private val mMainScreenViewModel by lazy {
         ViewModelProvider(requireActivity()).get(MainScreenViewModel::class.java)
     }
@@ -94,8 +95,12 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
         super.onResume()
         isDisplay = true
         dispatchRefresh()
-        mTomatoBellKit.refreshTimeMillis()
 
+        showViewAction()
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
         showViewAction()
     }
 
@@ -110,6 +115,10 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
         context?.bindService(intent, this, Context.BIND_AUTO_CREATE)
     }
 
+    override fun onPause() {
+        hiddenViewAction()
+        super.onPause()
+    }
 
     override fun onDestroy() {
         context?.unbindService(this)
@@ -120,8 +129,8 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
      * 处理底部按钮点击事件
      */
     private fun onClickListener() {
-        val type = mTomatoBellKit?.getType()
-        val status = mTomatoBellKit?.getStatus()
+        val type = mTomatoBellKit.getType()
+        val status = mTomatoBellKit.getStatus()
 
         if (null == type || null == status) {
             return
@@ -130,7 +139,7 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
         when (type) {
             CountDownType.WORKING -> {
                 when (status) {
-                    CountDownStatus.SPARE -> {
+                    CountDownStatus.READY -> {
                         mTomatoBellKit.start()
                     }
                     CountDownStatus.RUNNING -> {
@@ -146,7 +155,7 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
             }
             CountDownType.REPOSE -> {
                 when (status) {
-                    CountDownStatus.SPARE -> {
+                    CountDownStatus.READY -> {
                         mTomatoBellKit.start()
                     }
                 }
@@ -162,8 +171,8 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
      * 处理底部按钮长按事件
      */
     private fun onLongClickListener() {
-        onMainFragmentCallback?.setOnLongClickListener(View.OnLongClickListener { true })
-        onMainFragmentCallback?.setOnTouchEventListener(object : OnClickProgressListener() {
+        onMainTomatoBellFragmentCallback?.setOnLongClickListener(View.OnLongClickListener { true })
+        onMainTomatoBellFragmentCallback?.setOnTouchEventListener(object : OnClickProgressListener() {
             override fun onStart() {
                 val type = mTomatoBellKit?.getType()
                 val status = mTomatoBellKit?.getStatus()
@@ -250,7 +259,7 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
         isDisplay = true
         changeSuspensionIcon()
         onLongClickListener()
-        onMainFragmentCallback?.setOnClickListener(View.OnClickListener {
+        onMainTomatoBellFragmentCallback?.setOnClickListener(View.OnClickListener {
             onClickListener()
         })
     }
@@ -277,7 +286,7 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
             }
 
             when (status) {
-                CountDownStatus.SPARE -> {
+                CountDownStatus.READY -> {
                     stateInit(type, implementTimeMillis, surplusTimeMillis)
                 }
                 CountDownStatus.RUNNING -> {
@@ -382,12 +391,12 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
             val res = mSuspensionHandleQueue.poll()
             if (resId == -1) {
                 if (res == null) {
-                    mMainScreenViewModel.mMainSuspensionButtonResource.value = getSuspensionIcon()
+                    mMainScreenViewModel.mTomatoBellSuspensionButtonResource.value = getSuspensionIcon()
                 } else {
-                    mMainScreenViewModel.mMainSuspensionButtonResource.value = res
+                    mMainScreenViewModel.mTomatoBellSuspensionButtonResource.value = res
                 }
             } else {
-                mMainScreenViewModel.mMainSuspensionButtonResource.value = resId
+                mMainScreenViewModel.mTomatoBellSuspensionButtonResource.value = resId
             }
         } else {
             addSuspensionHandle(resId)
@@ -423,7 +432,7 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
         return when (mTomatoBellKit.getType()) {
             CountDownType.WORKING -> {
                 when (mTomatoBellKit.getStatus()) {
-                    CountDownStatus.SPARE -> {
+                    CountDownStatus.READY -> {
                         R.drawable.ic_tab_suspension_start
                     }
                     CountDownStatus.RUNNING -> {
@@ -439,7 +448,7 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
             }
             CountDownType.REPOSE -> {
                 when (mTomatoBellKit.getStatus()) {
-                    CountDownStatus.SPARE -> {
+                    CountDownStatus.READY -> {
                         R.drawable.ic_tab_suspension_rest
                     }
                     CountDownStatus.RUNNING -> {

@@ -1,9 +1,8 @@
 package com.smallraw.foretime.app.ui.main
 
-import androidx.annotation.DrawableRes
 import android.view.View
 
-interface OnMainFragmentCallback {
+interface OnMainTomatoBellFragmentCallback {
 
     fun setOnLongClickListener(onLongClickListener: View.OnLongClickListener?)
 
