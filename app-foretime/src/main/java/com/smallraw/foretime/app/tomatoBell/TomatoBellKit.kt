@@ -27,7 +27,7 @@ class TomatoBellKit : CountDownTick.OnCountDownTickListener {
     var mSurplusTimeMillisLiveData = MutableLiveData<Long>(0)
     var mImplementTimeMillisLiveData = MutableLiveData<Long>(0)
 
-    private var mCountTickTimer = CountDownTick(0, this, mRefreshIntervalTime)
+    private var mCountTickTimer = CountDownTick(getCurrentTypeTime(), this, mRefreshIntervalTime)
 
     override fun onCountDownStateChange(status: Int) {
         mCountDownStatusLiveData.postValue(status)

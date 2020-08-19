@@ -67,7 +67,7 @@ class CountDownTick
         mHandlerThread.priority = Thread.MAX_PRIORITY
         mHandlerThread.start()
         mHandler = Handler(mHandlerThread.looper, this)
-        mOnCountDownTickListener.onCountDownTotalMillis(mImplementTimeMillis)
+        reset()
     }
 
     fun getStatus(): Int {
