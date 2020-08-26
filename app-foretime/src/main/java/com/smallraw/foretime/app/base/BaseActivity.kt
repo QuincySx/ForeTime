@@ -1,16 +1,18 @@
 package com.smallraw.foretime.app.base
 
 import android.app.Activity
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
+import io.github.inflationx.viewpump.ViewPumpContextWrapper
 import qiu.niorgai.StatusBarCompat
 
 
@@ -20,6 +22,10 @@ abstract class BaseActivity : AppCompatActivity(), Handler.Callback {
     }
 
     protected val mHandler = Handler()
+
+    override fun attachBaseContext(newBase: Context?) {
+        super.attachBaseContext(newBase?.let { ViewPumpContextWrapper.wrap(it) })
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,7 +115,11 @@ abstract class BaseActivity : AppCompatActivity(), Handler.Callback {
                 val layoutParams = Class.forName("android.view.MiuiWindowManager\$LayoutParams")
                 val field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE")
                 var darkModeFlag = field.getInt(layoutParams)
-                val extraFlagField = clazz.getMethod("setExtraFlags", Int::class.javaPrimitiveType, Int::class.javaPrimitiveType)
+                val extraFlagField = clazz.getMethod(
+                    "setExtraFlags",
+                    Int::class.javaPrimitiveType,
+                    Int::class.javaPrimitiveType
+                )
                 if (dark) {
                     extraFlagField.invoke(window, darkModeFlag, darkModeFlag)//状态栏透明且黑色字体
                 } else {

@@ -16,7 +16,9 @@ import com.smallraw.foretime.app.entity.TaskConfigInfo
 import com.smallraw.foretime.app.executors.AppExecutors
 import com.smallraw.foretime.app.repository.DataRepository
 import com.smallraw.foretime.app.repository.database.AppDatabase
+import com.smallraw.lib.monitor.view.DumpViewTimeInterceptor
 import com.smallraw.library.core.utils.AppUtils
+import io.github.inflationx.viewpump.ViewPump
 
 class App : Application(), ViewModelStoreOwner {
     companion object {
@@ -46,6 +48,14 @@ class App : Application(), ViewModelStoreOwner {
         AppUtils.init(this)
         mAppExecutors = AppExecutors()
         initConfig()
+
+        ViewPump.init(
+            ViewPump.builder()
+                .addInterceptor(DumpViewTimeInterceptor())
+//                .addInterceptor(TextUpdatingInterceptor())
+//                .addInterceptor(CustomTextViewInterceptor())
+                .build()
+        )
     }
 
     private fun initConfig() {

@@ -1,1 +1,2 @@
+include ':lib-monitor-tools'
 include ':app-foretime', ':lib-core', ':lib-switch', ':lib-wheel'
