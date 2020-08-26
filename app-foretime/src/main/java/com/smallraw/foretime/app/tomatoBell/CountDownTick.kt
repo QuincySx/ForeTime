@@ -53,6 +53,11 @@ class CountDownTick
         fun onCountDownStateChange(@CountDownStatus status: Int)
 
         /**
+         * CountDownTimer 总时长的变化
+         */
+        fun onCountDownTotalMillis(totalMillis: Long)
+
+        /**
          * CountDownTimer 倒计时更改时触发的事件
          */
         fun onCountDownTick(millisUntilFinished: Long)
@@ -62,11 +67,22 @@ class CountDownTick
         mHandlerThread.priority = Thread.MAX_PRIORITY
         mHandlerThread.start()
         mHandler = Handler(mHandlerThread.looper, this)
+        reset()
     }
 
     fun getStatus(): Int {
         return mStatus
     }
+
+    /**
+     * 获取剩余时间
+     */
+    fun getSurplusTimeMillis() = mSurplusTimeMillis
+
+    /**
+     * 获取总时间
+     */
+    fun getImplementTimeMillis() = mImplementTimeMillis
 
     /**
      * 启动时间倒计时
@@ -159,11 +175,6 @@ class CountDownTick
         return false
     }
 
-    fun setOnCountDownTickListener(listener: OnCountDownTickListener): CountDownTick {
-        mOnCountDownTickListener = listener;
-        return this
-    }
-
     /**
      * 设置倒计时时长
      * hint：暂停后才可生效
@@ -171,16 +182,7 @@ class CountDownTick
     fun setImplementTimeMillis(millis: Long) {
         if (mStatus != CountDownStatus.RUNNING) {
             mImplementTimeMillis = millis
+            mOnCountDownTickListener.onCountDownTotalMillis(mImplementTimeMillis)
         }
     }
-
-    /**
-     * 获取剩余时间
-     */
-    fun getSurplusTimeMillis() = mSurplusTimeMillis
-
-    /**
-     * 获取总时间
-     */
-    fun getImplementTimeMillis() = mImplementTimeMillis
 }
