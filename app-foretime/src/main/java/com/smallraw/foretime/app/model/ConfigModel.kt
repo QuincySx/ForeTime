@@ -17,12 +17,11 @@ public class ConfigModel {
             val configDao = App.getInstance().getDatabase().configDao()
 
             val findByKey = configDao.findByKey(key)
-            if (findByKey.size > 0) {
-                val get = findByKey.get(0)
-                get.value = value
-                get.createTime = Date()
-                get.overTime = time
-                configDao.update(get)
+            if (findByKey != null) {
+                findByKey.value = value
+                findByKey.createTime = Date()
+                findByKey.overTime = time
+                configDao.update(findByKey)
             } else {
                 val configEntity = ConfigDO()
                 configEntity.name = key
@@ -43,15 +42,14 @@ public class ConfigModel {
             val configDao = App.getInstance().getDatabase().configDao()
 
             val findByKey = configDao.findByKey(key)
-            if (findByKey.size > 0) {
-                val get = findByKey.get(0)
+            if (findByKey != null) {
                 if (!checkTimeout) {
-                    return get.value!!
+                    return findByKey.value!!
                 }
-                val time = get.createTime?.time?.plus(get.overTime!!)
+                val time = findByKey.createTime?.time?.plus(findByKey.overTime!!)
                 val nowTime = Date().time
                 if (nowTime < time!!) {
-                    return get.value!!
+                    return findByKey.value!!
                 }
             }
             return ""
