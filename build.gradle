@@ -4,7 +4,7 @@ buildscript { scriptHandler ->
             to: scriptHandler
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.0-rc01'
+        classpath 'com.android.tools.build:gradle:4.0.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
     }
 }

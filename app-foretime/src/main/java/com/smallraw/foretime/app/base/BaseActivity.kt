@@ -2,10 +2,7 @@ package com.smallraw.foretime.app.base
 
 import android.app.Activity
 import android.content.Context
-import android.os.Build
-import android.os.Bundle
-import android.os.Handler
-import android.os.Message
+import android.os.*
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -28,6 +25,15 @@ abstract class BaseActivity : AppCompatActivity(), Handler.Callback {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Strict mode allows us to check that no writes or reads are blocking the UI thread.
+        StrictMode.setThreadPolicy(
+            StrictMode.ThreadPolicy.Builder()
+                .detectDiskReads()
+                .detectDiskWrites()
+                .penaltyDeath()
+                .build()
+        )
+
         super.onCreate(savedInstanceState)
         StatusBarCompat.translucentStatusBar(this, true)
 
