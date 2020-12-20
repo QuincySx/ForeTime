@@ -1,9 +1,6 @@
 package com.smallraw.foretime.app
 
 import android.app.Application
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
 import com.smallraw.foretime.app.config.getCalendarSettingConfig
@@ -16,7 +13,10 @@ import com.smallraw.foretime.app.entity.TaskConfigInfo
 import com.smallraw.foretime.app.executors.AppExecutors
 import com.smallraw.foretime.app.repository.DataRepository
 import com.smallraw.foretime.app.repository.database.AppDatabase
+import com.smallraw.lib.monitor.crash.LoopProxy
+import com.smallraw.lib.monitor.view.ViewInitTimeInterceptor
 import com.smallraw.library.core.utils.AppUtils
+import io.github.inflationx.viewpump.ViewPump
 
 class App : Application(), ViewModelStoreOwner {
     companion object {
@@ -41,11 +41,19 @@ class App : Application(), ViewModelStoreOwner {
     override fun onCreate() {
         System.setProperty("kotlinx.coroutines.debug", "on")
         super.onCreate()
-        handlerError()
+        LoopProxy.proxyCrash()
         mApp = this
         AppUtils.init(this)
         mAppExecutors = AppExecutors()
         initConfig()
+
+        ViewPump.init(
+            ViewPump.builder()
+                .addInterceptor(ViewInitTimeInterceptor())
+//                .addInterceptor(TextUpdatingInterceptor())
+//                .addInterceptor(CustomTextViewInterceptor())
+                .build()
+        )
     }
 
     private fun initConfig() {
@@ -86,21 +94,4 @@ class App : Application(), ViewModelStoreOwner {
     }
 
     override fun getViewModelStore() = mViewModelStore
-
-    private fun handlerError() {
-        // 捕获主线程 catch 防止闪退
-        // 不能防止 Activity onCreate 主线程报错，这样会因为 Activity 生命周期没走完而崩溃。
-        Handler().post(Runnable {
-            while (true) {
-                try {
-                    Looper.loop()
-                } catch (e: Throwable) {
-                    // 异常发给 AppCenter
-                    Log.e("Main Thread Catch", "如果软件 ANR 请检查报错信息是否在 Activity 的 onCreate() 方法。")
-//                    Crashes.trackError(e)
-                    e.printStackTrace()
-                }
-            }
-        })
-    }
 }

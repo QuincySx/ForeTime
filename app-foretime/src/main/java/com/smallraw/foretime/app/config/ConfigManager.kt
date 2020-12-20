@@ -1,8 +1,8 @@
 package com.smallraw.foretime.app.config
 
+import android.util.Log
 import androidx.annotation.StringDef
 import androidx.annotation.WorkerThread
-import android.util.Log
 import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.config.ConfigName.Companion.CalendarConfig
 import com.smallraw.foretime.app.config.ConfigName.Companion.MusicConfig
@@ -12,6 +12,7 @@ import com.smallraw.foretime.app.entity.MusicConfigInfo
 import com.smallraw.foretime.app.entity.TaskConfigInfo
 import com.smallraw.foretime.app.repository.database.entity.ConfigDO
 import kotlin.reflect.full.memberProperties
+import kotlin.system.measureTimeMillis
 
 @StringDef(TaskConfig, CalendarConfig, MusicConfig)
 annotation class ConfigName {
@@ -39,7 +40,8 @@ private fun <T> getConfig(@ConfigName configName: String): T {
     val clazz = sConfigList[configName]!!.second
     val config = loadAssetsConfig<T>(configName)
     val newInstance = clazz.newInstance()
-    clazz.declaredFields
+    val measureTimeMillis = measureTimeMillis {
+        clazz.declaredFields
             .filter {
                 it.name != "\$change"
                         && it.name != "serialVersionUID"
@@ -47,12 +49,14 @@ private fun <T> getConfig(@ConfigName configName: String): T {
             .forEach {
                 val findByKey = configDao.value.findByKey(it.name)
                 it.isAccessible = true
-                if (findByKey.isNotEmpty() && null != findByKey[0].value) {
-                    it.set(newInstance, convert(findByKey[0].value!!, it.type))
+                if (null != findByKey?.value) {
+                    it.set(newInstance, convert(findByKey.value!!, it.type))
                 } else {
                     it.set(newInstance, it.get(config))
                 }
             }
+    }
+    Log.e("==Java 反射==", "读取总耗时 $measureTimeMillis ms")
     return newInstance as T
 }
 
@@ -73,22 +77,32 @@ fun TaskConfigInfo.saveConfig() {
 
 @WorkerThread
 private fun save(configInfo: Any) {
-    // Kotlin 反射耗时太久
-     val kotlin = configInfo.javaClass.kotlin
-     kotlin.memberProperties.forEach {
-        Log.e("==反射==", "${it.name} ${it.call(configInfo)} ")
-     }
-    configInfo.javaClass
+    // Kotlin 反射耗时太久 800ms
+//    val measureTimeMillis = measureTimeMillis {
+//        val kotlin = configInfo.javaClass.kotlin
+//        val configDOList = ArrayList<ConfigDO>(kotlin.memberProperties.size)
+//        kotlin.memberProperties.forEach {
+//            configDOList.add(ConfigDO(it.name, "${it.get(configInfo)}"))
+//        }
+//        configDao.value.inserts(configDOList)
+//    }
+//    Log.e("==Kotlin 反射==", "总耗时 $measureTimeMillis ms")
+
+    val measureTimeMillis = measureTimeMillis {
+        val fields = configInfo.javaClass
             .declaredFields
             .filter {
                 it.name != "\$change"
                         && it.name != "serialVersionUID"
             }
-            .forEach {
-                it.isAccessible = true
-                Log.e("==反射==", "${it.name} ${it.get(configInfo)} ")
-                configDao.value.insert(ConfigDO(it.name, "${it.get(configInfo)}"))
-            }
+        val configDOList = ArrayList<ConfigDO>(fields.size)
+        fields.forEachIndexed { index, field ->
+            field.isAccessible = true
+            configDOList.add(ConfigDO(field.name, "${field.get(configInfo)}"))
+        }
+        configDao.value.inserts(configDOList)
+    }
+    Log.e("==Java 反射==", "总耗时 $measureTimeMillis ms")
 }
 
 private fun convert(param: String, classz: Class<*>): Any {

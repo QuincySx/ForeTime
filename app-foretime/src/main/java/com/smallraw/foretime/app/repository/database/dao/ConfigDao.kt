@@ -11,11 +11,14 @@ interface ConfigDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(configDO: ConfigDO): Long
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun inserts(configDOs: List<ConfigDO>): List<Long>
+
     @Query("SELECT * FROM config WHERE id = :id")
     fun findById(id: Long): ConfigDO
 
     @Query("SELECT * FROM config WHERE name= :name")
-    fun findByKey(name: String): List<ConfigDO>
+    fun findByKey(name: String): ConfigDO?
 
     @Update
     fun update(configDO: ConfigDO): Int
