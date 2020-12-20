@@ -16,15 +16,16 @@ import com.smallraw.foretime.app.base.BaseFragment
 import com.smallraw.foretime.app.config.getCalendarSettingConfig
 import com.smallraw.foretime.app.config.getDefCalendarSettingConfig
 import com.smallraw.foretime.app.config.saveConfig
+import com.smallraw.foretime.app.databinding.FragmentMainBinding
 import com.smallraw.foretime.app.ui.main.calendar.CalendarFragment
 import com.smallraw.foretime.app.ui.main.tomatoBell.TomatoBellFragment
 import com.smallraw.library.core.extensions.awaitEnd
 import com.smallraw.library.core.extensions.expandTouchArea
-import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.coroutines.launch
 
 
 class MainFragment : BaseFragment(), View.OnClickListener {
+    private lateinit var mBinding: FragmentMainBinding
     private lateinit var viewPagerAdapter: FragmentStateAdapter
     private val mTotalCount = 2
     private val mMainScreenViewModel by lazy {
@@ -35,8 +36,9 @@ class MainFragment : BaseFragment(), View.OnClickListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_main, container, false)
+    ): View {
+        mBinding = FragmentMainBinding.inflate(inflater, container, false)
+        return mBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -77,8 +79,8 @@ class MainFragment : BaseFragment(), View.OnClickListener {
         val translate = ValueAnimator.ofFloat(0f, 1f)
         translate.addUpdateListener { animation ->
             val scale = animation.animatedValue.toString().toFloat()
-            ivCalendarSuspension.setScaleX(scale)
-            ivCalendarSuspension.setScaleY(scale)
+            mBinding.ivCalendarSuspension.setScaleX(scale)
+            mBinding.ivCalendarSuspension.setScaleY(scale)
         }
         translate.duration = 140
         translate
@@ -88,49 +90,49 @@ class MainFragment : BaseFragment(), View.OnClickListener {
         val translate = ValueAnimator.ofFloat(0f, 1f)
         translate.addUpdateListener { animation ->
             val scale = animation.animatedValue.toString().toFloat()
-            ivTomatoBellSuspension.setScaleX(scale)
-            ivTomatoBellSuspension.setScaleY(scale)
+            mBinding.ivTomatoBellSuspension.setScaleX(scale)
+            mBinding.ivTomatoBellSuspension.setScaleY(scale)
         }
         translate.duration = 140
         translate
     }
 
     private fun initView() {
-        viewPager.setUserInputEnabled(false)
-        viewPager.adapter = viewPagerAdapter
-        viewPager.offscreenPageLimit = 2
+        mBinding.viewPager.setUserInputEnabled(false)
+        mBinding.viewPager.adapter = viewPagerAdapter
+        mBinding.viewPager.offscreenPageLimit = 2
 
-        ivTomatoBell.isChecked = true
+        mBinding.ivTomatoBell.isChecked = true
 
-        ivTomatoBell.setOnClickListener(this)
-        ivCalendar.setOnClickListener(this)
+        mBinding.ivTomatoBell.setOnClickListener(this)
+        mBinding.ivCalendar.setOnClickListener(this)
 
-        ivCalendar.expandTouchArea(100)
+        mBinding.ivCalendar.expandTouchArea(100)
 
         mMainScreenViewModel.mMainPageIndex.observe(viewLifecycleOwner) {
-            if (viewPager.currentItem == it) {
+            if (mBinding.viewPager.currentItem == it) {
                 return@observe
             }
-            viewPager.currentItem = it
+            mBinding.viewPager.currentItem = it
             when (it) {
                 MainPageIndex.TOMATO_BELL -> {
                     lifecycleScope.launch {
-                        ivTomatoBell.isChecked = true
-                        ivCalendar.isChecked = false
+                        mBinding.ivTomatoBell.isChecked = true
+                        mBinding.ivCalendar.isChecked = false
                         mCalendarSuspensionAnim.cancel()
                         mTomatoBellSuspensionAnim.cancel()
                         mCalendarSuspensionAnim.reverse()
                         mCalendarSuspensionAnim.awaitEnd()
                         mTomatoBellSuspensionAnim.start()
                         mTomatoBellSuspensionAnim.awaitEnd()
-                        ivCalendarSuspension.visibility = View.GONE
+                        mBinding.ivCalendarSuspension.visibility = View.GONE
                     }
                 }
                 MainPageIndex.CALENDAR -> {
                     lifecycleScope.launch {
-                        ivTomatoBell.isChecked = false
-                        ivCalendar.isChecked = true
-                        ivCalendarSuspension.visibility = View.VISIBLE
+                        mBinding.ivTomatoBell.isChecked = false
+                        mBinding.ivCalendar.isChecked = true
+                        mBinding.ivCalendarSuspension.visibility = View.VISIBLE
                         mCalendarSuspensionAnim.cancel()
                         mTomatoBellSuspensionAnim.cancel()
                         mTomatoBellSuspensionAnim.reverse()
@@ -141,10 +143,10 @@ class MainFragment : BaseFragment(), View.OnClickListener {
             }
         }
         mMainScreenViewModel.mTomatoBellSuspensionButtonResource.observe(viewLifecycleOwner) {
-            ivTomatoBellSuspension?.setBackgroundResource(it)
+            mBinding.ivTomatoBellSuspension?.setBackgroundResource(it)
         }
         mMainScreenViewModel.mCalendarSuspensionButtonResource.observe(viewLifecycleOwner) {
-            ivCalendarSuspension?.setBackgroundResource(it)
+            mBinding.ivCalendarSuspension?.setBackgroundResource(it)
         }
 //        tomatoBellFragment.showViewAction()
 
@@ -184,11 +186,11 @@ class MainFragment : BaseFragment(), View.OnClickListener {
     override fun onClick(view: View) {
         when (view.id) {
             R.id.ivTomatoBell -> {
-                ivCalendar.expandTouchArea(100)
+                mBinding.ivCalendar.expandTouchArea(100)
                 mMainScreenViewModel.mMainPageIndex.value = MainPageIndex.TOMATO_BELL
             }
             R.id.ivCalendar -> {
-                ivTomatoBell.expandTouchArea(100)
+                mBinding.ivTomatoBell.expandTouchArea(100)
                 mMainScreenViewModel.mMainPageIndex.value = MainPageIndex.CALENDAR
             }
         }
@@ -196,28 +198,28 @@ class MainFragment : BaseFragment(), View.OnClickListener {
 
     private val mOnMainTomatoBellFragmentCallback = object : OnMainTomatoBellFragmentCallback {
         override fun setOnTouchEventListener(onTouchListener: View.OnTouchListener?) {
-            if (ivTomatoBellSuspension != null) {
-                ivTomatoBellSuspension.setOnTouchListener(onTouchListener)
+            if (mBinding.ivTomatoBellSuspension != null) {
+                mBinding.ivTomatoBellSuspension.setOnTouchListener(onTouchListener)
             }
         }
 
         override fun setOnLongClickListener(onLongClickListener: View.OnLongClickListener?) {
-            if (ivTomatoBellSuspension != null) {
-                ivTomatoBellSuspension.setOnLongClickListener(onLongClickListener)
+            if (mBinding.ivTomatoBellSuspension != null) {
+                mBinding.ivTomatoBellSuspension.setOnLongClickListener(onLongClickListener)
             }
         }
 
         override fun setOnClickListener(onClickListener: View.OnClickListener?) {
-            if (ivTomatoBellSuspension != null) {
-                ivTomatoBellSuspension.setOnClickListener(onClickListener)
+            if (mBinding.ivTomatoBellSuspension != null) {
+                mBinding.ivTomatoBellSuspension.setOnClickListener(onClickListener)
             }
         }
     }
 
     private val mOnMainCalendarFragmentCallback = object : OnMainCalendarFragmentCallback {
         override fun setOnClickListener(onClickListener: View.OnClickListener?) {
-            if (ivCalendarSuspension != null) {
-                ivCalendarSuspension.setOnClickListener(onClickListener)
+            if (mBinding.ivCalendarSuspension != null) {
+                mBinding.ivCalendarSuspension.setOnClickListener(onClickListener)
             }
         }
     }

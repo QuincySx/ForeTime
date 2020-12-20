@@ -9,14 +9,17 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.smallraw.foretime.app.base.BaseActivity
-import kotlinx.android.synthetic.main.activity_shape.*
+import com.smallraw.foretime.app.databinding.ActivityShapeBinding
 
 
 class ShapeActivity : BaseActivity() {
+    private val mBinding by lazy {
+        ActivityShapeBinding.inflate(layoutInflater)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_shape)
+        setContentView(mBinding.root)
     }
 
     override fun onStart() {
@@ -25,6 +28,6 @@ class ShapeActivity : BaseActivity() {
                 .apply(bitmapTransform(BlurTransformation(25, 3))
                         .diskCacheStrategy(DiskCacheStrategy.NONE))
                 .apply(RequestOptions().centerCrop())
-                .into(ivBackground)
+                .into(mBinding.ivBackground)
     }
 }

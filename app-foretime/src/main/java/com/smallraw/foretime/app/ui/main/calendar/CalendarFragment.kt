@@ -13,6 +13,7 @@ import com.smallraw.foretime.app.base.BaseDialogView
 import com.smallraw.foretime.app.base.BaseFragment
 import com.smallraw.foretime.app.common.adapter.OnItemClickListener
 import com.smallraw.foretime.app.common.widget.dialog.SelectDayTypeDialog
+import com.smallraw.foretime.app.databinding.FragmentCalendarBinding
 import com.smallraw.foretime.app.entity.Weather
 import com.smallraw.foretime.app.repository.database.entity.MemorialDO
 import com.smallraw.foretime.app.ui.addTaskDay.AddTaskDayActivity
@@ -24,7 +25,6 @@ import com.smallraw.foretime.app.utils.monthDayFormat
 import com.smallraw.time.model.BaseCallback
 import com.smallraw.time.model.WeatherModel
 import com.smallraw.time.utils.getWeekOfDate
-import kotlinx.android.synthetic.main.fragment_calendar.*
 import me.jessyan.autosize.utils.AutoSizeUtils
 import java.util.*
 
@@ -39,6 +39,7 @@ class CalendarFragment : BaseFragment() {
         }
     }
 
+    private lateinit var mBinding: FragmentCalendarBinding
     private var onMainCalendarFragmentCallback: OnMainCalendarFragmentCallback? = null
     private val mCalendarList = ArrayList<MemorialDO>()
     private val mCalendarAdapter = CalendarAdapter(mCalendarList)
@@ -103,8 +104,9 @@ class CalendarFragment : BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_calendar, container, false)
+    ): View {
+        mBinding = FragmentCalendarBinding.inflate(inflater, container, false)
+        return mBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -126,7 +128,7 @@ class CalendarFragment : BaseFragment() {
         setDateTime()
         initWeatherNow()
 
-        ivSetting.setOnClickListener {
+        mBinding.ivSetting.setOnClickListener {
             context?.let { context ->
                 CalendarSettingDialog.Builder(context)
                     .setOnChangeSelectListener(object : CalendarSettingDialog.OnShowTypeListener {
@@ -144,10 +146,10 @@ class CalendarFragment : BaseFragment() {
     }
 
     private fun initView() {
-        recyclerView.layoutManager =
+        mBinding.recyclerView.layoutManager =
             androidx.recyclerview.widget.LinearLayoutManager(activity?.applicationContext)
-        recyclerView.adapter = mCalendarAdapter
-        recyclerView.setHasFixedSize(true)
+        mBinding.recyclerView.adapter = mCalendarAdapter
+        mBinding.recyclerView.setHasFixedSize(true)
         mCalendarAdapter.notifyDataSetChanged()
 //        mItemTouchHelper.attachToRecyclerView(recyclerView)
     }
@@ -163,7 +165,8 @@ class CalendarFragment : BaseFragment() {
     }
 
     private fun showViewAction() {
-        mMainScreenViewModel.mCalendarSuspensionButtonResource.value = R.drawable.ic_tab_suspension_add
+        mMainScreenViewModel.mCalendarSuspensionButtonResource.value =
+            R.drawable.ic_tab_suspension_add
         onMainCalendarFragmentCallback?.setOnClickListener(View.OnClickListener { v ->
             context?.let { context ->
                 SelectDayTypeDialog.Builder(context)
@@ -208,12 +211,12 @@ class CalendarFragment : BaseFragment() {
     private fun setWeatherData(data: Weather?) {
         try {
             if (data == null) {
-                ivWeather.setBackgroundResource(R.drawable.ic_weather_qing)
-                tvWeather.text = "暂无 · 0°C"
+                mBinding.ivWeather.setBackgroundResource(R.drawable.ic_weather_qing)
+                mBinding.tvWeather.text = "暂无 · 0°C"
             } else {
                 val weatherImage = WeatherModel.getWeatherImage(data.cond_code!!)
-                ivWeather.setBackgroundResource(weatherImage)
-                tvWeather.text = "${data.cond_txt} · ${data.tmp}°C"
+                mBinding.ivWeather.setBackgroundResource(weatherImage)
+                mBinding.tvWeather.text = "${data.cond_txt} · ${data.tmp}°C"
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -221,8 +224,8 @@ class CalendarFragment : BaseFragment() {
     }
 
     private fun setDateTime() {
-        tvDate.text = monthDayFormat(Date())
-        tvWeek.text = getWeekOfDate(requireActivity().applicationContext, Date())
+        mBinding.tvDate.text = monthDayFormat(Date())
+        mBinding.tvWeek.text = getWeekOfDate(requireActivity().applicationContext, Date())
     }
 
     fun hiddenViewAction() {

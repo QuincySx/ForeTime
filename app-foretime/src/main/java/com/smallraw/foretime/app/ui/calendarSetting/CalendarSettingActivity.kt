@@ -6,16 +6,19 @@ import android.os.Bundle
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.ui.backup.BackupActivity
 import com.smallraw.foretime.app.base.BaseTitleBarActivity
-import kotlinx.android.synthetic.main.activity_calendar_setting.*
+import com.smallraw.foretime.app.databinding.ActivityCalendarSettingBinding
 
 class CalendarSettingActivity : BaseTitleBarActivity() {
+    private val mBinding by lazy {
+        ActivityCalendarSettingBinding.inflate(layoutInflater)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_calendar_setting)
+        setContentView(mBinding.root)
         setTitleBarLeftImage(R.drawable.ic_back_black)
 
-        layoutBackup.setOnClickListener {
+        mBinding.layoutBackup.setOnClickListener {
             val i = Intent(this, BackupActivity::class.java)
             startActivity(i)
         }

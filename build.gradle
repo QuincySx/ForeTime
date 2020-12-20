@@ -4,13 +4,13 @@ buildscript { scriptHandler ->
             to: scriptHandler
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.0-rc01'
+        classpath 'com.android.tools.build:gradle:4.1.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
     }
 }
 
 plugins {
-    id 'com.diffplug.spotless' version '5.1.0'
+    id 'com.diffplug.spotless' version '5.8.2'
 }
 
 ext {

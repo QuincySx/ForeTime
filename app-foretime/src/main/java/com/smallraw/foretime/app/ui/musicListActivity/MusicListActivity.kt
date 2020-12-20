@@ -4,17 +4,19 @@ import android.os.Bundle
 import android.view.View
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.base.BaseTitleBarActivity
-import kotlinx.android.synthetic.main.activity_music_list.*
-import kotlinx.android.synthetic.main.fragment_calendar.*
+import com.smallraw.foretime.app.databinding.ActivityMusicListBinding
 import me.jessyan.autosize.utils.AutoSizeUtils
 
 class MusicListActivity : BaseTitleBarActivity() {
+    private val mBinding by lazy {
+        ActivityMusicListBinding.inflate(layoutInflater)
+    }
     private val mMusicList = ArrayList<MusicBean>()
     private val mAdapter = MusicAdapter(mMusicList)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_music_list)
+        setContentView(mBinding.root)
         setTitleBarLeftImage(R.drawable.ic_back_black)
         addRightView(newTitleRightView())
 
@@ -25,9 +27,9 @@ class MusicListActivity : BaseTitleBarActivity() {
     }
 
     private fun initRecyclerView() {
-        recyclerViewMusic.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
-        recyclerViewMusic.adapter = mAdapter
-        recyclerView.setHasFixedSize(true)
+        mBinding.recyclerViewMusic.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
+        mBinding.recyclerViewMusic.adapter = mAdapter
+        mBinding.recyclerViewMusic.setHasFixedSize(true)
     }
 
     private fun newTitleRightView(): View {

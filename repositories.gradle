@@ -4,6 +4,7 @@ repositories {
         content {
             includeGroupByRegex "com.android.*"
             includeGroupByRegex "androidx.*"
+            includeGroupByRegex "com.google.*"
             includeGroupByRegex "com.google.test.*"
             includeGroup "android.arch.lifecycle"
             includeGroup "android.arch.core"

@@ -8,13 +8,16 @@ import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.common.widget.dialog.SelectLongTimeDialog
 import com.smallraw.foretime.app.config.saveConfig
 import com.smallraw.foretime.app.base.BaseTitleBarActivity
-import kotlinx.android.synthetic.main.activity_tomato_setting.*
+import com.smallraw.foretime.app.databinding.ActivityTomatoSettingBinding
 
 class TomatoSettingActivity : BaseTitleBarActivity() {
+    private val mBinding by lazy {
+        ActivityTomatoSettingBinding.inflate(layoutInflater)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_tomato_setting)
+        setContentView(mBinding.root)
         setTitleBarLeftImage(R.drawable.ic_back_black)
         initView()
     }
@@ -22,20 +25,20 @@ class TomatoSettingActivity : BaseTitleBarActivity() {
     @SuppressLint("SetTextI18n")
     private fun initView() {
         App.getInstance().getMusicConfig()
-        tvLongTimeAbsorbed.text = "${App.getInstance().getCalendarConfig().focusTime / 60 / 1000} 分钟"
-        tvLongTimeRest.text = "${App.getInstance().getCalendarConfig().restTime / 60 / 1000} 分钟"
-        swbScreenAlwaysOn.isChecked = App.getInstance().getCalendarConfig().flipFocus
+        mBinding.tvLongTimeAbsorbed.text = "${App.getInstance().getCalendarConfig().focusTime / 60 / 1000} 分钟"
+        mBinding.tvLongTimeRest.text = "${App.getInstance().getCalendarConfig().restTime / 60 / 1000} 分钟"
+        mBinding.swbScreenAlwaysOn.isChecked = App.getInstance().getCalendarConfig().flipFocus
 
-        swbPlayMusic.isChecked = App.getInstance().getMusicConfig().playMusic
-        swbRestPlayMusic.isChecked = App.getInstance().getMusicConfig().restPlayMusic
+        mBinding.swbPlayMusic.isChecked = App.getInstance().getMusicConfig().playMusic
+        mBinding.swbRestPlayMusic.isChecked = App.getInstance().getMusicConfig().restPlayMusic
 
-        swbScreenAlwaysOn.setOnCheckedChangeListener { buttonView, isChecked ->
+        mBinding.swbScreenAlwaysOn.setOnCheckedChangeListener { buttonView, isChecked ->
             App.getInstance().getCalendarConfig().screenAlwaysOn = isChecked
         }
-        swbPlayMusic.setOnCheckedChangeListener { buttonView, isChecked ->
+        mBinding.swbPlayMusic.setOnCheckedChangeListener { buttonView, isChecked ->
             App.getInstance().getMusicConfig().playMusic = isChecked
         }
-        swbRestPlayMusic.setOnCheckedChangeListener { buttonView, isChecked ->
+        mBinding.swbRestPlayMusic.setOnCheckedChangeListener { buttonView, isChecked ->
             App.getInstance().getMusicConfig().restPlayMusic = isChecked
         }
     }
@@ -49,10 +52,10 @@ class TomatoSettingActivity : BaseTitleBarActivity() {
                         .setUnit("Min")
                         .select((App.getInstance().getCalendarConfig().focusTime / 60 / 1000).toInt())
                         .setOnWheelCallback {
-                            tvLongTimeAbsorbed.text = "$it 分钟"
+                            mBinding.tvLongTimeAbsorbed.text = "$it 分钟"
                             App.getInstance().getCalendarConfig().focusTime = it.toInt() * 60 * 1000L
                         }
-                        .atViewAuto(tvLongTimeAbsorbed)
+                        .atViewAuto(mBinding.tvLongTimeAbsorbed)
                         .build()
                         .show()
             }
@@ -62,10 +65,10 @@ class TomatoSettingActivity : BaseTitleBarActivity() {
                         .setUnit("Min")
                         .select((App.getInstance().getCalendarConfig().restTime / 60 / 1000).toInt())
                         .setOnWheelCallback {
-                            tvLongTimeRest.text = "$it 分钟"
+                            mBinding.tvLongTimeRest.text = "$it 分钟"
                             App.getInstance().getCalendarConfig().restTime = it.toInt() * 60 * 1000L
                         }
-                        .atViewAuto(tvLongTimeAbsorbed)
+                        .atViewAuto(mBinding.tvLongTimeAbsorbed)
                         .build()
                         .show()
             }

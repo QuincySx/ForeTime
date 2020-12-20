@@ -17,7 +17,7 @@ import com.smallraw.foretime.app.constant.TaskTypeConsts
 import com.smallraw.foretime.app.event.TaskChangeEvent
 import com.smallraw.foretime.app.repository.database.entity.MemorialDO
 import com.smallraw.foretime.app.base.BaseTitleBarActivity
-import kotlinx.android.synthetic.main.activity_add_countdown_day.*
+import com.smallraw.foretime.app.databinding.ActivityAddCountdownDayBinding
 import org.greenrobot.eventbus.EventBus
 import java.text.SimpleDateFormat
 import java.util.*
@@ -85,6 +85,10 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
         private val REPEAT_LIST = arrayListOf("从不", "每周", "每月", "每年")
     }
 
+    private val mBinding by lazy {
+        ActivityAddCountdownDayBinding.inflate(layoutInflater)
+    }
+
     private var mCalendar = Calendar.getInstance()
 
     private val mDataRepository = App.getInstance().getRepository()
@@ -107,14 +111,14 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_countdown_day)
+        setContentView(mBinding.root)
         setTitleBarLeftImage(R.drawable.ic_back_black)
 
         mCurrentDayOptionType = intent.getIntExtra(DAY_OPTION_TYPE_EXTRA, OptionTypeAdd)
         when (mCurrentDayOptionType) {
             OptionTypeAdd -> {
                 mCalendar.timeInMillis = System.currentTimeMillis()
-                tvTargetDate.text = "${mCalendar.get(Calendar.YEAR)}-${mCalendar.get(Calendar.MONTH) + 1}-${mCalendar.get(Calendar.DAY_OF_MONTH)}"
+                mBinding.tvTargetDate.text = "${mCalendar.get(Calendar.YEAR)}-${mCalendar.get(Calendar.MONTH) + 1}-${mCalendar.get(Calendar.DAY_OF_MONTH)}"
             }
             OptionTypeEdit -> {
                 mEditTaskId = intent.getLongExtra(TASK_ID_EXTRA, mEditTaskId)
@@ -129,10 +133,10 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
 
         dispatchTypeTitle(mCurrentDayType)
 
-        tvTargetDate.setOnClickListener {
+        mBinding.tvTargetDate.setOnClickListener {
             var date: Long
             try {
-                val parse = mSimpleDateFormat.parse(tvTargetDate.text.toString())
+                val parse = mSimpleDateFormat.parse(mBinding.tvTargetDate.text.toString())
                 date = parse.time
             } catch (e: Exception) {
                 date = System.currentTimeMillis()
@@ -140,36 +144,36 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
             }
             SelectDateDialog.Builder(this)
                     .setOnWheelCallback { date ->
-                        tvTargetDate.text = mSimpleDateFormat.format(date)
+                        mBinding.tvTargetDate.text = mSimpleDateFormat.format(date)
                     }
                     .setTime(date)
-                    .atViewAuto(tvTargetDate)
+                    .atViewAuto(mBinding.tvTargetDate)
                     .build()
                     .show()
         }
 
-        tvRepeat.setOnClickListener {
+        mBinding.tvRepeat.setOnClickListener {
             MultipleItemDialog.Builder(this)
                     .setDate(REPEAT_LIST)
                     .setSelectItem(mSelectRepeatIndex)
                     .setSelectItem { dialog, i ->
                         mSelectRepeatIndex = i
-                        tvRepeat.text = REPEAT_LIST[i]
+                        mBinding.tvRepeat.text = REPEAT_LIST[i]
                         dialog.dismiss()
                     }
-                    .atViewAuto(tvRepeat)
+                    .atViewAuto(mBinding.tvRepeat)
                     .build()
                     .show()
         }
 
-        colorRecyclerView.setColors(COLOR_LIST)
+        mBinding.colorRecyclerView.setColors(COLOR_LIST)
 
-        ivTomatoBellSuspension.setOnClickListener {
-            val titleName = titleName.text.toString()
-            val note = tvNote.text.toString()
-            val date = mSimpleDateFormat.parse(tvTargetDate.text.toString())
-            val repeat = tvRepeat.text.toString()
-            val color = colorRecyclerView.selectColor
+        mBinding.ivTomatoBellSuspension.setOnClickListener {
+            val titleName = mBinding.titleName.text.toString()
+            val note = mBinding.tvNote.text.toString()
+            val date = mSimpleDateFormat.parse(mBinding.tvTargetDate.text.toString())
+            val repeat = mBinding.tvRepeat.text.toString()
+            val color = mBinding.colorRecyclerView.selectColor
 
             if (TextUtils.isEmpty(titleName)) {
                 Toast.makeText(applicationContext, "标题不能为空", Toast.LENGTH_SHORT).show()
@@ -224,10 +228,10 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
 
     private fun setContentViewData(task: MemorialDO) {
         mCalendar.timeInMillis = task.targetTime!!.time
-        tvTargetDate.text = "${mCalendar.get(Calendar.YEAR)}-${mCalendar.get(Calendar.MONTH) + 1}-${mCalendar.get(Calendar.DAY_OF_MONTH)}"
+        mBinding.tvTargetDate.text = "${mCalendar.get(Calendar.YEAR)}-${mCalendar.get(Calendar.MONTH) + 1}-${mCalendar.get(Calendar.DAY_OF_MONTH)}"
 
-        titleName.setText(task.name)
-        tvNote.setText(task.description)
+        mBinding.titleName.setText(task.name)
+        mBinding.tvNote.setText(task.description)
 
         mSelectRepeatIndex = when (task.repeatTime) {
             "none" -> {
@@ -251,12 +255,12 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
     private fun dispatchTypeTitle(@DayType dayType: Int) {
         when (dayType) {
             DaysMatter -> {
-                titleName.hint = "倒数日名称"
-                layoutCyclePeriod.visibility = View.VISIBLE
+                mBinding.titleName.hint = "倒数日名称"
+                mBinding.layoutCyclePeriod.visibility = View.VISIBLE
             }
             DaysCumulative -> {
-                titleName.hint = "累计日名称"
-                layoutCyclePeriod.visibility = View.GONE
+                mBinding.titleName.hint = "累计日名称"
+                mBinding.layoutCyclePeriod.visibility = View.GONE
             }
         }
     }

@@ -13,7 +13,7 @@ import com.smallraw.foretime.app.event.TaskChangeEvent
 import com.smallraw.foretime.app.repository.database.entity.MemorialDO
 import com.smallraw.foretime.app.ui.addTaskDay.AddTaskDayActivity
 import com.smallraw.foretime.app.base.BaseTitleBarActivity
-import kotlinx.android.synthetic.main.activity_task_info.*
+import com.smallraw.foretime.app.databinding.ActivityTaskInfoBinding
 import me.jessyan.autosize.utils.AutoSizeUtils
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -34,13 +34,16 @@ class TaskInfoActivity : BaseTitleBarActivity() {
         private val colorList = arrayListOf("#139EED", "#EE386D", "#FFC529", "#9092A5", "#FF8E9F", "#2B0050", "#FD92C4")
     }
 
+    private val mBinding by lazy {
+        ActivityTaskInfoBinding.inflate(layoutInflater)
+    }
     private var mTask: MemorialDO? = null
     private var taskInfoAdapter: TaskInfoAdapter? = null
     private var pagerSnapHelper = androidx.recyclerview.widget.PagerSnapHelper()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_task_info)
+        setContentView(mBinding.root)
         setTitleBarLeftImage(R.drawable.ic_back_black)
         EventBus.getDefault().register(this)
 
@@ -83,14 +86,14 @@ class TaskInfoActivity : BaseTitleBarActivity() {
     }
 
     private fun setAdapterDate() {
-        recyclerView.adapter = taskInfoAdapter
+        mBinding.recyclerView.adapter = taskInfoAdapter
     }
 
     private fun initRecyclerView() {
         val linearLayoutManager = androidx.recyclerview.widget.LinearLayoutManager(this, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false)
-        recyclerView.layoutManager = linearLayoutManager
-        recyclerView.setHasFixedSize(true)
-        pagerSnapHelper.attachToRecyclerView(recyclerView)
+        mBinding.recyclerView.layoutManager = linearLayoutManager
+        mBinding.recyclerView.setHasFixedSize(true)
+        pagerSnapHelper.attachToRecyclerView(mBinding.recyclerView)
     }
 
     private fun newShareView(onClickListener: View.OnClickListener? = null): View {

@@ -13,11 +13,14 @@ import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import com.smallraw.foretime.app.R
-import com.smallraw.foretime.app.base.BaseActivity
-import kotlinx.android.synthetic.main.activity_base_title_activity.*
+import com.smallraw.foretime.app.databinding.ActivityBaseTitleActivityBinding
 
 
 abstract class BaseTitleBarActivity : BaseActivity() {
+    private val mBinding by lazy {
+        ActivityBaseTitleActivityBinding.inflate(layoutInflater)
+    }
+
     protected lateinit var mImgTitleBarLeft: ImageView
     protected lateinit var mTvTitleBarContent: TextView
     protected lateinit var mLayoutTitleBarRight: LinearLayout
@@ -27,13 +30,13 @@ abstract class BaseTitleBarActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        super.setContentView(R.layout.activity_base_title_activity)
+        setContentView(mBinding.root)
 
-        mLayoutTitleBar = layout_title_bar
-        mLayoutTitleBarRight = layout_title_bar_right
-        mImgTitleBarLeft = img_title_bar_left
-        mTvTitleBarContent = tv_title_bar_content
-        mLayoutContent = root_content
+        mLayoutTitleBar = mBinding.layoutTitleBar
+        mLayoutTitleBarRight = mBinding.layoutTitleBarRight
+        mImgTitleBarLeft = mBinding.imgTitleBarLeft
+        mTvTitleBarContent = mBinding.tvTitleBarContent
+        mLayoutContent = mBinding.rootContent
 
         mImgTitleBarLeft.setOnClickListener(selfLeftClickListener())
         mTvTitleBarContent.setText(selfTitleContent())

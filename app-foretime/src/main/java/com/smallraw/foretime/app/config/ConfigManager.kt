@@ -11,6 +11,7 @@ import com.smallraw.foretime.app.entity.CalendarConfigInfo
 import com.smallraw.foretime.app.entity.MusicConfigInfo
 import com.smallraw.foretime.app.entity.TaskConfigInfo
 import com.smallraw.foretime.app.repository.database.entity.ConfigDO
+import kotlin.reflect.full.memberProperties
 
 @StringDef(TaskConfig, CalendarConfig, MusicConfig)
 annotation class ConfigName {
@@ -73,10 +74,10 @@ fun TaskConfigInfo.saveConfig() {
 @WorkerThread
 private fun save(configInfo: Any) {
     // Kotlin 反射耗时太久
-    // val kotlin = configInfo.javaClass.kotlin
-    // kotlin.memberProperties.forEach {
-    //    Log.e("==反射==", "${it.name} ${it.call(configInfo)} ")
-    // }
+     val kotlin = configInfo.javaClass.kotlin
+     kotlin.memberProperties.forEach {
+        Log.e("==反射==", "${it.name} ${it.call(configInfo)} ")
+     }
     configInfo.javaClass
             .declaredFields
             .filter {
