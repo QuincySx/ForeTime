@@ -48,7 +48,8 @@ object Deps {
 
     // jetpack see https://developer.android.google.cn/jetpack
     // see AndroidX version update https://developer.android.google.cn/jetpack/androidx/releases
-    val constraintlayout = "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
+    val constraintlayout =
+        "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
     val material = "com.google.android.material:material:${Versions.material}"
     val appcompat = "androidx.appcompat:appcompat:${Versions.appcompat}"
     val cardview = "androidx.cardview:cardview:${Versions.cardview}"
@@ -60,11 +61,14 @@ object Deps {
     val retrofit_rxjava = "com.squareup.retrofit2:adapter-rxjava2:${Versions.retrofit}"
 
     val navigation_runtime = "androidx.navigation:navigation-runtime:${Versions.navigation}"
-    val navigation_runtime_ktx = "androidx.navigation:navigation-runtime-ktx:${Versions.navigation}"
+    val navigation_runtime_ktx =
+        "androidx.navigation:navigation-runtime-ktx:${Versions.navigation}"
     val navigation_fragment = "androidx.navigation:navigation-fragment:${Versions.navigation}"
-    val navigation_fragment_ktx = "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
+    val navigation_fragment_ktx =
+        "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
     val navigation_testing = "androidx.navigation:navigation-testing:${Versions.navigation}"
     val navigation_ui = "androidx.navigation:navigation-ui:${Versions.navigation}"
     val navigation_ui_ktx = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
-    val navigation_safe_args_plugin = "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation}"
+    val navigation_safe_args_plugin =
+        "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation}"
 }

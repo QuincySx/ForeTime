@@ -3,14 +3,17 @@ buildscript { scriptHandler ->
     apply from: 'repositories.gradle',
             to: scriptHandler
 
+    ext.kotlin_version = "1.4.21"
+
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}"
     }
 }
 
 plugins {
     id 'com.diffplug.spotless' version '5.8.2'
+    id "com.smallraw.plugin" apply false
 }
 
 ext {
@@ -26,9 +29,38 @@ subprojects {
 
     apply plugin: 'com.diffplug.spotless'
     spotless {
+        java {
+            // This path needs to be relative to each project
+            target fileTree('.') {
+                include '**/src/*/java/**/*.java'
+                exclude '**/.gradle/**'
+                exclude '**/generated/**'
+                exclude '**/build/install/**'
+            }
+            removeUnusedImports()
+            googleJavaFormat("1.7").aosp()
+            importOrder 'java', '', 'org.smallraw', '\\#'
+            trimTrailingWhitespace()
+            endWithNewline()
+            licenseHeaderFile "$rootDir/gradle/spotless/java.license"
+        }
         kotlin {
-            target '**/*.kt'
+            // This path needs to be relative to each project
+            target fileTree('.') {
+                include '**/*.kt'
+                exclude '**/.gradle/**'
+                exclude '**/build/install/**'
+            }
             ktlint(Versions.ktlint)
+            trimTrailingWhitespace()
+            endWithNewline()
+            licenseHeaderFile "$rootDir/gradle/spotless/java.license"
+        }
+        groovyGradle {
+            target '*.gradle'
+            greclipse().configFile("$rootDir/gradle/spotless/formatter.properties")
+            endWithNewline()
+            indentWithSpaces(4)
         }
     }
 }

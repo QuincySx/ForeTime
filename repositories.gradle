@@ -49,15 +49,21 @@ repositories {
             includeGroup "org.antlr"
             includeGroup "org.xerial"
             includeGroup "org.abego.treelayout"
+
             // androidx test library
             includeGroup "org.mockito"
             includeGroup "org.objenesis"
+
+            // android lint library
+            includeGroup "org.ow2.asm"
+            includeGroup "it.unimi.dsi"
 
             // custom library
             includeGroup "me.jessyan"
             includeGroup "com.alibaba"
             includeGroup "jp.wasabeef"
             includeGroup "org.greenrobot"
+            includeGroup "org.bouncycastle"
 
             // exclude library
             excludeGroup "com.github.niorgai"
@@ -68,6 +74,14 @@ repositories {
         url 'https://jitpack.io'
         content {
             includeGroup "com.github.niorgai"
+        }
+    }
+
+    maven {
+        url "https://plugins.gradle.org/m2/"
+        content {
+            includeGroupByRegex "com.diffplug.*"
+            includeGroup "com.diffplug.spotless"
         }
     }
 
