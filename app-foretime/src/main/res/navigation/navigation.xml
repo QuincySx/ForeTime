@@ -7,8 +7,7 @@
     <fragment
         android:id="@+id/main_screen"
         android:name="com.smallraw.foretime.app.ui.main.MainFragment"
-        android:label="fragment_main_screen"
-        tools:layout="@layout/fragment_title_screen">
+        android:label="fragment_main_screen">
 <!--        <action-->
 <!--            android:id="@+id/action_title_screen_to_register"-->
 <!--            app:destination="@id/register"-->

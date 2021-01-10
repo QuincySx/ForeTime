@@ -4,29 +4,36 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import com.smallraw.foretime.app.R
+import com.smallraw.foretime.app.base.BaseTitleBarActivity
+import com.smallraw.foretime.app.base.databinding.DataBindingConfig
+import com.smallraw.foretime.app.databinding.ActivityHarvestTodayBinding
 import com.smallraw.foretime.app.entity.Weather
 import com.smallraw.foretime.app.ui.shape.ShapeActivity
-import com.smallraw.foretime.app.base.BaseTitleBarActivity
-import com.smallraw.foretime.app.databinding.ActivityHarvestTodayBinding
+import com.smallraw.foretime.app.utils.monthDayFormat
 import com.smallraw.time.model.BaseCallback
 import com.smallraw.time.model.WeatherModel
 import com.smallraw.time.utils.getWeekOfDate
-import com.smallraw.foretime.app.utils.monthDayFormat
 import java.util.*
 
 class HarvestTodayActivity : BaseTitleBarActivity() {
-    private val mBinding by lazy {
-        ActivityHarvestTodayBinding.inflate(layoutInflater)
+    override fun initViewModel() {
+    }
+
+    override fun getDataBindingConfig(): DataBindingConfig {
+        return DataBindingConfig(R.layout.activity_harvest_today)
+    }
+
+    override fun getBinding(): ActivityHarvestTodayBinding {
+        return super.getBinding() as ActivityHarvestTodayBinding
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(mBinding.root)
         setTitleBarLeftImage(R.drawable.ic_back_black)
         setDateTime()
         initWeatherNow()
 
-        mBinding.ivSuspensionShare.setOnClickListener {
+        getBinding().ivSuspensionShare.setOnClickListener {
             val intent = Intent(this, ShapeActivity::class.java)
             startActivity(intent)
         }
@@ -57,12 +64,12 @@ class HarvestTodayActivity : BaseTitleBarActivity() {
     private fun setWeatherData(data: Weather?) {
         try {
             if (data == null) {
-                mBinding.ivWeather.setBackgroundResource(R.drawable.ic_weather_qing)
-                mBinding.tvWeather.text = "暂无 · 0°C"
+                getBinding().ivWeather.setBackgroundResource(R.drawable.ic_weather_qing)
+                getBinding().tvWeather.text = "暂无 · 0°C"
             } else {
                 val weatherImage = WeatherModel.getWeatherImage(data.cond_code!!)
-                mBinding.ivWeather.setBackgroundResource(weatherImage)
-                mBinding.tvWeather.text = "${data.cond_txt} · ${data.tmp}°C"
+                getBinding().ivWeather.setBackgroundResource(weatherImage)
+                getBinding().tvWeather.text = "${data.cond_txt} · ${data.tmp}°C"
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -70,7 +77,7 @@ class HarvestTodayActivity : BaseTitleBarActivity() {
     }
 
     private fun setDateTime() {
-        mBinding.tvDate.text = monthDayFormat(Date())
-        mBinding.tvWeek.text = getWeekOfDate(applicationContext, Date())
+        getBinding().tvDate.text = monthDayFormat(Date())
+        getBinding().tvWeek.text = getWeekOfDate(applicationContext, Date())
     }
 }

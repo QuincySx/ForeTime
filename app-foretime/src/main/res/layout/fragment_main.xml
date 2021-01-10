@@ -1,73 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.main.MainFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="com.smallraw.foretime.app.ui.main.MainPageIndex"/>
+        <import type="android.view.View"/>
+        <variable name="bottomButton" type="com.smallraw.foretime.app.ui.main.MainScreenViewModel"/>
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.main.MainFragment">
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@null"
-        app:layout_constraintBottom_toTopOf="@+id/viewSpacing"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@null"
+            app:layout_constraintBottom_toTopOf="@+id/viewSpacing"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-    <View
-        android:id="@+id/viewSpacing"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginBottom="6.5dp"
-        android:background="#F8F8F8"
-        app:layout_constraintBottom_toTopOf="@+id/ivCalendar"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        <View
+            android:id="@+id/viewSpacing"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginBottom="6.5dp"
+            android:background="#F8F8F8"
+            app:layout_constraintBottom_toTopOf="@+id/ivCalendar"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
 
-    <ImageView
-        android:id="@+id/ivTomatoBellSuspension"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_marginBottom="25dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        <ImageView
+            android:id="@+id/ivTomatoBellSuspension"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginBottom="25dp"
+            android:visibility="@{bottomButton.mainPageIndex == MainPageIndex.TOMATO_BELL ? View.VISIBLE:View.GONE}"
+            android:src="@{bottomButton.tomatoBellSuspensionRes}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
 
-    <ImageView
-        android:id="@+id/ivCalendarSuspension"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_marginBottom="25dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@drawable/ic_tab_suspension_add" />
+        <ImageView
+            android:id="@+id/ivCalendarSuspension"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginBottom="25dp"
+            android:visibility="@{bottomButton.mainPageIndex == MainPageIndex.CALENDAR ? View.VISIBLE:View.GONE}"
+            android:src="@{bottomButton.calendarSuspensionRes}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:srcCompat="@drawable/ic_tab_suspension_add"/>
 
-    <RadioButton
-        android:id="@+id/ivTomatoBell"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginBottom="9dp"
-        android:background="@drawable/selector_tab_tomato_bell"
-        android:button="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/ivCalendar"
-        app:layout_constraintHeight_default="spread"
-        app:layout_constraintHorizontal_bias="0.25"
-        app:layout_constraintStart_toStartOf="parent" />
+        <RadioButton
+            android:id="@+id/ivTomatoBell"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginBottom="9dp"
+            android:background="@drawable/selector_tab_tomato_bell"
+            android:button="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/ivCalendar"
+            app:layout_constraintHeight_default="spread"
+            app:layout_constraintHorizontal_bias="0.25"
+            app:layout_constraintStart_toStartOf="parent"/>
 
-    <RadioButton
-        android:id="@+id/ivCalendar"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginBottom="9dp"
-        android:background="@drawable/selector_tab_calendar"
-        android:button="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.75"
-        app:layout_constraintStart_toStartOf="@id/ivTomatoBell" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <RadioButton
+            android:id="@+id/ivCalendar"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginBottom="9dp"
+            android:background="@drawable/selector_tab_calendar"
+            android:button="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.75"
+            app:layout_constraintStart_toStartOf="@id/ivTomatoBell"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

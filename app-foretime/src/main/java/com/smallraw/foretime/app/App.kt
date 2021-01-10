@@ -1,8 +1,8 @@
 package com.smallraw.foretime.app
 
 import android.app.Application
-import androidx.lifecycle.ViewModelStore
-import androidx.lifecycle.ViewModelStoreOwner
+import com.smallraw.foretime.app.base.AppViewModelStore
+import com.smallraw.foretime.app.base.IViewModelStoreApp
 import com.smallraw.foretime.app.config.getCalendarSettingConfig
 import com.smallraw.foretime.app.config.getMusicSettingConfig
 import com.smallraw.foretime.app.config.getTaskSettingConfig
@@ -10,15 +10,16 @@ import com.smallraw.foretime.app.config.saveConfig
 import com.smallraw.foretime.app.entity.CalendarConfigInfo
 import com.smallraw.foretime.app.entity.MusicConfigInfo
 import com.smallraw.foretime.app.entity.TaskConfigInfo
-import com.smallraw.foretime.app.executors.AppExecutors
+import com.smallraw.foretime.app.common.executors.AppExecutors
 import com.smallraw.foretime.app.repository.DataRepository
 import com.smallraw.foretime.app.repository.database.AppDatabase
+import com.smallraw.foretime.app.tomatoBell.TomatoBellKit
 import com.smallraw.lib.monitor.crash.LoopProxy
 import com.smallraw.lib.monitor.view.ViewInitTimeInterceptor
 import com.smallraw.library.core.utils.AppUtils
 import io.github.inflationx.viewpump.ViewPump
 
-class App : Application(), ViewModelStoreOwner {
+class App : Application(), IViewModelStoreApp {
     companion object {
         private lateinit var mApp: App
 
@@ -35,7 +36,7 @@ class App : Application(), ViewModelStoreOwner {
     private lateinit var mTaskConfigInfo: TaskConfigInfo
 
     private val mViewModelStore by lazy {
-        ViewModelStore()
+        AppViewModelStore()
     }
 
     override fun onCreate() {
@@ -46,6 +47,7 @@ class App : Application(), ViewModelStoreOwner {
         AppUtils.init(this)
         mAppExecutors = AppExecutors()
         initConfig()
+        initTomatoBell()
 
         ViewPump.init(
             ViewPump.builder()
@@ -54,6 +56,12 @@ class App : Application(), ViewModelStoreOwner {
 //                .addInterceptor(CustomTextViewInterceptor())
                 .build()
         )
+    }
+
+    private fun initTomatoBell() {
+        mAppExecutors.diskIO().execute {
+            TomatoBellKit.getInstance().reset()
+        }
     }
 
     private fun initConfig() {
@@ -93,5 +101,5 @@ class App : Application(), ViewModelStoreOwner {
         return mAppExecutors
     }
 
-    override fun getViewModelStore() = mViewModelStore
+    override fun getViewModelStore() = mViewModelStore.viewModelStore
 }

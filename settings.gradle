@@ -1,4 +1,5 @@
 includeBuild 'versionPlugin'
+include ':lib-feature-flag-kit', ':lib-feature-flag'
 include ':lib-monitor-tools', ':lib-permissions'
 include ':app-foretime', ':lib-core', ':lib-switch', ':lib-wheel'
 // project(':lib-small-permissions').projectDir = new File("ThirdParty/SmallPermissions")

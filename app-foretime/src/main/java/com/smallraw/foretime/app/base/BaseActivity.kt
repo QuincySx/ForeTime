@@ -1,24 +1,31 @@
 package com.smallraw.foretime.app.base
 
 import android.app.Activity
+import android.app.Application
 import android.content.Context
-import android.os.*
-import android.view.View
-import android.view.Window
-import android.view.WindowManager
+import android.os.Bundle
+import android.os.Handler
+import android.os.Message
+import android.os.StrictMode
 import android.widget.Toast
 import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.smallraw.foretime.app.base.databinding.DataBindingActivity
+import com.smallraw.library.core.utils.BarUtils
 import io.github.inflationx.viewpump.ViewPumpContextWrapper
 import qiu.niorgai.StatusBarCompat
 
 
-abstract class BaseActivity : AppCompatActivity(), Handler.Callback {
+abstract class BaseActivity : DataBindingActivity(), Handler.Callback {
     companion object {
-        private val HANDLER_MSG_PROMPT = 1
+        private const val HANDLER_MSG_PROMPT = 1
     }
 
     protected val mHandler = Handler()
+    private var mActivityProvider: ViewModelProvider? = null
+    private var mApplicationProvider: ViewModelProvider? = null
 
     override fun attachBaseContext(newBase: Context?) {
         super.attachBaseContext(newBase?.let { ViewPumpContextWrapper.wrap(it) })
@@ -38,11 +45,42 @@ abstract class BaseActivity : AppCompatActivity(), Handler.Callback {
         StatusBarCompat.translucentStatusBar(this, true)
 
         if (useStatusBarLightMode()) {
-            StatusBarLightMode(this)
+            BarUtils.setStatusBarLightMode(this, true)
         }
     }
 
     open fun useStatusBarLightMode() = true
+
+    protected open fun <T : ViewModel?> getActivityScopeViewModel(modelClass: Class<T>): T {
+        if (mActivityProvider == null) {
+            mActivityProvider = ViewModelProvider(this)
+        }
+        return mActivityProvider!!.get(modelClass)
+    }
+
+    protected open fun <T : ViewModel?> getApplicationScopeViewModel(modelClass: Class<T>): T {
+        if (mApplicationProvider == null) {
+            mApplicationProvider = ViewModelProvider(
+                (this.applicationContext as IViewModelStoreApp).getViewModelStore(),
+                getAppFactory(this)
+            )
+        }
+        return mApplicationProvider!![modelClass]
+    }
+
+    private fun getAppFactory(activity: Activity): ViewModelProvider.Factory {
+        val application: Application = checkApplication(activity)
+        return ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+    }
+
+    @Throws(IllegalStateException::class)
+    private fun checkApplication(activity: Activity): Application {
+        return activity.application
+            ?: throw IllegalStateException(
+                "Your activity/fragment is not yet attached to "
+                        + "Application. You can't request ViewModel before onCreate call."
+            )
+    }
 
     fun showPrompt(@StringRes res: Int) {
         showPrompt(getString(res))
@@ -67,76 +105,5 @@ abstract class BaseActivity : AppCompatActivity(), Handler.Callback {
     override fun onDestroy() {
         mHandler.removeCallbacksAndMessages(null)
         super.onDestroy()
-    }
-
-    private fun StatusBarLightMode(activity: Activity): Int {
-        var result = 0
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            if (MIUISetStatusBarLightMode(window, true)) {
-                result = 1
-            } else if (FlymeSetStatusBarLightMode(activity.window, true)) {
-                result = 2
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                result = 3
-            }
-        }
-        return result
-    }
-
-    private fun FlymeSetStatusBarLightMode(window: Window?, dark: Boolean): Boolean {
-        var result = false
-        if (window != null) {
-            try {
-                val lp = window.getAttributes()
-                val darkFlag = WindowManager.LayoutParams::class.java
-                        .getDeclaredField("MEIZU_FLAG_DARK_STATUS_BAR_ICON")
-                val meizuFlags = WindowManager.LayoutParams::class.java
-                        .getDeclaredField("meizuFlags")
-                darkFlag.isAccessible = true
-                meizuFlags.isAccessible = true
-                val bit = darkFlag.getInt(null)
-                var value = meizuFlags.getInt(lp)
-                if (dark) {
-                    value = value or bit
-                } else {
-                    value = value and bit.inv()
-                }
-                meizuFlags.setInt(lp, value)
-                window.setAttributes(lp)
-                result = true
-            } catch (e: Exception) {
-
-            }
-
-        }
-        return result
-    }
-
-    private fun MIUISetStatusBarLightMode(window: Window?, dark: Boolean): Boolean {
-        var result = false
-        if (window != null) {
-            val clazz = window.javaClass
-            try {
-                val layoutParams = Class.forName("android.view.MiuiWindowManager\$LayoutParams")
-                val field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE")
-                var darkModeFlag = field.getInt(layoutParams)
-                val extraFlagField = clazz.getMethod(
-                    "setExtraFlags",
-                    Int::class.javaPrimitiveType,
-                    Int::class.javaPrimitiveType
-                )
-                if (dark) {
-                    extraFlagField.invoke(window, darkModeFlag, darkModeFlag)//状态栏透明且黑色字体
-                } else {
-                    extraFlagField.invoke(window, 0, darkModeFlag)//清除黑色字体
-                }
-                result = true
-            } catch (e: Exception) {
-
-            }
-
-        }
-        return result
     }
 }

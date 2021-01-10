@@ -1,4 +1,4 @@
-package com.smallraw.foretime.app.common;
+package com.smallraw.foretime.app.common.widget;
 
 import android.content.Context;
 import android.graphics.Rect;

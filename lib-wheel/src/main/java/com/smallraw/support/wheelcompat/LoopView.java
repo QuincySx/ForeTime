@@ -42,7 +42,7 @@ public class LoopView extends View {
   private Paint mTopBottomTextPaint;  //paint that draw top and bottom text
   private Paint mCenterTextPaint;  // paint that draw center text
   private Paint mCenterLinePaint;  // paint that draw line besides center text
-  private ArrayList mDataList;
+  private ArrayList<String> mDataList;
   private int mTextSize;
   private int mMaxTextWidth;
   private int mMaxTextHeight;
@@ -180,7 +180,7 @@ public class LoopView extends View {
   private void measureTextWidthHeight() {
     Rect rect = new Rect();
     for (int i = 0; i < mDataList.size(); i++) {
-      String s1 = (String) mDataList.get(i);
+      String s1 = mDataList.get(i);
       mCenterTextPaint.getTextBounds(s1, 0, s1.length(), rect);
       int textWidth = rect.width();
       if (textWidth > mMaxTextWidth) {

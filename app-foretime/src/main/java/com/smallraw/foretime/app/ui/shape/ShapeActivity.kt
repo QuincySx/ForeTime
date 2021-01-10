@@ -1,25 +1,26 @@
 package com.smallraw.foretime.app.ui.shape
 
-import android.os.Bundle
-
-import com.smallraw.foretime.app.R
-import jp.wasabeef.glide.transformations.BlurTransformation
-import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.RequestOptions.bitmapTransform
+import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.base.BaseActivity
+import com.smallraw.foretime.app.base.databinding.DataBindingConfig
 import com.smallraw.foretime.app.databinding.ActivityShapeBinding
+import jp.wasabeef.glide.transformations.BlurTransformation
 
 
 class ShapeActivity : BaseActivity() {
     private val mBinding by lazy {
-        ActivityShapeBinding.inflate(layoutInflater)
+        getBinding() as ActivityShapeBinding
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(mBinding.root)
+    override fun initViewModel() {
+    }
+
+    override fun getDataBindingConfig(): DataBindingConfig {
+        return DataBindingConfig(R.layout.activity_shape)
     }
 
     override fun onStart() {

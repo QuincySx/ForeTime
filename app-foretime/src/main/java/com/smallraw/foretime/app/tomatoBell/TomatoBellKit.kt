@@ -1,11 +1,8 @@
 package com.smallraw.foretime.app.tomatoBell
 
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import com.smallraw.foretime.app.App
-import com.smallraw.foretime.app.BuildConfig
+import androidx.lifecycle.LiveData
 
-class TomatoBellKit : CountDownTick.OnCountDownTickListener {
+class TomatoBellKit {
     companion object {
         private var TAG = TomatoBellKit::class.java.simpleName
 
@@ -19,128 +16,103 @@ class TomatoBellKit : CountDownTick.OnCountDownTickListener {
         }
     }
 
-    //刷新间隔
-    private val mRefreshIntervalTime: Long = 25
+    private val mCountDownController by lazy { CountDownController() }
+    private val mTomatoBellController by lazy { TomatoBellController() }
 
-    var mCountDownTypeLiveData = MutableLiveData<@CountDownType Int>(CountDownType.WORKING)
-    var mCountDownStatusLiveData = MutableLiveData<@CountDownStatus Int>(CountDownStatus.READY)
-    var mSurplusTimeMillisLiveData = MutableLiveData<Long>(0)
-    var mImplementTimeMillisLiveData = MutableLiveData<Long>(0)
+    fun actionLong() {
+        val type = getType().value
+        val status = getStatus().value
 
-    private var mCountTickTimer = CountDownTick(getCurrentTypeTime(), this, mRefreshIntervalTime)
-
-    override fun onCountDownStateChange(status: Int) {
-        mCountDownStatusLiveData.postValue(status)
-        if (status == CountDownStatus.FINISH) {
-            changeType()
+        if (null == type || null == status) {
+            return
         }
-        if (status == CountDownStatus.CANCEL) {
-            reset(CountDownType.WORKING)
-        }
-    }
 
-    override fun onCountDownTotalMillis(totalMillis: Long) {
-        mImplementTimeMillisLiveData.postValue(totalMillis)
-    }
-
-    override fun onCountDownTick(millisUntilFinished: Long) {
-        mSurplusTimeMillisLiveData.postValue(millisUntilFinished)
-    }
-
-    /**
-     * 修改状态
-     */
-    private fun changeType() {
-        when (mCountDownTypeLiveData.value) {
+        when (type) {
             CountDownType.WORKING -> {
-                reset(CountDownType.REPOSE)
-                start()
+                when (status) {
+                    CountDownStatus.PAUSE, CountDownStatus.RUNNING -> {
+                        reset(CountDownType.REPOSE)
+                        start()
+                    }
+                }
             }
             CountDownType.REPOSE -> {
-                reset(CountDownType.WORKING)
+                when (status) {
+                    CountDownStatus.RUNNING -> {
+                        reset(CountDownType.WORKING)
+                    }
+                }
+            }
+        }
+    }
+
+    fun action() {
+        val type = getType().value
+        val status = getStatus().value
+
+        if (null == type || null == status) {
+            return
+        }
+
+        when (type) {
+            CountDownType.WORKING -> {
+                when (status) {
+                    CountDownStatus.READY -> {
+                        start()
+                    }
+                    CountDownStatus.RUNNING -> {
+                        pause()
+                    }
+                    CountDownStatus.PAUSE -> {
+                        resume()
+                    }
+                    else -> {
+                        mTomatoBellController.nextState()
+                        reset()
+                    }
+                }
+            }
+            CountDownType.REPOSE -> {
+                when (status) {
+                    CountDownStatus.READY -> {
+                        start()
+                    }
+                    else -> {
+                        mTomatoBellController.nextState()
+                        reset()
+                    }
+                }
             }
             else -> {
-                reset(CountDownType.WORKING)
+                start()
             }
         }
     }
+
+    fun nextState() = mTomatoBellController.nextState()
 
     fun start() {
-        mCountTickTimer.setImplementTimeMillis(getCurrentTypeTime())
-        mCountTickTimer.start()
-        Log.d(TAG, "CountDown start")
+        mCountDownController.start(mTomatoBellController.getCurrentTypeTime())
     }
 
-    fun pause() {
-        mCountTickTimer.pause()
-        Log.d(TAG, "CountDown pause")
+    fun pause() = mCountDownController.pause()
+
+    fun resume() = mCountDownController.resume()
+
+    fun reset() {
+        mCountDownController.reset(mTomatoBellController.getCurrentTypeTime())
     }
 
-    fun resume() {
-        mCountTickTimer.resume()
-        Log.d(TAG, "CountDown resume")
+    fun reset(@CountDownType type:Int) {
+        mTomatoBellController.setState(type)
+        mCountDownController.reset(mTomatoBellController.getCurrentTypeTime())
     }
 
-    fun reset(type: Int) {
-        mCountDownTypeLiveData.value = type
-        if (mCountTickTimer.getStatus() == CountDownStatus.RUNNING) {
-            mCountTickTimer.pause()
-        }
-        val implementTimeMillis = getCurrentTypeTime()
-        mCountTickTimer.setImplementTimeMillis(implementTimeMillis)
-        mCountTickTimer.reset()
-        Log.d(TAG, "CountDown Type reset ")
-        printCallStatck()
-    }
+    fun stop() = mCountDownController.stop()
 
-    fun stop() {
-        mCountTickTimer.cancel()
-        Log.d(TAG, "CountDown stop")
-    }
+    fun getType(): LiveData<@CountDownType Int> = mTomatoBellController.getTomatoBellType()
 
-    fun getType() = mCountDownTypeLiveData.value
-
-    fun getStatus() = mCountDownStatusLiveData.value
-
-    fun getSurplusTimeMillis() = mSurplusTimeMillisLiveData.value
-
-    fun getImplementTimeMillis() = mImplementTimeMillisLiveData.value
-
-    fun refreshTimeMillis() {
-        if (getStatus() == CountDownStatus.READY || getStatus() == CountDownStatus.FINISH) {
-            mCountTickTimer.setImplementTimeMillis(getCurrentTypeTime())
-            mCountTickTimer.reset()
-        }
-    }
-
-    fun printCallStatck() {
-        val ex = Throwable()
-        val stackElements = ex.stackTrace
-        Log.e("Statck", "-----------------------------------")
-        for (i in stackElements.indices) {
-            val buffer = StringBuffer()
-            buffer.append(stackElements[i].className).append("\t")
-            buffer.append(stackElements[i].fileName).append("\t")
-            buffer.append(stackElements[i].lineNumber).append("\t")
-            buffer.append(stackElements[i].methodName)
-
-            Log.e("Statck", buffer.toString())
-        }
-        Log.e("Statck", "-----------------------------------")
-    }
-
-    /**
-     * 根据类型获取时间
-     */
-    private fun getCurrentTypeTime(): Long {
-        if (BuildConfig.DEBUG) {
-            return 1000 * 20
-        } else {
-            return when (mCountDownTypeLiveData.value) {
-                CountDownType.WORKING -> App.getInstance().getCalendarConfig().focusTime
-                CountDownType.REPOSE -> App.getInstance().getCalendarConfig().restTime
-                else -> 0
-            }
-        }
-    }
+    fun getStatus() = mCountDownController.getStatus()
+    fun getImplementTimeMillis(): LiveData<Long> = mCountDownController.getImplementTimeMillis()
+    fun getSurplusTimeMillis(): LiveData<Long> = mCountDownController.getSurplusTimeMillis()
 }

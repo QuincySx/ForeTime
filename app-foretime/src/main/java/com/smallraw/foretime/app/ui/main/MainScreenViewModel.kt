@@ -2,6 +2,7 @@ package com.smallraw.foretime.app.ui.main
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.IntDef
+import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
@@ -14,7 +15,7 @@ annotation class MainPageIndex {
 }
 
 class MainScreenViewModel : ViewModel() {
-    var mTomatoBellSuspensionButtonResource = MutableLiveData<@DrawableRes Int>()
-    var mCalendarSuspensionButtonResource = MutableLiveData<@DrawableRes Int>()
-    var mMainPageIndex = MutableLiveData<@MainPageIndex Int>(MainPageIndex.TOMATO_BELL)
+    var tomatoBellSuspensionRes = ObservableField<@DrawableRes Int>()
+    var calendarSuspensionRes = ObservableField<@DrawableRes Int>()
+    var mainPageIndex = MutableLiveData<@MainPageIndex Int>(MainPageIndex.TOMATO_BELL)
 }

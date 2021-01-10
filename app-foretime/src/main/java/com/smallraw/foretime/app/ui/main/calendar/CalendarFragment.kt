@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.base.BaseDialogView
 import com.smallraw.foretime.app.base.BaseFragment
+import com.smallraw.foretime.app.base.databinding.DataBindingConfig
 import com.smallraw.foretime.app.common.adapter.OnItemClickListener
 import com.smallraw.foretime.app.common.widget.dialog.SelectDayTypeDialog
 import com.smallraw.foretime.app.databinding.FragmentCalendarBinding
@@ -100,6 +101,13 @@ class CalendarFragment : BaseFragment() {
 
     })
 
+    override fun initViewModel() {
+    }
+
+    override fun getDataBindingConfig(): DataBindingConfig {
+        return DataBindingConfig(R.layout.fragment_calendar)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -111,6 +119,7 @@ class CalendarFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mMainScreenViewModel.calendarSuspensionRes.set(R.drawable.ic_tab_suspension_add)
 
         initView()
         mCalendarVewModel.mActiveTaskListLiveData.observe(viewLifecycleOwner, {
@@ -165,9 +174,8 @@ class CalendarFragment : BaseFragment() {
     }
 
     private fun showViewAction() {
-        mMainScreenViewModel.mCalendarSuspensionButtonResource.value =
-            R.drawable.ic_tab_suspension_add
-        onMainCalendarFragmentCallback?.setOnClickListener(View.OnClickListener { v ->
+        mMainScreenViewModel.calendarSuspensionRes.set(R.drawable.ic_tab_suspension_add)
+        onMainCalendarFragmentCallback?.setOnClickListener { v ->
             context?.let { context ->
                 SelectDayTypeDialog.Builder(context)
                     .setOnClickCallback { view, index ->
@@ -183,7 +191,7 @@ class CalendarFragment : BaseFragment() {
                     .build()
                     .show()
             }
-        })
+        }
     }
 
     private fun initWeatherNow() {

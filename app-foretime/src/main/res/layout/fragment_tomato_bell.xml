@@ -1,77 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/ivSetting"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginEnd="17dp"
-        android:layout_marginRight="17dp"
-        android:layout_marginTop="28dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icon_setting_black" />
+    <data>
 
-    <LinearLayout
-        android:id="@+id/layoutMusic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.18">
+        <import type="android.view.View"/>
+
+        <variable
+            name="state"
+            type="com.smallraw.foretime.app.ui.main.tomatoBell.TomatoBellViewModel"/>
+
+        <variable
+            name="musicVm"
+            type="com.smallraw.foretime.app.viewmodle.MusicViewModel"/>
+
+        <variable
+            name="click"
+            type="com.smallraw.foretime.app.ui.main.tomatoBell.TomatoBellFragment.ClickProxy"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/ivMusic"
+            android:id="@+id/ivSetting"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_gravity="center"
-            app:srcCompat="@drawable/icon_music_black" />
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="17dp"
+            android:onClick="@{click::onSettingClick}"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/icon_setting_black"/>
 
-        <TextView
-            android:id="@+id/tvMusicText"
-            style="@style/TextNormal"
+        <LinearLayout
+            android:id="@+id/layoutMusic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:text="夏天的雷雨" />
-    </LinearLayout>
+            android:onClick="@{click::onMusicClick}"
+            android:orientation="vertical"
+            android:visibility="@{musicVm.isPlay? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.18">
 
-    <com.smallraw.foretime.app.common.widget.TimeScheduleView
-        android:id="@+id/viewTimeSchedule"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivMusic"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/icon_music_black"/>
 
-    <TextView
-        android:id="@+id/viewOperationHints"
-        style="@style/TextVice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="轻触休息 长按跳过"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/viewTimeSchedule"
-        app:layout_constraintVertical_bias="0.1" />
+            <TextView
+                android:id="@+id/tvMusicText"
+                style="@style/TextNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:text="@{musicVm.name}"/>
+        </LinearLayout>
 
-    <com.smallraw.foretime.app.common.widget.TimeProgressView
-        android:id="@+id/viewTimeProgress"
-        android:layout_width="88dp"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/viewTimeSchedule"
-        app:layout_constraintVertical_bias="0.5" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.smallraw.foretime.app.common.widget.TimeScheduleView
+            android:id="@+id/viewTimeSchedule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5"
+            app:setProgress="@{state.Progress}"
+            app:setProgressColor="@{state.progressColor}"
+            app:setTimeWrapper="@{state.timeWrapper}"/>
+
+        <TextView
+            android:id="@+id/viewOperationHints"
+            style="@style/TextVice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{state.operationHints}"
+            android:visibility="@{state.operationHintsVisibility? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/viewTimeSchedule"
+            app:layout_constraintVertical_bias="0.1"
+            tools:text="轻触休息 长按跳过"/>
+
+        <com.smallraw.foretime.app.common.widget.TimeProgressView
+            android:id="@+id/viewTimeProgress"
+            android:layout_width="88dp"
+            android:layout_height="wrap_content"
+            android:visibility="@{state.TouchTimeProgressVisibility? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/viewTimeSchedule"
+            app:layout_constraintVertical_bias="0.5"
+            app:setProgress="@{state.TouchTimeProgress}"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

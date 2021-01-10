@@ -61,6 +61,10 @@ android {
 
 }
 
+kapt {
+    useBuildCache = true
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -107,12 +111,25 @@ dependencies {
     implementation "androidx.collection:collection-ktx:${Versions.androidxCollection}"
     implementation "androidx.collection:collection-ktx:${Versions.androidxCollection}"
 
-    // room database
+    // Room Database
     // see https://medium.com/google-developers/7-pro-tips-for-room-fbadea4bfbd1#4785
-    implementation "androidx.room:room-runtime:${Versions.room}"
-    implementation "androidx.room:room-ktx:${Versions.room}"
-    implementation "androidx.sqlite:sqlite-ktx:${Versions.sqlite}"
-    kapt "androidx.room:room-compiler:${Versions.room}"
+    // implementation "androidx.room:room-runtime:${Versions.room}"
+    // implementation "androidx.room:room-ktx:${Versions.room}"
+    // kapt "androidx.room:room-compiler:${Versions.room}"
+    // implementation "androidx.sqlite:sqlite-ktx:${Versions.sqlite}"
+
+    // Apple Silicon Room Database 使用临时解决方案
+    // see https://issuetracker.google.com/issues/174695268
+    implementation("androidx.room:room-runtime:${Versions.room}") {
+        exclude(group:'org.xerial')
+    }
+    kapt("androidx.room:room-compiler:${Versions.room}"){
+        exclude(group:'org.xerial')
+    }
+    implementation("androidx.room:room-ktx:${Versions.room}"){
+        exclude(group:'org.xerial')
+    }
+    implementation 'org.xerial:sqlite-jdbc:3.34.0'
 
     // work
     implementation "androidx.work:work-runtime:${Versions.work}"
@@ -153,8 +170,4 @@ dependencies {
 
     // 事件总线 see https://github.com/greenrobot/EventBus
     implementation "org.greenrobot:eventbus:${Versions.eventbus}"
-}
-
-kapt {
-    useBuildCache = true
 }

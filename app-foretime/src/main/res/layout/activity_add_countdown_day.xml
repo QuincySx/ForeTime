@@ -1,212 +1,215 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.addTaskDay.AddTaskDayActivity">
-
-    <ScrollView
+<layout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:overScrollMode="never"
-        android:scrollbars="none"
-        app:layout_constraintBottom_toTopOf="@+id/ivTomatoBellSuspension"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.addTaskDay.AddTaskDayActivity">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="0dp"
+            android:overScrollMode="never"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toTopOf="@+id/ivTomatoBellSuspension"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <EditText
-                android:id="@+id/titleName"
-                style="@style/TextBig"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="36dp"
-                android:background="@null"
-                android:cursorVisible="true"
-                android:gravity="center"
-                android:hint="倒数日名称"
-                android:textColorHint="@color/TextColorHint"
-                android:textCursorDrawable="@drawable/shape_edittext_cursor" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginLeft="42dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="42dp"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/tv_time_hint"
-                    style="@style/TextNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:paddingStart="4dp"
-                    android:text="起始日期"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <TextView
-                    android:id="@+id/tv_time_text"
-                    style="@style/TextNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:paddingLeft="30dp"
-                    android:text="2018-05-15"
-                    app:layout_constraintRight_toRightOf="parent" />
-
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:background="#EDEDED"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginLeft="42dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="42dp">
-
-                <TextView
-                    style="@style/TextNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:paddingLeft="4dp"
-                    android:text="目标日期"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <TextView
-                    android:id="@+id/tvTargetDate"
-                    style="@style/TextNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:paddingLeft="30dp"
-                    app:layout_constraintRight_toRightOf="parent" />
-
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:background="#EDEDED"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/layoutCyclePeriod"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginLeft="42dp"
-                android:layout_marginRight="42dp">
-
-                <TextView
-                    style="@style/TextNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:paddingLeft="4dp"
-                    android:text="循环周期"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <TextView
-                    android:id="@+id/tvRepeat"
-                    style="@style/TextNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:paddingLeft="30dp"
-                    android:text="从不"
-                    app:layout_constraintRight_toRightOf="parent" />
-
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:background="#EDEDED"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="136dp"
-                android:layout_marginLeft="42dp"
-                android:layout_marginRight="42dp">
-
-                <TextView
-                    android:id="@+id/tv_remark"
-                    style="@style/TextNormal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="26dp"
-                    android:gravity="center"
-                    android:paddingLeft="4dp"
-                    android:text="备注"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
                 <EditText
-                    android:id="@+id/tvNote"
-                    style="@style/TextSmall"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="6dp"
+                    android:id="@+id/titleName"
+                    style="@style/TextBig"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="36dp"
                     android:background="@null"
-                    android:gravity="left|top"
-                    android:hint="请填写您的备注"
-                    android:inputType="textMultiLine"
-                    android:maxLength="80"
-                    android:padding="4dp"
-                    android:textColorHint="#DBDBDB"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_remark" />
+                    android:cursorVisible="true"
+                    android:gravity="center"
+                    android:hint="倒数日名称"
+                    android:textColorHint="@color/TextColorHint"
+                    android:textCursorDrawable="@drawable/shape_edittext_cursor"/>
 
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:background="#EDEDED"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="42dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="42dp"
+                    android:visibility="gone">
 
-            <com.smallraw.foretime.app.common.widget.colorRecyclerView.ColorRecyclerView
-                android:id="@+id/colorRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="32dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="32dp"
-                android:overScrollMode="never"
-                android:paddingTop="20dp"
-                android:paddingBottom="20dp"
-                android:scrollbars="none" />
-        </LinearLayout>
-    </ScrollView>
+                    <TextView
+                        android:id="@+id/tv_time_hint"
+                        style="@style/TextNormal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:paddingStart="4dp"
+                        android:text="起始日期"
+                        app:layout_constraintStart_toStartOf="parent"/>
 
-    <ImageView
-        android:id="@+id/ivTomatoBellSuspension"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_marginBottom="25dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@drawable/ic_tab_suspension_next" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/tv_time_text"
+                        style="@style/TextNormal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:paddingLeft="30dp"
+                        android:text="2018-05-15"
+                        app:layout_constraintRight_toRightOf="parent"/>
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:background="#EDEDED"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="42dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="42dp">
+
+                    <TextView
+                        style="@style/TextNormal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:paddingLeft="4dp"
+                        android:text="目标日期"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/tvTargetDate"
+                        style="@style/TextNormal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:paddingLeft="30dp"
+                        app:layout_constraintRight_toRightOf="parent"/>
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:background="#EDEDED"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layoutCyclePeriod"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="42dp"
+                    android:layout_marginRight="42dp">
+
+                    <TextView
+                        style="@style/TextNormal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:paddingLeft="4dp"
+                        android:text="循环周期"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/tvRepeat"
+                        style="@style/TextNormal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:paddingLeft="30dp"
+                        android:text="从不"
+                        app:layout_constraintRight_toRightOf="parent"/>
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:background="#EDEDED"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="136dp"
+                    android:layout_marginLeft="42dp"
+                    android:layout_marginRight="42dp">
+
+                    <TextView
+                        android:id="@+id/tv_remark"
+                        style="@style/TextNormal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="26dp"
+                        android:gravity="center"
+                        android:paddingLeft="4dp"
+                        android:text="备注"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <EditText
+                        android:id="@+id/tvNote"
+                        style="@style/TextSmall"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@null"
+                        android:gravity="left|top"
+                        android:hint="请填写您的备注"
+                        android:inputType="textMultiLine"
+                        android:maxLength="80"
+                        android:padding="4dp"
+                        android:textColorHint="#DBDBDB"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_remark"/>
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:background="#EDEDED"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <com.smallraw.foretime.app.common.widget.colorRecyclerView.ColorRecyclerView
+                    android:id="@+id/colorRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="32dp"
+                    android:overScrollMode="never"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="20dp"
+                    android:scrollbars="none"/>
+            </LinearLayout>
+        </ScrollView>
+
+        <ImageView
+            android:id="@+id/ivTomatoBellSuspension"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginBottom="25dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:srcCompat="@drawable/ic_tab_suspension_next"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
