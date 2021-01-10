@@ -26,4 +26,8 @@ class TomatoBellController {
             }
         }
     }
+
+    fun nextState() {
+
+    }
 }

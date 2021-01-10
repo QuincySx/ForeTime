@@ -1,9 +1,6 @@
 package com.smallraw.foretime.app.tomatoBell
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.smallraw.foretime.app.App
-import com.smallraw.foretime.app.BuildConfig
 
 class TomatoBellKit {
     companion object {
@@ -22,22 +19,12 @@ class TomatoBellKit {
     private val mCountDownController by lazy { CountDownController() }
     private val mTomatoBellController by lazy { TomatoBellController() }
 
-    /**
-     * 修改状态
-     */
-    private fun changeType() {
-        when (mTomatoBellController.getTomatoBellType().value) {
-            CountDownType.WORKING -> {
-                reset()
-                mCountDownController.start(mTomatoBellController.getCurrentTypeTime())
-            }
-            CountDownType.REPOSE -> reset()
-            else -> reset()
-        }
+    fun nextTomatoBellState() {
+        mTomatoBellController.nextState()
+        reset()
     }
 
     fun start() {
-        mTomatoBellController.start()
         mCountDownController.start(mTomatoBellController.getCurrentTypeTime())
     }
 

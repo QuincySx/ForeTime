@@ -112,6 +112,7 @@ class CountDownTick
 
         mHandler.sendEmptyMessage(0)
         mOnCountDownTickListener.onCountDownStateChange(mStatus)
+        mOnCountDownTickListener.onCountDownTick(mSurplusTimeMillis)
         return this
     }
 
@@ -126,6 +127,7 @@ class CountDownTick
 
         mHandler.sendEmptyMessage(0)
         mOnCountDownTickListener.onCountDownStateChange(mStatus)
+        mOnCountDownTickListener.onCountDownTick(mSurplusTimeMillis)
         return this
     }
 
