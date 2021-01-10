@@ -6,7 +6,7 @@ import android.util.Log
 
 object LoopProxy {
     fun proxyCrash(catchCall: ((Throwable) -> Unit)? = null) {
-        Handler().post {
+        Handler(Looper.getMainLooper()).post {
             while (true) {
                 try {
                     Looper.loop()

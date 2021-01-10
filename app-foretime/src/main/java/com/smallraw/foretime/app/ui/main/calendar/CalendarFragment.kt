@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.base.BaseDialogView
 import com.smallraw.foretime.app.base.BaseFragment
+import com.smallraw.foretime.app.base.databinding.DataBindingConfig
 import com.smallraw.foretime.app.common.adapter.OnItemClickListener
 import com.smallraw.foretime.app.common.widget.dialog.SelectDayTypeDialog
 import com.smallraw.foretime.app.databinding.FragmentCalendarBinding
@@ -99,6 +100,13 @@ class CalendarFragment : BaseFragment() {
         }
 
     })
+
+    override fun initViewModel() {
+    }
+
+    override fun getDataBindingConfig(): DataBindingConfig {
+        return DataBindingConfig(R.layout.fragment_calendar)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

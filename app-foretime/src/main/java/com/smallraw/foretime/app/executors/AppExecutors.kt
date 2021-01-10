@@ -2,8 +2,7 @@ package com.smallraw.foretime.app.executors
 
 import android.os.Handler
 import android.os.Looper
-import java.util.concurrent.Executor
-import java.util.concurrent.Executors
+import java.util.concurrent.*
 
 
 public class AppExecutors {
@@ -21,7 +20,13 @@ public class AppExecutors {
 
     constructor () : this(
         Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()),
-        Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()),
+        ThreadPoolExecutor(
+            Runtime.getRuntime().availableProcessors() * 2,
+            64,
+            60L,
+            TimeUnit.SECONDS,
+            SynchronousQueue<Runnable>(),
+        ),
         MainThreadExecutor()
     )
 

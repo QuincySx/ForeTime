@@ -13,6 +13,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.base.BaseFragment
+import com.smallraw.foretime.app.base.databinding.DataBindingConfig
 import com.smallraw.foretime.app.config.getCalendarSettingConfig
 import com.smallraw.foretime.app.config.getDefCalendarSettingConfig
 import com.smallraw.foretime.app.config.saveConfig
@@ -30,6 +31,13 @@ class MainFragment : BaseFragment(), View.OnClickListener {
     private val mTotalCount = 2
     private val mMainScreenViewModel by lazy {
         ViewModelProvider(requireActivity()).get(MainScreenViewModel::class.java)
+    }
+
+    override fun initViewModel() {
+    }
+
+    override fun getDataBindingConfig(): DataBindingConfig {
+        return DataBindingConfig(R.layout.fragment_main)
     }
 
     override fun onCreateView(

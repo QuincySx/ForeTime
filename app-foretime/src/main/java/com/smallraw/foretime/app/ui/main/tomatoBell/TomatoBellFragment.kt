@@ -16,10 +16,11 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
 import com.smallraw.foretime.app.App
+import com.smallraw.foretime.app.BR
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.base.BaseFragment
+import com.smallraw.foretime.app.base.databinding.DataBindingConfig
 import com.smallraw.foretime.app.common.widget.OnClickProgressListener
-import com.smallraw.foretime.app.databinding.FragmentTomatoBellBinding
 import com.smallraw.foretime.app.service.CountDownService
 import com.smallraw.foretime.app.tomatoBell.CountDownStatus
 import com.smallraw.foretime.app.tomatoBell.CountDownType
@@ -27,7 +28,7 @@ import com.smallraw.foretime.app.tomatoBell.TomatoBellKit
 import com.smallraw.foretime.app.ui.main.MainScreenViewModel
 import com.smallraw.foretime.app.ui.main.OnMainTomatoBellFragmentCallback
 import com.smallraw.foretime.app.ui.musicListActivity.MusicListActivity
-import com.smallraw.foretime.app.utils.ms2Minutes
+import com.smallraw.foretime.app.viewmodle.MusicViewModel
 import java.util.concurrent.LinkedBlockingQueue
 
 class TomatoBellFragment : BaseFragment(), ServiceConnection {
@@ -41,7 +42,6 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
         }
     }
 
-    private lateinit var mBinding: FragmentTomatoBellBinding
     private var mCountDownService: CountDownService? = null
     private var isDisplay = false
     private var mSuspensionHandleQueue = LinkedBlockingQueue<Int>(1)
@@ -52,6 +52,20 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
     private val mTomatoBellKit by lazy {
         TomatoBellKit.getInstance()
     }
+    private lateinit var mMusicViewModel: MusicViewModel
+    private lateinit var mTomatoBellViewModel: TomatoBellViewModel
+
+    override fun initViewModel() {
+        mMusicViewModel = getApplicationScopeViewModel(MusicViewModel::class.java)
+        mTomatoBellViewModel = getApplicationScopeViewModel(TomatoBellViewModel::class.java)
+    }
+
+    override fun getDataBindingConfig(): DataBindingConfig {
+        return DataBindingConfig(R.layout.fragment_tomato_bell)
+            .addBindingParam(BR.state, mTomatoBellViewModel)
+            .addBindingParam(BR.musicVm, mMusicViewModel)
+            .addBindingParam(BR.click, ClickProxy())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,27 +74,28 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
     ): View {
         val intent = Intent(context, CountDownService::class.java)
         context?.bindService(intent, this, Context.BIND_AUTO_CREATE)
-        mBinding = FragmentTomatoBellBinding.inflate(inflater, container, false)
-        return mBinding.root
+//        mBinding = FragmentTomatoBellBinding.inflate(inflater, container, false)
+//        return mBinding.root
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mBinding.ivSetting.setOnClickListener {
-            context?.let { context ->
-                TomatoSettingDialog.Builder(context)
-                    .setOnChangeListener { mTomatoBellKit.refreshTimeMillis() }
-                    .atViewAuto(it)
-                    .build()
-                    .show()
-            }
-        }
-
-        mBinding.layoutMusic.setOnClickListener {
-            val i = Intent(activity, MusicListActivity::class.java)
-            startActivity(i)
-        }
+//        mBinding.ivSetting.setOnClickListener {
+//            context?.let { context ->
+//                TomatoSettingDialog.Builder(context)
+//                    .setOnChangeListener { mTomatoBellKit.refreshTimeMillis() }
+//                    .atViewAuto(it)
+//                    .build()
+//                    .show()
+//            }
+//        }
+//
+//        mBinding.layoutMusic.setOnClickListener {
+//            val i = Intent(activity, MusicListActivity::class.java)
+//            startActivity(i)
+//        }
 
         mTomatoBellKit.mSurplusTimeMillisLiveData.observe(viewLifecycleOwner) {
             dispatchRefresh()
@@ -90,6 +105,23 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
         }
         mTomatoBellKit.mCountDownTypeLiveData.observe(viewLifecycleOwner) {
             dispatchRefresh()
+        }
+    }
+
+    inner class ClickProxy() {
+        fun onSettingClick(view: View) {
+            context?.let { context ->
+                TomatoSettingDialog.Builder(context)
+                    .setOnChangeListener { mTomatoBellKit.refreshTimeMillis() }
+                    .atViewAuto(view)
+                    .build()
+                    .show()
+            }
+        }
+
+        fun onMusicClick(view: View) {
+            val i = Intent(activity, MusicListActivity::class.java)
+            startActivity(i)
         }
     }
 
@@ -174,7 +206,8 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
      */
     private fun onLongClickListener() {
         onMainTomatoBellFragmentCallback?.setOnLongClickListener(View.OnLongClickListener { true })
-        onMainTomatoBellFragmentCallback?.setOnTouchEventListener(object : OnClickProgressListener() {
+        onMainTomatoBellFragmentCallback?.setOnTouchEventListener(object :
+            OnClickProgressListener() {
             override fun onStart() {
                 val type = mTomatoBellKit?.getType()
                 val status = mTomatoBellKit?.getStatus()
@@ -204,22 +237,22 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
                     }
                 }
                 if (isLongClick) {
-                    mBinding.viewTimeProgress.setProgress(0F)
-                    mBinding.viewTimeProgress.visibility = View.VISIBLE
+//                    mBinding.viewTimeProgress.setProgress(0F)
+//                    mBinding.viewTimeProgress.visibility = View.VISIBLE
                 }
             }
 
             override fun onProgress(progress: Double) {
-                mBinding.viewTimeProgress.setProgress(progress.toFloat())
+//                mBinding.viewTimeProgress.setProgress(progress.toFloat())
             }
 
             override fun onSuccess() {
-                mBinding.viewTimeProgress.visibility = View.GONE
+//                mBinding.viewTimeProgress.visibility = View.GONE
                 responseEvent()
             }
 
             override fun onCancel() {
-                mBinding.viewTimeProgress.visibility = View.GONE
+//                mBinding.viewTimeProgress.visibility = View.GONE
             }
         })
     }
@@ -380,8 +413,8 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
      * 设置番茄钟提示语
      */
     private fun setHint(hint: String) {
-        mBinding.viewOperationHints.visibility = View.VISIBLE
-        mBinding.viewOperationHints.text = hint
+//        mBinding.viewOperationHints.visibility = View.VISIBLE
+//        mBinding.viewOperationHints.text = hint
     }
 
     /**
@@ -393,7 +426,8 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
             val res = mSuspensionHandleQueue.poll()
             if (resId == -1) {
                 if (res == null) {
-                    mMainScreenViewModel.mTomatoBellSuspensionButtonResource.value = getSuspensionIcon()
+                    mMainScreenViewModel.mTomatoBellSuspensionButtonResource.value =
+                        getSuspensionIcon()
                 } else {
                     mMainScreenViewModel.mTomatoBellSuspensionButtonResource.value = res
                 }
@@ -419,11 +453,11 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
      * 刷新倒计时控件 UI
      */
     private fun refreshTimeSchedule(@ColorInt color: Int, totalTime: Long, lastTime: Long) {
-        mBinding.viewTimeSchedule.setProgressColor(color)
+//        mBinding.viewTimeSchedule.setProgressColor(color)
         val process = lastTime.toFloat() / totalTime
-        mBinding.viewTimeSchedule.setProgress(process)
-        mBinding.viewTimeSchedule.setText(ms2Minutes(lastTime))
-        mBinding.viewTimeSchedule.postInvalidate()
+//        mBinding.viewTimeSchedule.setProgress(process)
+//        mBinding.viewTimeSchedule.setText(ms2Minutes(lastTime))
+//        mBinding.viewTimeSchedule.postInvalidate()
     }
 
     /**

@@ -5,14 +5,22 @@ import android.os.Bundle
 import android.view.View
 import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.R
+import com.smallraw.foretime.app.base.BaseTitleBarActivity
+import com.smallraw.foretime.app.base.databinding.DataBindingConfig
 import com.smallraw.foretime.app.common.widget.dialog.SelectLongTimeDialog
 import com.smallraw.foretime.app.config.saveConfig
-import com.smallraw.foretime.app.base.BaseTitleBarActivity
 import com.smallraw.foretime.app.databinding.ActivityTomatoSettingBinding
 
 class TomatoSettingActivity : BaseTitleBarActivity() {
     private val mBinding by lazy {
         ActivityTomatoSettingBinding.inflate(layoutInflater)
+    }
+
+    override fun initViewModel() {
+    }
+
+    override fun getDataBindingConfig(): DataBindingConfig {
+        return DataBindingConfig(R.layout.activity_tomato_setting)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

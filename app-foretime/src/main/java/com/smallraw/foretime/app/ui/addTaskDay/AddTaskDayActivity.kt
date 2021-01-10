@@ -4,20 +4,21 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.annotation.IntDef
-import androidx.core.content.ContextCompat
 import android.text.TextUtils
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.IntDef
+import androidx.core.content.ContextCompat
 import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.R
+import com.smallraw.foretime.app.base.BaseTitleBarActivity
+import com.smallraw.foretime.app.base.databinding.DataBindingConfig
 import com.smallraw.foretime.app.common.widget.dialog.MultipleItemDialog
 import com.smallraw.foretime.app.common.widget.dialog.SelectDateDialog
 import com.smallraw.foretime.app.constant.TaskTypeConsts
+import com.smallraw.foretime.app.databinding.ActivityAddCountdownDayBinding
 import com.smallraw.foretime.app.event.TaskChangeEvent
 import com.smallraw.foretime.app.repository.database.entity.MemorialDO
-import com.smallraw.foretime.app.base.BaseTitleBarActivity
-import com.smallraw.foretime.app.databinding.ActivityAddCountdownDayBinding
 import org.greenrobot.eventbus.EventBus
 import java.text.SimpleDateFormat
 import java.util.*
@@ -35,6 +36,7 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
          * 累计日
          */
         const val DaysCumulative = TaskTypeConsts.CUMULATIVE_DAY
+
         /**
          * 倒数日
          */
@@ -44,6 +46,7 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
          * 添加
          */
         const val OptionTypeAdd = 0
+
         /**
          * 修改
          */
@@ -81,7 +84,8 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
             ContextCompat.startActivity(context, intent, null)
         }
 
-        private val COLOR_LIST = arrayListOf("#139EED", "#EE386D", "#FFC529", "#9092A5", "#FF8E9F", "#2B0050", "#FD92C4")
+        private val COLOR_LIST =
+            arrayListOf("#139EED", "#EE386D", "#FFC529", "#9092A5", "#FF8E9F", "#2B0050", "#FD92C4")
         private val REPEAT_LIST = arrayListOf("从不", "每周", "每月", "每年")
     }
 
@@ -108,6 +112,13 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
      */
     private var mSelectRepeatIndex = 0
 
+    override fun initViewModel() {
+    }
+
+    override fun getDataBindingConfig(): DataBindingConfig {
+        return DataBindingConfig(R.layout.activity_add_countdown_day)
+    }
+
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -118,7 +129,10 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
         when (mCurrentDayOptionType) {
             OptionTypeAdd -> {
                 mCalendar.timeInMillis = System.currentTimeMillis()
-                mBinding.tvTargetDate.text = "${mCalendar.get(Calendar.YEAR)}-${mCalendar.get(Calendar.MONTH) + 1}-${mCalendar.get(Calendar.DAY_OF_MONTH)}"
+                mBinding.tvTargetDate.text =
+                    "${mCalendar.get(Calendar.YEAR)}-${mCalendar.get(Calendar.MONTH) + 1}-${
+                        mCalendar.get(Calendar.DAY_OF_MONTH)
+                    }"
             }
             OptionTypeEdit -> {
                 mEditTaskId = intent.getLongExtra(TASK_ID_EXTRA, mEditTaskId)
@@ -143,27 +157,27 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
                 e.printStackTrace()
             }
             SelectDateDialog.Builder(this)
-                    .setOnWheelCallback { date ->
-                        mBinding.tvTargetDate.text = mSimpleDateFormat.format(date)
-                    }
-                    .setTime(date)
-                    .atViewAuto(mBinding.tvTargetDate)
-                    .build()
-                    .show()
+                .setOnWheelCallback { date ->
+                    mBinding.tvTargetDate.text = mSimpleDateFormat.format(date)
+                }
+                .setTime(date)
+                .atViewAuto(mBinding.tvTargetDate)
+                .build()
+                .show()
         }
 
         mBinding.tvRepeat.setOnClickListener {
             MultipleItemDialog.Builder(this)
-                    .setDate(REPEAT_LIST)
-                    .setSelectItem(mSelectRepeatIndex)
-                    .setSelectItem { dialog, i ->
-                        mSelectRepeatIndex = i
-                        mBinding.tvRepeat.text = REPEAT_LIST[i]
-                        dialog.dismiss()
-                    }
-                    .atViewAuto(mBinding.tvRepeat)
-                    .build()
-                    .show()
+                .setDate(REPEAT_LIST)
+                .setSelectItem(mSelectRepeatIndex)
+                .setSelectItem { dialog, i ->
+                    mSelectRepeatIndex = i
+                    mBinding.tvRepeat.text = REPEAT_LIST[i]
+                    dialog.dismiss()
+                }
+                .atViewAuto(mBinding.tvRepeat)
+                .build()
+                .show()
         }
 
         mBinding.colorRecyclerView.setColors(COLOR_LIST)
@@ -200,15 +214,37 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
             App.getInstance().getAppExecutors().diskIO().execute {
                 when (mCurrentDayOptionType) {
                     OptionTypeAdd -> {
-                        val memorial = MemorialDO(titleName, note, mCurrentDayType, color, date, repeatTime, Date())
+                        val memorial = MemorialDO(
+                            titleName,
+                            note,
+                            mCurrentDayType,
+                            color,
+                            date,
+                            repeatTime,
+                            Date()
+                        )
                         mDataRepository.insertTask(memorial)
                         EventBus.getDefault().post(TaskChangeEvent(TaskChangeEvent.ADD))
                     }
                     OptionTypeEdit -> {
-                        val memorial = MemorialDO(titleName, note, mCurrentDayType, color, date, repeatTime, Date())
+                        val memorial = MemorialDO(
+                            titleName,
+                            note,
+                            mCurrentDayType,
+                            color,
+                            date,
+                            repeatTime,
+                            Date()
+                        )
                         memorial.id = mEditTaskId
                         mDataRepository.update(memorial)
-                        EventBus.getDefault().post(TaskChangeEvent(TaskChangeEvent.UPDATE, mEditTaskId, mCurrentDayType))
+                        EventBus.getDefault().post(
+                            TaskChangeEvent(
+                                TaskChangeEvent.UPDATE,
+                                mEditTaskId,
+                                mCurrentDayType
+                            )
+                        )
                     }
                 }
             }
@@ -223,12 +259,14 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
                 setContentViewData(task)
             }
         }
-
     }
 
     private fun setContentViewData(task: MemorialDO) {
         mCalendar.timeInMillis = task.targetTime!!.time
-        mBinding.tvTargetDate.text = "${mCalendar.get(Calendar.YEAR)}-${mCalendar.get(Calendar.MONTH) + 1}-${mCalendar.get(Calendar.DAY_OF_MONTH)}"
+        mBinding.tvTargetDate.text =
+            "${mCalendar.get(Calendar.YEAR)}-${mCalendar.get(Calendar.MONTH) + 1}-${
+                mCalendar.get(Calendar.DAY_OF_MONTH)
+            }"
 
         mBinding.titleName.setText(task.name)
         mBinding.tvNote.setText(task.description)

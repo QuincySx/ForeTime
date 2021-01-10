@@ -22,7 +22,7 @@ fun Window.monitorMetrics(name: String = "") {
         return
     }
     this.addOnFrameMetricsAvailableListener(
-        { window, frameMetrics, dropCountSinceLastInvocation ->
+        { _, frameMetrics, _ ->
             // 布局和测量时间
             val layoutMeasureDuration = frameMetrics.getMetric(FrameMetrics.LAYOUT_MEASURE_DURATION)
             // 布局绘制时间

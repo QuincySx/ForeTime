@@ -2,9 +2,9 @@ package com.smallraw.foretime.app.common.widget
 
 import android.content.Context
 import android.graphics.*
-import androidx.annotation.ColorInt
 import android.util.AttributeSet
 import android.view.View
+import androidx.annotation.ColorInt
 import me.jessyan.autosize.utils.AutoSizeUtils
 
 class TimeScheduleView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : View(context, attrs, defStyleAttr) {
@@ -100,14 +100,14 @@ class TimeScheduleView @JvmOverloads constructor(context: Context, attrs: Attrib
 
     private fun measureHeight(measureSpec: Int): Int {
         var result: Int
-        val mode = View.MeasureSpec.getMode(measureSpec)
-        val size = View.MeasureSpec.getSize(measureSpec)
+        val mode = MeasureSpec.getMode(measureSpec)
+        val size = MeasureSpec.getSize(measureSpec)
 
-        if (mode == View.MeasureSpec.EXACTLY) {
+        if (mode == MeasureSpec.EXACTLY) {
             result = size
         } else {
             result = defWidth
-            if (mode == View.MeasureSpec.AT_MOST) {
+            if (mode == MeasureSpec.AT_MOST) {
                 result = Math.min(result, size)
             }
         }
@@ -116,14 +116,14 @@ class TimeScheduleView @JvmOverloads constructor(context: Context, attrs: Attrib
 
     private fun measureWidth(measureSpec: Int): Int {
         var result: Int
-        val mode = View.MeasureSpec.getMode(measureSpec)
-        val size = View.MeasureSpec.getSize(measureSpec)
+        val mode = MeasureSpec.getMode(measureSpec)
+        val size = MeasureSpec.getSize(measureSpec)
 
-        if (mode == View.MeasureSpec.EXACTLY) {
+        if (mode == MeasureSpec.EXACTLY) {
             result = size
         } else {
             result = defWidth
-            if (mode == View.MeasureSpec.AT_MOST) {
+            if (mode == MeasureSpec.AT_MOST) {
                 result = Math.min(result, size)
             }
         }

@@ -5,6 +5,7 @@ import com.smallraw.foretime.app.tomatoBell.CountDownType.Companion.REPOSE
 import com.smallraw.foretime.app.tomatoBell.CountDownType.Companion.WORKING
 
 
+@Target(AnnotationTarget.TYPE, AnnotationTarget.VALUE_PARAMETER)
 @IntDef(WORKING, REPOSE)
 public annotation class CountDownType {
     companion object {

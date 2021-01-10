@@ -7,6 +7,7 @@ import com.smallraw.foretime.app.tomatoBell.CountDownStatus.Companion.PAUSE
 import com.smallraw.foretime.app.tomatoBell.CountDownStatus.Companion.READY
 import com.smallraw.foretime.app.tomatoBell.CountDownStatus.Companion.RUNNING
 
+@Target(AnnotationTarget.PROPERTY, AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.TYPE)
 @IntDef(READY, RUNNING, PAUSE, FINISH, CANCEL)
 public annotation class CountDownStatus {
     companion object {

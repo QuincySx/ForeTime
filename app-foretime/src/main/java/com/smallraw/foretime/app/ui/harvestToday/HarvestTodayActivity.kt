@@ -4,19 +4,27 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import com.smallraw.foretime.app.R
+import com.smallraw.foretime.app.base.BaseTitleBarActivity
+import com.smallraw.foretime.app.base.databinding.DataBindingConfig
+import com.smallraw.foretime.app.databinding.ActivityHarvestTodayBinding
 import com.smallraw.foretime.app.entity.Weather
 import com.smallraw.foretime.app.ui.shape.ShapeActivity
-import com.smallraw.foretime.app.base.BaseTitleBarActivity
-import com.smallraw.foretime.app.databinding.ActivityHarvestTodayBinding
+import com.smallraw.foretime.app.utils.monthDayFormat
 import com.smallraw.time.model.BaseCallback
 import com.smallraw.time.model.WeatherModel
 import com.smallraw.time.utils.getWeekOfDate
-import com.smallraw.foretime.app.utils.monthDayFormat
 import java.util.*
 
 class HarvestTodayActivity : BaseTitleBarActivity() {
     private val mBinding by lazy {
         ActivityHarvestTodayBinding.inflate(layoutInflater)
+    }
+
+    override fun initViewModel() {
+    }
+
+    override fun getDataBindingConfig(): DataBindingConfig {
+        return DataBindingConfig(R.layout.activity_harvest_today)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

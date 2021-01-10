@@ -15,7 +15,6 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Parcel;
 import android.os.Parcelable;
-import androidx.core.content.ContextCompat;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
@@ -29,6 +28,8 @@ import android.view.ViewParent;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.CompoundButton;
 
+import androidx.core.content.ContextCompat;
+
 @SuppressWarnings("unused")
 public class SwitchButton extends CompoundButton {
     public static final float DEFAULT_THUMB_RANGE_RATIO = 1.8f;
@@ -37,8 +38,8 @@ public class SwitchButton extends CompoundButton {
     public static final int DEFAULT_ANIMATION_DURATION = 250;
     public static final int DEFAULT_TINT_COLOR = 0x327FC2;
 
-    private static int[] CHECKED_PRESSED_STATE = new int[]{android.R.attr.state_checked, android.R.attr.state_enabled, android.R.attr.state_pressed};
-    private static int[] UNCHECKED_PRESSED_STATE = new int[]{-android.R.attr.state_checked, android.R.attr.state_enabled, android.R.attr.state_pressed};
+    private static final int[] CHECKED_PRESSED_STATE = new int[]{android.R.attr.state_checked, android.R.attr.state_enabled, android.R.attr.state_pressed};
+    private static final int[] UNCHECKED_PRESSED_STATE = new int[]{-android.R.attr.state_checked, android.R.attr.state_enabled, android.R.attr.state_pressed};
 
     private Drawable mThumbDrawable, mBackDrawable;
     private ColorStateList mBackColor, mThumbColor;
@@ -474,10 +475,10 @@ public class SwitchButton extends CompoundButton {
         }
 
         if (mThumbRadius == -1) {
-            mThumbRadius = Math.min(mThumbWidth, mThumbHeight) / 2;
+            mThumbRadius = Math.min(mThumbWidth, mThumbHeight) / 2F;
         }
         if (mBackRadius == -1) {
-            mBackRadius = Math.min(mBackWidth, mBackHeight) / 2;
+            mBackRadius = Math.min(mBackWidth, mBackHeight) / 2F;
         }
 
         int contentWidth = getMeasuredWidth() - getPaddingLeft() - getPaddingRight();
@@ -492,14 +493,14 @@ public class SwitchButton extends CompoundButton {
             thumbTop = getPaddingTop() + Math.max(0, mThumbMargin.top);
         } else {
             // center vertical in content area
-            thumbTop = getPaddingTop() + Math.max(0, mThumbMargin.top) + (contentHeight - drawingHeight + 1) / 2;
+            thumbTop = getPaddingTop() + Math.max(0, mThumbMargin.top) + (contentHeight - drawingHeight + 1) / 2F;
         }
 
         float thumbLeft;
         if (contentWidth <= mBackWidth) {
             thumbLeft = getPaddingLeft() + Math.max(0, mThumbMargin.left);
         } else {
-            thumbLeft = getPaddingLeft() + Math.max(0, mThumbMargin.left) + (contentWidth - drawingWidth + 1) / 2;
+            thumbLeft = getPaddingLeft() + Math.max(0, mThumbMargin.left) + (contentWidth - drawingWidth + 1) / 2F;
         }
 
         mThumbRectF.set(thumbLeft, thumbTop, thumbLeft + mThumbWidth, thumbTop + mThumbHeight);
@@ -688,7 +689,7 @@ public class SwitchButton extends CompoundButton {
             case MotionEvent.ACTION_MOVE:
                 float x = event.getX();
                 setProgress(getProgress() + (x - mLastX) / mSafeRectF.width());
-                if (!mCatch && (Math.abs(deltaX) > mTouchSlop / 2 || Math.abs(deltaY) > mTouchSlop / 2)) {
+                if (!mCatch && (Math.abs(deltaX) > mTouchSlop / 2F || Math.abs(deltaY) > mTouchSlop / 2F)) {
                     if (deltaY == 0 || Math.abs(deltaX) > Math.abs(deltaY)) {
                         catchView();
                     } else if (Math.abs(deltaY) > Math.abs(deltaX)) {

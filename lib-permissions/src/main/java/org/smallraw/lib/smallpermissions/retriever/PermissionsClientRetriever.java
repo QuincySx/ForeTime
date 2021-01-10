@@ -21,6 +21,7 @@ import org.smallraw.lib.smallpermissions.permisson.RequestPermissionsSupportFrag
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class PermissionsClientRetriever implements Handler.Callback {
     public static final String FRAGMENT_TAG = "com.smallraw.library.smallpermissions.fragment";
@@ -34,9 +35,9 @@ public class PermissionsClientRetriever implements Handler.Callback {
     private final Handler mHandler;
 
     final Map<FragmentManager, RequestPermissionsSupportFragment> mPendingSupportPhotoManagerFragments =
-            new HashMap();
+            new HashMap<>();
     final Map<android.app.FragmentManager, RequestPermissionsFragment> mPendingPhotoManagerFragments =
-            new HashMap();
+            new HashMap<>();
 
     public PermissionsClientRetriever() {
         mHandler = new Handler(Looper.getMainLooper(), this /* Callback */);
@@ -67,7 +68,7 @@ public class PermissionsClientRetriever implements Handler.Callback {
             throw new IllegalArgumentException("You cannot start a load on a fragment before it is attached");
         }
         FragmentManager fm = fragment.getChildFragmentManager();
-        return supportFragmentGet(fragment.getContext().getApplicationContext(), fm);
+        return supportFragmentGet(Objects.requireNonNull(fragment.getContext()).getApplicationContext(), fm);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -80,13 +81,11 @@ public class PermissionsClientRetriever implements Handler.Callback {
     }
 
     private IPermission fragmentGet(Context applicationContext, android.app.FragmentManager fm) {
-        RequestPermissionsFragment current = getRequestManagerFragment(fm);
-        return current;
+        return getRequestManagerFragment(fm);
     }
 
     private IPermission supportFragmentGet(Context applicationContext, FragmentManager fm) {
-        RequestPermissionsSupportFragment current = getSupportRequestManagerFragment(fm);
-        return current;
+        return getSupportRequestManagerFragment(fm);
     }
 
     private RequestPermissionsSupportFragment getSupportRequestManagerFragment(final FragmentManager fm) {

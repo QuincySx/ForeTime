@@ -3,17 +3,18 @@ package com.smallraw.foretime.app.ui.taskInfo
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import androidx.core.content.res.ResourcesCompat
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.content.res.ResourcesCompat
 import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.R
+import com.smallraw.foretime.app.base.BaseTitleBarActivity
+import com.smallraw.foretime.app.base.databinding.DataBindingConfig
+import com.smallraw.foretime.app.databinding.ActivityTaskInfoBinding
 import com.smallraw.foretime.app.event.TaskChangeEvent
 import com.smallraw.foretime.app.repository.database.entity.MemorialDO
 import com.smallraw.foretime.app.ui.addTaskDay.AddTaskDayActivity
-import com.smallraw.foretime.app.base.BaseTitleBarActivity
-import com.smallraw.foretime.app.databinding.ActivityTaskInfoBinding
 import me.jessyan.autosize.utils.AutoSizeUtils
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -40,6 +41,13 @@ class TaskInfoActivity : BaseTitleBarActivity() {
     private var mTask: MemorialDO? = null
     private var taskInfoAdapter: TaskInfoAdapter? = null
     private var pagerSnapHelper = androidx.recyclerview.widget.PagerSnapHelper()
+
+    override fun initViewModel() {
+    }
+
+    override fun getDataBindingConfig(): DataBindingConfig {
+        return DataBindingConfig(R.layout.activity_task_info)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.base.BaseTitleBarActivity
+import com.smallraw.foretime.app.base.databinding.DataBindingConfig
 import com.smallraw.foretime.app.databinding.ActivityMusicListBinding
 import me.jessyan.autosize.utils.AutoSizeUtils
 
@@ -13,6 +14,13 @@ class MusicListActivity : BaseTitleBarActivity() {
     }
     private val mMusicList = ArrayList<MusicBean>()
     private val mAdapter = MusicAdapter(mMusicList)
+
+    override fun initViewModel() {
+    }
+
+    override fun getDataBindingConfig(): DataBindingConfig {
+        return DataBindingConfig(R.layout.activity_music_list)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
