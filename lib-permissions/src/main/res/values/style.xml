@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <color name="smallraw_permissions_transparent">#FFFFFFFF</color>
 
     <style name="SmallRawRequestPermissionsActivityStyle" parent="Theme.AppCompat.NoActionBar">
@@ -8,6 +8,6 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowNoDisplay">false</item>
         <item name="android:windowDisablePreview">true</item>
-        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowIsTranslucent" tools:ignore="DuplicateDefinition">false</item>
     </style>
 </resources>

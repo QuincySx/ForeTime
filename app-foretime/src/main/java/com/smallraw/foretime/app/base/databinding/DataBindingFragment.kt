@@ -44,7 +44,7 @@ abstract class DataBindingFragment : Fragment() {
                     setBackgroundColor(Color.WHITE)
                     text = "Debug"
                 }
-                (mBinding!!.root as ViewGroup).addView(mTvStrictModeTip)
+                (mBinding?.root as ViewGroup?)?.addView(mTvStrictModeTip)
             }
         }
         return mBinding
@@ -87,7 +87,7 @@ abstract class DataBindingFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        mBinding!!.unbind()
+        mBinding?.unbind()
         mBinding = null
     }
 }

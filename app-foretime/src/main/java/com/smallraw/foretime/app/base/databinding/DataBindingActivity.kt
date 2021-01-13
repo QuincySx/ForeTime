@@ -32,7 +32,7 @@ abstract class DataBindingActivity : AppCompatActivity() {
                     setBackgroundColor(Color.WHITE)
                     text = "Debug"
                 }
-                (mBinding!!.root as ViewGroup).addView(mTvStrictModeTip)
+                (mBinding?.root as ViewGroup?)?.addView(mTvStrictModeTip)
             }
         }
         return mBinding?: throw RuntimeException("Please call after the life cycle of onCreate")
@@ -72,7 +72,7 @@ abstract class DataBindingActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mBinding!!.unbind()
+        mBinding?.unbind()
         mBinding = null
     }
 }

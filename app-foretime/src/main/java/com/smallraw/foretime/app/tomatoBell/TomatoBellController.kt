@@ -27,7 +27,15 @@ class TomatoBellController {
         }
     }
 
-    fun nextState() {
+    fun setState(@CountDownType type: Int) {
+        mTomatoBellTypeLiveData.postValue(type)
+    }
 
+    fun nextState() {
+        if (getTomatoBellType().value == CountDownType.WORKING) {
+            mTomatoBellTypeLiveData.postValue(CountDownType.REPOSE)
+        } else {
+            mTomatoBellTypeLiveData.postValue(CountDownType.WORKING)
+        }
     }
 }

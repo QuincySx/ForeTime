@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
-        <import type="android.view.View" />
+        <import type="android.view.View"/>
 
         <variable
             name="state"
-            type="com.smallraw.foretime.app.ui.main.tomatoBell.TomatoBellViewModel" />
+            type="com.smallraw.foretime.app.ui.main.tomatoBell.TomatoBellViewModel"/>
 
         <variable
             name="musicVm"
-            type="com.smallraw.foretime.app.viewmodle.MusicViewModel" />
+            type="com.smallraw.foretime.app.viewmodle.MusicViewModel"/>
 
         <variable
             name="click"
-            type="com.smallraw.foretime.app.ui.main.tomatoBell.TomatoBellFragment.ClickProxy" />
+            type="com.smallraw.foretime.app.ui.main.tomatoBell.TomatoBellFragment.ClickProxy"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,7 +33,7 @@
             android:onClick="@{click::onSettingClick}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/icon_setting_black" />
+            app:srcCompat="@drawable/icon_setting_black"/>
 
         <LinearLayout
             android:id="@+id/layoutMusic"
@@ -53,7 +53,7 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_gravity="center"
-                app:srcCompat="@drawable/icon_music_black" />
+                app:srcCompat="@drawable/icon_music_black"/>
 
             <TextView
                 android:id="@+id/tvMusicText"
@@ -61,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="@{musicVm.name}" />
+                android:text="@{musicVm.name}"/>
         </LinearLayout>
 
         <com.smallraw.foretime.app.common.widget.TimeScheduleView
@@ -75,7 +75,7 @@
             app:layout_constraintVertical_bias="0.5"
             app:setProgress="@{state.Progress}"
             app:setProgressColor="@{state.progressColor}"
-            app:setTimeWrapper="@{state.timeWrapper}" />
+            app:setTimeWrapper="@{state.timeWrapper}"/>
 
         <TextView
             android:id="@+id/viewOperationHints"
@@ -83,12 +83,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{state.operationHints}"
+            android:visibility="@{state.operationHintsVisibility? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/viewTimeSchedule"
             app:layout_constraintVertical_bias="0.1"
-            tools:text="轻触休息 长按跳过" />
+            tools:text="轻触休息 长按跳过"/>
 
         <com.smallraw.foretime.app.common.widget.TimeProgressView
             android:id="@+id/viewTimeProgress"
@@ -100,6 +101,6 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/viewTimeSchedule"
             app:layout_constraintVertical_bias="0.5"
-            app:setProgress="@{state.TouchTimeProgress}" />
+            app:setProgress="@{state.TouchTimeProgress}"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

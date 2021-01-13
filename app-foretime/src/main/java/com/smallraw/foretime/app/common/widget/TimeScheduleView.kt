@@ -99,10 +99,10 @@ class TimeScheduleView @JvmOverloads constructor(context: Context, attrs: Attrib
     }
 
     private fun measureHeight(measureSpec: Int): Int {
-        var result: Int
         val mode = MeasureSpec.getMode(measureSpec)
         val size = MeasureSpec.getSize(measureSpec)
 
+        var result: Int
         if (mode == MeasureSpec.EXACTLY) {
             result = size
         } else {
@@ -115,10 +115,10 @@ class TimeScheduleView @JvmOverloads constructor(context: Context, attrs: Attrib
     }
 
     private fun measureWidth(measureSpec: Int): Int {
-        var result: Int
         val mode = MeasureSpec.getMode(measureSpec)
         val size = MeasureSpec.getSize(measureSpec)
 
+        var result: Int
         if (mode == MeasureSpec.EXACTLY) {
             result = size
         } else {
@@ -137,6 +137,7 @@ class TimeScheduleView @JvmOverloads constructor(context: Context, attrs: Attrib
      */
     fun setProgress(progress: Float) {
         mProgress = progress
+        postInvalidate()
     }
 
     /**
@@ -147,6 +148,7 @@ class TimeScheduleView @JvmOverloads constructor(context: Context, attrs: Attrib
     fun setProgressColor(@ColorInt color: Int) {
         mProgressColor = color
         mPaintCircle.color = mProgressColor
+        postInvalidate()
     }
 
     /**
@@ -156,5 +158,6 @@ class TimeScheduleView @JvmOverloads constructor(context: Context, attrs: Attrib
      */
     fun setText(text: String) {
         mTextContent = text
+        postInvalidate()
     }
 }

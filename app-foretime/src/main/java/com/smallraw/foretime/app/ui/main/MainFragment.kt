@@ -1,6 +1,7 @@
 package com.smallraw.foretime.app.ui.main
 
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -98,8 +99,8 @@ class MainFragment : BaseFragment(), View.OnClickListener {
         val translate = ValueAnimator.ofFloat(0f, 1f)
         translate.addUpdateListener { animation ->
             val scale = animation.animatedValue.toString().toFloat()
-            mBinding.ivTomatoBellSuspension.setScaleX(scale)
-            mBinding.ivTomatoBellSuspension.setScaleY(scale)
+            mBinding.ivTomatoBellSuspension.scaleX = scale
+            mBinding.ivTomatoBellSuspension.scaleY = scale
         }
         translate.duration = 140
         translate
@@ -151,10 +152,10 @@ class MainFragment : BaseFragment(), View.OnClickListener {
             }
         }
         mMainScreenViewModel.mTomatoBellSuspensionButtonResource.observe(viewLifecycleOwner) {
-            mBinding.ivTomatoBellSuspension?.setBackgroundResource(it)
+            mBinding.ivTomatoBellSuspension.setBackgroundResource(it)
         }
         mMainScreenViewModel.mCalendarSuspensionButtonResource.observe(viewLifecycleOwner) {
-            mBinding.ivCalendarSuspension?.setBackgroundResource(it)
+            mBinding.ivCalendarSuspension.setBackgroundResource(it)
         }
 //        tomatoBellFragment.showViewAction()
 
@@ -205,30 +206,23 @@ class MainFragment : BaseFragment(), View.OnClickListener {
     }
 
     private val mOnMainTomatoBellFragmentCallback = object : OnMainTomatoBellFragmentCallback {
+        @SuppressLint("ClickableViewAccessibility")
         override fun setOnTouchEventListener(onTouchListener: View.OnTouchListener?) {
-            if (mBinding.ivTomatoBellSuspension != null) {
-                mBinding.ivTomatoBellSuspension.setOnTouchListener(onTouchListener)
-            }
+            mBinding.ivTomatoBellSuspension.setOnTouchListener(onTouchListener)
         }
 
         override fun setOnLongClickListener(onLongClickListener: View.OnLongClickListener?) {
-            if (mBinding.ivTomatoBellSuspension != null) {
-                mBinding.ivTomatoBellSuspension.setOnLongClickListener(onLongClickListener)
-            }
+            mBinding.ivTomatoBellSuspension.setOnLongClickListener(onLongClickListener)
         }
 
         override fun setOnClickListener(onClickListener: View.OnClickListener?) {
-            if (mBinding.ivTomatoBellSuspension != null) {
-                mBinding.ivTomatoBellSuspension.setOnClickListener(onClickListener)
-            }
+            mBinding.ivTomatoBellSuspension.setOnClickListener(onClickListener)
         }
     }
 
     private val mOnMainCalendarFragmentCallback = object : OnMainCalendarFragmentCallback {
         override fun setOnClickListener(onClickListener: View.OnClickListener?) {
-            if (mBinding.ivCalendarSuspension != null) {
-                mBinding.ivCalendarSuspension.setOnClickListener(onClickListener)
-            }
+            mBinding.ivCalendarSuspension.setOnClickListener(onClickListener)
         }
     }
 }

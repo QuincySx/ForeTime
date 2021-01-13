@@ -13,6 +13,7 @@ import com.smallraw.foretime.app.entity.TaskConfigInfo
 import com.smallraw.foretime.app.executors.AppExecutors
 import com.smallraw.foretime.app.repository.DataRepository
 import com.smallraw.foretime.app.repository.database.AppDatabase
+import com.smallraw.foretime.app.tomatoBell.TomatoBellKit
 import com.smallraw.lib.monitor.crash.LoopProxy
 import com.smallraw.lib.monitor.view.ViewInitTimeInterceptor
 import com.smallraw.library.core.utils.AppUtils
@@ -46,6 +47,7 @@ class App : Application(), IViewModelStoreApp {
         AppUtils.init(this)
         mAppExecutors = AppExecutors()
         initConfig()
+        initTomatoBell()
 
         ViewPump.init(
             ViewPump.builder()
@@ -54,6 +56,12 @@ class App : Application(), IViewModelStoreApp {
 //                .addInterceptor(CustomTextViewInterceptor())
                 .build()
         )
+    }
+
+    private fun initTomatoBell() {
+        mAppExecutors.diskIO().execute {
+            TomatoBellKit.getInstance().reset()
+        }
     }
 
     private fun initConfig() {

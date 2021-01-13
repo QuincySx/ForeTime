@@ -111,6 +111,7 @@ public final class NetworkUtils {
      *
      * @return {@code true}: enabled<br>{@code false}: disabled
      */
+    @SuppressLint("MissingPermission")
     public static boolean getMobileDataEnabled() {
         try {
             TelephonyManager tm =
