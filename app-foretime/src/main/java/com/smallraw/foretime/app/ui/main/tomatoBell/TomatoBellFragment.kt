@@ -28,7 +28,6 @@ import com.smallraw.foretime.app.ui.main.OnMainTomatoBellFragmentCallback
 import com.smallraw.foretime.app.ui.musicListActivity.MusicListActivity
 import com.smallraw.foretime.app.utils.ms2Minutes
 import com.smallraw.foretime.app.viewmodle.MusicViewModel
-import java.util.concurrent.LinkedBlockingQueue
 
 class TomatoBellFragment : BaseFragment(), ServiceConnection {
 
@@ -43,7 +42,6 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
 
     private var mCountDownService: CountDownService? = null
     private var isDisplay = false
-    private var mSuspensionHandleQueue = LinkedBlockingQueue<Int>(1)
     var onMainTomatoBellFragmentCallback: OnMainTomatoBellFragmentCallback? = null
     private val mMainScreenViewModel by lazy {
         ViewModelProvider(requireActivity()).get(MainScreenViewModel::class.java)
@@ -275,32 +273,12 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
      * 修改底部图标
      * TODO 底部图标应该两个叠加,业务操作隔离
      */
-    private fun changeSuspensionIcon(resId: Int = -1) {
-        if (isDisplay) {
-            val res = mSuspensionHandleQueue.poll()
-            if (resId == -1) {
-                if (res == null) {
-                    mMainScreenViewModel.mTomatoBellSuspensionButtonResource.value =
-                        getSuspensionIcon()
-                } else {
-                    mMainScreenViewModel.mTomatoBellSuspensionButtonResource.value = res
-                }
-            } else {
-                mMainScreenViewModel.mTomatoBellSuspensionButtonResource.value = resId
-            }
+    private fun changeSuspensionIcon(@DrawableRes resId: Int = -1) {
+        if (resId == -1) {
+            mMainScreenViewModel.tomatoBellSuspensionRes.set(getSuspensionIcon())
         } else {
-            addSuspensionHandle(resId)
+            mMainScreenViewModel.tomatoBellSuspensionRes.set(resId)
         }
-    }
-
-    /**
-     * 通过队列消除重复事件
-     */
-    private fun addSuspensionHandle(resId: Int) {
-        if (!mSuspensionHandleQueue.isEmpty()) {
-            mSuspensionHandleQueue.poll()
-        }
-        mSuspensionHandleQueue.add(resId)
     }
 
     /**

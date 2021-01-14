@@ -119,7 +119,8 @@ class CalendarFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        mMainScreenViewModel.calendarSuspensionRes.set(R.drawable.ic_tab_suspension_add)
+        
         initView()
         mCalendarVewModel.mActiveTaskListLiveData.observe(viewLifecycleOwner, {
             Log.e("LiveData", "任务卡列表收到变化")
@@ -173,9 +174,8 @@ class CalendarFragment : BaseFragment() {
     }
 
     private fun showViewAction() {
-        mMainScreenViewModel.mCalendarSuspensionButtonResource.value =
-            R.drawable.ic_tab_suspension_add
-        onMainCalendarFragmentCallback?.setOnClickListener(View.OnClickListener { v ->
+        mMainScreenViewModel.calendarSuspensionRes.set(R.drawable.ic_tab_suspension_add)
+        onMainCalendarFragmentCallback?.setOnClickListener{ v ->
             context?.let { context ->
                 SelectDayTypeDialog.Builder(context)
                     .setOnClickCallback { view, index ->
@@ -191,7 +191,7 @@ class CalendarFragment : BaseFragment() {
                     .build()
                     .show()
             }
-        })
+        }
     }
 
     private fun initWeatherNow() {

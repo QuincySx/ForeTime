@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.os.Handler
 import android.os.Message
+import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import androidx.annotation.StringRes
@@ -72,7 +73,8 @@ abstract class BaseFragment : DataBindingFragment() {
 
     override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
         //TODO 错开动画转场与 UI 刷新的时机，避免掉帧卡顿的现象
-        mHandler.postDelayed(Runnable {
+        Log.e("============","==========")
+        mHandler.postDelayed({
             if (!mAnimationLoaded) {
                 mAnimationLoaded = true
                 loadInitData()
