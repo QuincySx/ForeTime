@@ -17,7 +17,7 @@ import com.smallraw.foretime.app.common.widget.dialog.MultipleItemDialog
 import com.smallraw.foretime.app.common.widget.dialog.SelectDateDialog
 import com.smallraw.foretime.app.constant.TaskTypeConsts
 import com.smallraw.foretime.app.databinding.ActivityAddCountdownDayBinding
-import com.smallraw.foretime.app.event.TaskChangeEvent
+import com.smallraw.foretime.app.common.event.TaskChangeEvent
 import com.smallraw.foretime.app.repository.database.entity.MemorialDO
 import org.greenrobot.eventbus.EventBus
 import java.text.SimpleDateFormat
@@ -90,7 +90,7 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
     }
 
     private val mBinding by lazy {
-        ActivityAddCountdownDayBinding.inflate(layoutInflater)
+        getBinding() as ActivityAddCountdownDayBinding
     }
 
     private var mCalendar = Calendar.getInstance()
@@ -122,7 +122,6 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(mBinding.root)
         setTitleBarLeftImage(R.drawable.ic_back_black)
 
         mCurrentDayOptionType = intent.getIntExtra(DAY_OPTION_TYPE_EXTRA, OptionTypeAdd)

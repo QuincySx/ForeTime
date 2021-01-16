@@ -1,4 +1,4 @@
-package com.smallraw.foretime.app.event;
+package com.smallraw.foretime.app.common.event;
 
 import androidx.annotation.IntDef;
 

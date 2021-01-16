@@ -1,4 +1,4 @@
-package com.smallraw.foretime.app.bindingAdapter
+package com.smallraw.foretime.app.common.bindingAdapter
 
 import androidx.databinding.BindingAdapter
 import com.smallraw.foretime.app.common.widget.TimeProgressView

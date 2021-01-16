@@ -1,4 +1,4 @@
-package com.smallraw.foretime.app.bindingAdapter
+package com.smallraw.foretime.app.common.bindingAdapter
 
 import androidx.annotation.ColorInt
 import androidx.databinding.BindingAdapter

@@ -16,10 +16,6 @@ import com.smallraw.time.utils.getWeekOfDate
 import java.util.*
 
 class HarvestTodayActivity : BaseTitleBarActivity() {
-    private val mBinding by lazy {
-        ActivityHarvestTodayBinding.inflate(layoutInflater)
-    }
-
     override fun initViewModel() {
     }
 
@@ -27,14 +23,17 @@ class HarvestTodayActivity : BaseTitleBarActivity() {
         return DataBindingConfig(R.layout.activity_harvest_today)
     }
 
+    override fun getBinding(): ActivityHarvestTodayBinding {
+        return super.getBinding() as ActivityHarvestTodayBinding
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(mBinding.root)
         setTitleBarLeftImage(R.drawable.ic_back_black)
         setDateTime()
         initWeatherNow()
 
-        mBinding.ivSuspensionShare.setOnClickListener {
+        getBinding().ivSuspensionShare.setOnClickListener {
             val intent = Intent(this, ShapeActivity::class.java)
             startActivity(intent)
         }
@@ -65,12 +64,12 @@ class HarvestTodayActivity : BaseTitleBarActivity() {
     private fun setWeatherData(data: Weather?) {
         try {
             if (data == null) {
-                mBinding.ivWeather.setBackgroundResource(R.drawable.ic_weather_qing)
-                mBinding.tvWeather.text = "暂无 · 0°C"
+                getBinding().ivWeather.setBackgroundResource(R.drawable.ic_weather_qing)
+                getBinding().tvWeather.text = "暂无 · 0°C"
             } else {
                 val weatherImage = WeatherModel.getWeatherImage(data.cond_code!!)
-                mBinding.ivWeather.setBackgroundResource(weatherImage)
-                mBinding.tvWeather.text = "${data.cond_txt} · ${data.tmp}°C"
+                getBinding().ivWeather.setBackgroundResource(weatherImage)
+                getBinding().tvWeather.text = "${data.cond_txt} · ${data.tmp}°C"
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -78,7 +77,7 @@ class HarvestTodayActivity : BaseTitleBarActivity() {
     }
 
     private fun setDateTime() {
-        mBinding.tvDate.text = monthDayFormat(Date())
-        mBinding.tvWeek.text = getWeekOfDate(applicationContext, Date())
+        getBinding().tvDate.text = monthDayFormat(Date())
+        getBinding().tvWeek.text = getWeekOfDate(applicationContext, Date())
     }
 }

@@ -1,4 +1,4 @@
-package com.smallraw.foretime.app.executors
+package com.smallraw.foretime.app.common.executors
 
 import android.os.Handler
 import android.os.Looper

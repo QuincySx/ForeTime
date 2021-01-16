@@ -3,7 +3,7 @@ package com.smallraw.foretime.app.tomatoBell
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.smallraw.foretime.app.extensions.printCallStack
+import com.smallraw.foretime.app.common.extensions.printCallStack
 
 class CountDownController : CountDownTick.OnCountDownTickListener {
     companion object {

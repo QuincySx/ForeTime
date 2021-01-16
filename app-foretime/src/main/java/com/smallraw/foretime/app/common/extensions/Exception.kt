@@ -1,4 +1,4 @@
-package com.smallraw.foretime.app.extensions
+package com.smallraw.foretime.app.common.extensions
 
 import android.util.Log
 

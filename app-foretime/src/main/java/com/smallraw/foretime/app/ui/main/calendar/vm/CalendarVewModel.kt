@@ -7,7 +7,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.smallraw.foretime.app.App
-import com.smallraw.foretime.app.event.TaskChangeEvent
+import com.smallraw.foretime.app.common.event.TaskChangeEvent
 import com.smallraw.foretime.app.repository.DataRepository
 import com.smallraw.foretime.app.repository.database.entity.MemorialDO
 import com.smallraw.foretime.app.repository.database.entity.MemorialTopDO

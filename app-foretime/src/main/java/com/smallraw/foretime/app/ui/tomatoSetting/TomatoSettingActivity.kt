@@ -13,7 +13,7 @@ import com.smallraw.foretime.app.databinding.ActivityTomatoSettingBinding
 
 class TomatoSettingActivity : BaseTitleBarActivity() {
     private val mBinding by lazy {
-        ActivityTomatoSettingBinding.inflate(layoutInflater)
+        getBinding() as ActivityTomatoSettingBinding
     }
 
     override fun initViewModel() {
@@ -25,7 +25,6 @@ class TomatoSettingActivity : BaseTitleBarActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(mBinding.root)
         setTitleBarLeftImage(R.drawable.ic_back_black)
         initView()
     }

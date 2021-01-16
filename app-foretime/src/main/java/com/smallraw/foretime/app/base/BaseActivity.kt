@@ -9,6 +9,7 @@ import android.os.Message
 import android.os.StrictMode
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.smallraw.foretime.app.base.databinding.DataBindingActivity
@@ -19,7 +20,7 @@ import qiu.niorgai.StatusBarCompat
 
 abstract class BaseActivity : DataBindingActivity(), Handler.Callback {
     companion object {
-        private val HANDLER_MSG_PROMPT = 1
+        private const val HANDLER_MSG_PROMPT = 1
     }
 
     protected val mHandler = Handler()

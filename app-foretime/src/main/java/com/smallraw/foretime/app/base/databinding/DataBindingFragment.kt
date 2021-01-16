@@ -35,7 +35,7 @@ abstract class DataBindingFragment : Fragment() {
     protected abstract fun getDataBindingConfig(): DataBindingConfig
 
     @SuppressLint("SetTextI18n")
-    protected fun getBinding(): ViewDataBinding {
+    protected open fun getBinding(): ViewDataBinding {
         if (isDebug() && mBinding != null) {
             if (mTvStrictModeTip == null) {
                 mTvStrictModeTip = TextView(context).apply {

@@ -71,7 +71,7 @@
         app:layout_constraintLeft_toRightOf="@+id/ivWeather"
         app:layout_constraintTop_toBottomOf="@+id/tvDate" />
 
-    <com.smallraw.foretime.app.common.OverScrollView
+    <com.smallraw.foretime.app.common.widget.OverScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="19dp"
@@ -86,5 +86,5 @@
             android:layout_height="match_parent"
             android:overScrollMode="never"
             android:scrollbars="none" />
-    </com.smallraw.foretime.app.common.OverScrollView>
+    </com.smallraw.foretime.app.common.widget.OverScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

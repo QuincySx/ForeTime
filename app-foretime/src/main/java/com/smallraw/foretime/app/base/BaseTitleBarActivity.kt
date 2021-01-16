@@ -10,11 +10,10 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
+import androidx.annotation.IdRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import com.smallraw.foretime.app.R
-import com.smallraw.foretime.app.base.databinding.DataBindingConfig
-import com.smallraw.foretime.app.databinding.ActivityBaseTitleActivityBinding
 
 
 abstract class BaseTitleBarActivity : BaseActivity() {
@@ -24,24 +23,27 @@ abstract class BaseTitleBarActivity : BaseActivity() {
     protected lateinit var mLayoutTitleBar: ConstraintLayout
     protected lateinit var mLayoutContent: FrameLayout
 
-    override fun getDataBindingConfig(): DataBindingConfig {
-        return DataBindingConfig(R.layout.activity_base_title_activity)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val databinding = getBinding() as ActivityBaseTitleActivityBinding
-
-        mLayoutTitleBar = databinding.layoutTitleBar
-        mLayoutTitleBarRight = databinding.layoutTitleBarRight
-        mImgTitleBarLeft = databinding.imgTitleBarLeft
-        mTvTitleBarContent = databinding.tvTitleBarContent
-        mLayoutContent = databinding.rootContent
+        mImgTitleBarLeft = findViewById(R.id.img_title_bar_left)
+        mTvTitleBarContent = findViewById(R.id.tv_title_bar_content)
+        mLayoutTitleBarRight = findViewById(R.id.layout_title_bar_right)
+        mLayoutTitleBar = findViewById(R.id.layout_title_bar)
+        mLayoutContent = findViewById(R.id.root_content)
 
         mImgTitleBarLeft.setOnClickListener(selfLeftClickListener())
-        mTvTitleBarContent.setText(selfTitleContent())
+        mTvTitleBarContent.text = selfTitleContent()
         mLayoutTitleBar.setBackgroundColor(selfTitleBackgroundColor())
+    }
+
+    override fun getDataBindingContentView(): ViewGroup? {
+        return findViewById(R.id.root_content)
+    }
+
+    @IdRes
+    override fun getDataBindingRootViewId(): Int {
+        return R.layout.activity_base_title_activity
     }
 
     protected fun addRightView(view: View) {
@@ -65,24 +67,6 @@ abstract class BaseTitleBarActivity : BaseActivity() {
         return View.OnClickListener {
             finish()
         }
-    }
-
-    override fun setContentView(layoutResID: Int) {
-        mLayoutContent.removeAllViews()
-        View.inflate(this, layoutResID, mLayoutContent)
-        onContentChanged()
-    }
-
-    override fun setContentView(view: View) {
-        mLayoutContent.removeAllViews()
-        mLayoutContent.addView(view)
-        onContentChanged()
-    }
-
-    override fun setContentView(view: View, params: ViewGroup.LayoutParams) {
-        mLayoutContent.removeAllViews()
-        mLayoutContent.addView(view, params)
-        onContentChanged()
     }
 
     protected fun setTitleBarLeftImage(@DrawableRes res: Int) {

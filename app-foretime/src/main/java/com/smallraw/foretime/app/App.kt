@@ -10,7 +10,7 @@ import com.smallraw.foretime.app.config.saveConfig
 import com.smallraw.foretime.app.entity.CalendarConfigInfo
 import com.smallraw.foretime.app.entity.MusicConfigInfo
 import com.smallraw.foretime.app.entity.TaskConfigInfo
-import com.smallraw.foretime.app.executors.AppExecutors
+import com.smallraw.foretime.app.common.executors.AppExecutors
 import com.smallraw.foretime.app.repository.DataRepository
 import com.smallraw.foretime.app.repository.database.AppDatabase
 import com.smallraw.foretime.app.tomatoBell.TomatoBellKit

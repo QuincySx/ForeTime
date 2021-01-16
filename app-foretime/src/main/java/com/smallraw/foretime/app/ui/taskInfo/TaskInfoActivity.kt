@@ -12,7 +12,7 @@ import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.base.BaseTitleBarActivity
 import com.smallraw.foretime.app.base.databinding.DataBindingConfig
 import com.smallraw.foretime.app.databinding.ActivityTaskInfoBinding
-import com.smallraw.foretime.app.event.TaskChangeEvent
+import com.smallraw.foretime.app.common.event.TaskChangeEvent
 import com.smallraw.foretime.app.repository.database.entity.MemorialDO
 import com.smallraw.foretime.app.ui.addTaskDay.AddTaskDayActivity
 import me.jessyan.autosize.utils.AutoSizeUtils
@@ -36,7 +36,7 @@ class TaskInfoActivity : BaseTitleBarActivity() {
     }
 
     private val mBinding by lazy {
-        ActivityTaskInfoBinding.inflate(layoutInflater)
+        getBinding() as ActivityTaskInfoBinding
     }
     private var mTask: MemorialDO? = null
     private var taskInfoAdapter: TaskInfoAdapter? = null
@@ -51,7 +51,6 @@ class TaskInfoActivity : BaseTitleBarActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(mBinding.root)
         setTitleBarLeftImage(R.drawable.ic_back_black)
         EventBus.getDefault().register(this)
 

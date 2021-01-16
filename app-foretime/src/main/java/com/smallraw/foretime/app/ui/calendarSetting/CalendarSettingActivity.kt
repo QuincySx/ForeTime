@@ -10,7 +10,7 @@ import com.smallraw.foretime.app.ui.backup.BackupActivity
 
 class CalendarSettingActivity : BaseTitleBarActivity() {
     private val mBinding by lazy {
-        ActivityCalendarSettingBinding.inflate(layoutInflater)
+        getBinding() as ActivityCalendarSettingBinding
     }
 
     override fun initViewModel() {
@@ -22,7 +22,6 @@ class CalendarSettingActivity : BaseTitleBarActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(mBinding.root)
         setTitleBarLeftImage(R.drawable.ic_back_black)
 
         mBinding.layoutBackup.setOnClickListener {
