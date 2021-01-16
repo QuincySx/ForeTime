@@ -1,4 +1,4 @@
-includeBuild 'versionPlugin'
+includeBuild 'VersionPlugin'
 include ':lib-feature-flag-kit', ':lib-feature-flag'
 include ':lib-monitor-tools', ':lib-permissions'
 include ':app-foretime', ':lib-core', ':lib-switch', ':lib-wheel'
