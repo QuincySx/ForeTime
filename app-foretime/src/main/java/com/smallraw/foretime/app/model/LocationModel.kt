@@ -9,7 +9,7 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import com.smallraw.foretime.app.App
-import org.smallraw.lib.smallpermissions.SmallPermission
+import com.smallraw.library.smallpermissions.SmallPermission
 import java.util.concurrent.CountDownLatch
 
 public class LocationModel {

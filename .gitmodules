@@ -1,0 +1,3 @@
+[submodule "ThirdParty/lib-permissions"]
+	path = ThirdParty/lib-permissions
+	url = https://github.com/SmallRaw/SmallPermissions.git
