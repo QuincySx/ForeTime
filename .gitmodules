@@ -1,3 +1,4 @@
-[submodule "ThirdParty/lib-permissions"]
-	path = ThirdParty/lib-permissions
+[submodule "ThirdParty/SmallPermissions"]
+	path = ThirdParty/SmallPermissions
 	url = https://github.com/SmallRaw/SmallPermissions.git
+	branch = androidx

@@ -1,17 +1,33 @@
+/*
+ * Copyright 2021 Smallraw Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.smallraw.library.core.utils;
-
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.SharedPreferences;
-
-import androidx.annotation.NonNull;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
+import androidx.annotation.NonNull;
+
 /**
+ *
+ *
  * <pre>
  *     author: Blankj
  *     blog  : http://blankj.com
@@ -66,7 +82,7 @@ public final class SPUtils {
      * Return the single {@link SPUtils} instance
      *
      * @param spName The name of sp.
-     * @param mode   Operating mode.
+     * @param mode Operating mode.
      * @return the single {@link SPUtils} instance
      */
     public static SPUtils getInstance(String spName, final int mode) {
@@ -101,7 +117,7 @@ public final class SPUtils {
     /**
      * Put the string value in sp.
      *
-     * @param key   The key of sp.
+     * @param key The key of sp.
      * @param value The value of sp.
      */
     public void put(@NonNull final String key, final String value) {
@@ -111,10 +127,10 @@ public final class SPUtils {
     /**
      * Put the string value in sp.
      *
-     * @param key      The key of sp.
-     * @param value    The value of sp.
-     * @param isCommit True to use {@link SharedPreferences.Editor#commit()},
-     *                 false to use {@link SharedPreferences.Editor#apply()}
+     * @param key The key of sp.
+     * @param value The value of sp.
+     * @param isCommit True to use {@link SharedPreferences.Editor#commit()}, false to use {@link
+     *     SharedPreferences.Editor#apply()}
      */
     public void put(@NonNull final String key, final String value, final boolean isCommit) {
         if (isCommit) {
@@ -137,7 +153,7 @@ public final class SPUtils {
     /**
      * Return the string value in sp.
      *
-     * @param key          The key of sp.
+     * @param key The key of sp.
      * @param defaultValue The default value if the sp doesn't exist.
      * @return the string value if sp exists or {@code defaultValue} otherwise
      */
@@ -148,7 +164,7 @@ public final class SPUtils {
     /**
      * Put the int value in sp.
      *
-     * @param key   The key of sp.
+     * @param key The key of sp.
      * @param value The value of sp.
      */
     public void put(@NonNull final String key, final int value) {
@@ -158,10 +174,10 @@ public final class SPUtils {
     /**
      * Put the int value in sp.
      *
-     * @param key      The key of sp.
-     * @param value    The value of sp.
-     * @param isCommit True to use {@link SharedPreferences.Editor#commit()},
-     *                 false to use {@link SharedPreferences.Editor#apply()}
+     * @param key The key of sp.
+     * @param value The value of sp.
+     * @param isCommit True to use {@link SharedPreferences.Editor#commit()}, false to use {@link
+     *     SharedPreferences.Editor#apply()}
      */
     public void put(@NonNull final String key, final int value, final boolean isCommit) {
         if (isCommit) {
@@ -184,7 +200,7 @@ public final class SPUtils {
     /**
      * Return the int value in sp.
      *
-     * @param key          The key of sp.
+     * @param key The key of sp.
      * @param defaultValue The default value if the sp doesn't exist.
      * @return the int value if sp exists or {@code defaultValue} otherwise
      */
@@ -195,7 +211,7 @@ public final class SPUtils {
     /**
      * Put the long value in sp.
      *
-     * @param key   The key of sp.
+     * @param key The key of sp.
      * @param value The value of sp.
      */
     public void put(@NonNull final String key, final long value) {
@@ -205,10 +221,10 @@ public final class SPUtils {
     /**
      * Put the long value in sp.
      *
-     * @param key      The key of sp.
-     * @param value    The value of sp.
-     * @param isCommit True to use {@link SharedPreferences.Editor#commit()},
-     *                 false to use {@link SharedPreferences.Editor#apply()}
+     * @param key The key of sp.
+     * @param value The value of sp.
+     * @param isCommit True to use {@link SharedPreferences.Editor#commit()}, false to use {@link
+     *     SharedPreferences.Editor#apply()}
      */
     public void put(@NonNull final String key, final long value, final boolean isCommit) {
         if (isCommit) {
@@ -231,7 +247,7 @@ public final class SPUtils {
     /**
      * Return the long value in sp.
      *
-     * @param key          The key of sp.
+     * @param key The key of sp.
      * @param defaultValue The default value if the sp doesn't exist.
      * @return the long value if sp exists or {@code defaultValue} otherwise
      */
@@ -242,7 +258,7 @@ public final class SPUtils {
     /**
      * Put the float value in sp.
      *
-     * @param key   The key of sp.
+     * @param key The key of sp.
      * @param value The value of sp.
      */
     public void put(@NonNull final String key, final float value) {
@@ -252,10 +268,10 @@ public final class SPUtils {
     /**
      * Put the float value in sp.
      *
-     * @param key      The key of sp.
-     * @param value    The value of sp.
-     * @param isCommit True to use {@link SharedPreferences.Editor#commit()},
-     *                 false to use {@link SharedPreferences.Editor#apply()}
+     * @param key The key of sp.
+     * @param value The value of sp.
+     * @param isCommit True to use {@link SharedPreferences.Editor#commit()}, false to use {@link
+     *     SharedPreferences.Editor#apply()}
      */
     public void put(@NonNull final String key, final float value, final boolean isCommit) {
         if (isCommit) {
@@ -278,7 +294,7 @@ public final class SPUtils {
     /**
      * Return the float value in sp.
      *
-     * @param key          The key of sp.
+     * @param key The key of sp.
      * @param defaultValue The default value if the sp doesn't exist.
      * @return the float value if sp exists or {@code defaultValue} otherwise
      */
@@ -289,7 +305,7 @@ public final class SPUtils {
     /**
      * Put the boolean value in sp.
      *
-     * @param key   The key of sp.
+     * @param key The key of sp.
      * @param value The value of sp.
      */
     public void put(@NonNull final String key, final boolean value) {
@@ -299,10 +315,10 @@ public final class SPUtils {
     /**
      * Put the boolean value in sp.
      *
-     * @param key      The key of sp.
-     * @param value    The value of sp.
-     * @param isCommit True to use {@link SharedPreferences.Editor#commit()},
-     *                 false to use {@link SharedPreferences.Editor#apply()}
+     * @param key The key of sp.
+     * @param value The value of sp.
+     * @param isCommit True to use {@link SharedPreferences.Editor#commit()}, false to use {@link
+     *     SharedPreferences.Editor#apply()}
      */
     public void put(@NonNull final String key, final boolean value, final boolean isCommit) {
         if (isCommit) {
@@ -325,7 +341,7 @@ public final class SPUtils {
     /**
      * Return the boolean value in sp.
      *
-     * @param key          The key of sp.
+     * @param key The key of sp.
      * @param defaultValue The default value if the sp doesn't exist.
      * @return the boolean value if sp exists or {@code defaultValue} otherwise
      */
@@ -336,7 +352,7 @@ public final class SPUtils {
     /**
      * Put the set of string value in sp.
      *
-     * @param key   The key of sp.
+     * @param key The key of sp.
      * @param value The value of sp.
      */
     public void put(@NonNull final String key, final Set<String> value) {
@@ -346,14 +362,12 @@ public final class SPUtils {
     /**
      * Put the set of string value in sp.
      *
-     * @param key      The key of sp.
-     * @param value    The value of sp.
-     * @param isCommit True to use {@link SharedPreferences.Editor#commit()},
-     *                 false to use {@link SharedPreferences.Editor#apply()}
+     * @param key The key of sp.
+     * @param value The value of sp.
+     * @param isCommit True to use {@link SharedPreferences.Editor#commit()}, false to use {@link
+     *     SharedPreferences.Editor#apply()}
      */
-    public void put(@NonNull final String key,
-                    final Set<String> value,
-                    final boolean isCommit) {
+    public void put(@NonNull final String key, final Set<String> value, final boolean isCommit) {
         if (isCommit) {
             sp.edit().putStringSet(key, value).commit();
         } else {
@@ -365,8 +379,8 @@ public final class SPUtils {
      * Return the set of string value in sp.
      *
      * @param key The key of sp.
-     * @return the set of string value if sp exists
-     * or {@code Collections.<String>emptySet()} otherwise
+     * @return the set of string value if sp exists or {@code Collections.<String>emptySet()}
+     *     otherwise
      */
     public Set<String> getStringSet(@NonNull final String key) {
         return getStringSet(key, Collections.emptySet());
@@ -375,12 +389,11 @@ public final class SPUtils {
     /**
      * Return the set of string value in sp.
      *
-     * @param key          The key of sp.
+     * @param key The key of sp.
      * @param defaultValue The default value if the sp doesn't exist.
      * @return the set of string value if sp exists or {@code defaultValue} otherwise
      */
-    public Set<String> getStringSet(@NonNull final String key,
-                                    final Set<String> defaultValue) {
+    public Set<String> getStringSet(@NonNull final String key, final Set<String> defaultValue) {
         return sp.getStringSet(key, defaultValue);
     }
 
@@ -397,7 +410,8 @@ public final class SPUtils {
      * Return whether the sp contains the preference.
      *
      * @param key The key of sp.
-     * @return {@code true}: yes<br>{@code false}: no
+     * @return {@code true}: yes<br>
+     *     {@code false}: no
      */
     public boolean contains(@NonNull final String key) {
         return sp.contains(key);
@@ -415,9 +429,9 @@ public final class SPUtils {
     /**
      * Remove the preference in sp.
      *
-     * @param key      The key of sp.
-     * @param isCommit True to use {@link SharedPreferences.Editor#commit()},
-     *                 false to use {@link SharedPreferences.Editor#apply()}
+     * @param key The key of sp.
+     * @param isCommit True to use {@link SharedPreferences.Editor#commit()}, false to use {@link
+     *     SharedPreferences.Editor#apply()}
      */
     public void remove(@NonNull final String key, final boolean isCommit) {
         if (isCommit) {
@@ -427,9 +441,7 @@ public final class SPUtils {
         }
     }
 
-    /**
-     * Remove all preferences in sp.
-     */
+    /** Remove all preferences in sp. */
     public void clear() {
         clear(false);
     }
@@ -437,8 +449,8 @@ public final class SPUtils {
     /**
      * Remove all preferences in sp.
      *
-     * @param isCommit True to use {@link SharedPreferences.Editor#commit()},
-     *                 false to use {@link SharedPreferences.Editor#apply()}
+     * @param isCommit True to use {@link SharedPreferences.Editor#commit()}, false to use {@link
+     *     SharedPreferences.Editor#apply()}
      */
     public void clear(final boolean isCommit) {
         if (isCommit) {

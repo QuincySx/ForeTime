@@ -1,13 +1,37 @@
+/*
+ * Copyright 2021 Smallraw Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.smallraw.foretime.app.common.widget
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Path
+import android.graphics.PathMeasure
+import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.ColorInt
 import me.jessyan.autosize.utils.AutoSizeUtils
 
-class TimeScheduleView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : View(context, attrs, defStyleAttr) {
+class TimeScheduleView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : View(context, attrs, defStyleAttr) {
 
     private var mWidth: Int = 0
     private var mHeight: Int = 0
@@ -44,7 +68,12 @@ class TimeScheduleView @JvmOverloads constructor(context: Context, attrs: Attrib
      * @return 高度
      */
     private val defWidth: Int
-        get() = (Math.max(mProgressCircleRadius, mCircleLowerRadius) * 2 + Math.max(mProgressCircleWidth, mProgressCircleWidth) * 2).toInt()
+        get() = (
+            Math.max(mProgressCircleRadius, mCircleLowerRadius) * 2 + Math.max(
+                mProgressCircleWidth,
+                mProgressCircleWidth
+            ) * 2
+            ).toInt()
 
     init {
         init()
@@ -75,12 +104,22 @@ class TimeScheduleView @JvmOverloads constructor(context: Context, attrs: Attrib
         mWidth = w
         mHeight = h
 
-        mPath.addCircle((mWidth / 2).toFloat(), (mHeight / 2).toFloat(), mProgressCircleRadius, Path.Direction.CW)
+        mPath.addCircle(
+            (mWidth / 2).toFloat(),
+            (mHeight / 2).toFloat(),
+            mProgressCircleRadius,
+            Path.Direction.CW
+        )
         mPathMeasure.setPath(mPath, false)
     }
 
     override fun onDraw(canvas: Canvas) {
-        canvas.drawCircle((mWidth / 2).toFloat(), (mHeight / 2).toFloat(), mProgressCircleRadius, mPaintCircleLower)
+        canvas.drawCircle(
+            (mWidth / 2).toFloat(),
+            (mHeight / 2).toFloat(),
+            mProgressCircleRadius,
+            mPaintCircleLower
+        )
 
         canvas.save()
         canvas.rotate(-90f, (mWidth / 2).toFloat(), (mHeight / 2).toFloat())
@@ -90,12 +129,19 @@ class TimeScheduleView @JvmOverloads constructor(context: Context, attrs: Attrib
         canvas.restore()
 
         mPaintText.getTextBounds(mTextContent, 0, mTextContent.length, mTextRect)
-        canvas.drawText(mTextContent, (mWidth / 2 - mTextRect.width() / 2).toFloat(), (mWidth / 2 + mTextRect.height() / 2).toFloat(), mPaintText)
+        canvas.drawText(
+            mTextContent,
+            (mWidth / 2 - mTextRect.width() / 2).toFloat(),
+            (mWidth / 2 + mTextRect.height() / 2).toFloat(),
+            mPaintText
+        )
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        setMeasuredDimension(measureWidth(widthMeasureSpec),
-                measureHeight(heightMeasureSpec))
+        setMeasuredDimension(
+            measureWidth(widthMeasureSpec),
+            measureHeight(heightMeasureSpec)
+        )
     }
 
     private fun measureHeight(measureSpec: Int): Int {

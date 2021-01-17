@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Smallraw Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.smallraw.foretime.app.common.widget;
 
 import android.content.Context;
@@ -6,13 +21,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+import androidx.annotation.Nullable;
+import me.jessyan.autosize.utils.AutoSizeUtils;
 
 import com.smallraw.foretime.app.R;
-
-import me.jessyan.autosize.utils.AutoSizeUtils;
 
 public class TriangleView extends View {
     private float mHeight;
@@ -33,7 +47,9 @@ public class TriangleView extends View {
     public TriangleView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        TypedArray typedArray = context.getTheme().obtainStyledAttributes(attrs, R.styleable.TriangleView, defStyleAttr, 0);
+        TypedArray typedArray =
+                context.getTheme()
+                        .obtainStyledAttributes(attrs, R.styleable.TriangleView, defStyleAttr, 0);
         mTriangleDirection = typedArray.getInt(R.styleable.TriangleView_triangleDirection, 0);
         typedArray.recycle();
         init();
@@ -67,8 +83,7 @@ public class TriangleView extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension(measureWidth(widthMeasureSpec),
-                measureHeight(heightMeasureSpec));
+        setMeasuredDimension(measureWidth(widthMeasureSpec), measureHeight(heightMeasureSpec));
     }
 
     private int measureHeight(int measureSpec) {

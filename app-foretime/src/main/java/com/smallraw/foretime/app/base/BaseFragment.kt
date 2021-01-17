@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Smallraw Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.smallraw.foretime.app.base
 
 import android.app.Activity
@@ -60,8 +75,8 @@ abstract class BaseFragment : DataBindingFragment() {
     private fun checkApplication(activity: Activity): Application {
         return activity.application
             ?: throw IllegalStateException(
-                "Your activity/fragment is not yet attached to "
-                        + "Application. You can't request ViewModel before onCreate call."
+                "Your activity/fragment is not yet attached to " +
+                    "Application. You can't request ViewModel before onCreate call."
             )
     }
 
@@ -72,14 +87,17 @@ abstract class BaseFragment : DataBindingFragment() {
     }
 
     override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
-        //TODO 错开动画转场与 UI 刷新的时机，避免掉帧卡顿的现象
-        Log.e("============","==========")
-        mHandler.postDelayed({
-            if (!mAnimationLoaded) {
-                mAnimationLoaded = true
-                loadInitData()
-            }
-        }, 280)
+        // TODO 错开动画转场与 UI 刷新的时机，避免掉帧卡顿的现象
+        Log.e("============", "==========")
+        mHandler.postDelayed(
+            {
+                if (!mAnimationLoaded) {
+                    mAnimationLoaded = true
+                    loadInitData()
+                }
+            },
+            280
+        )
         return super.onCreateAnimation(transit, enter, nextAnim)
     }
 
@@ -94,6 +112,7 @@ abstract class BaseFragment : DataBindingFragment() {
             Message.obtain().apply {
                 what = HANDLER_MSG_PROMPT
                 obj = msg
-            })
+            }
+        )
     }
 }

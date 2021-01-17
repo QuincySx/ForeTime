@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Smallraw Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.smallraw.foretime.app.base
 
 import android.app.Dialog
@@ -13,7 +28,6 @@ import android.widget.LinearLayout
 import com.smallraw.foretime.app.R
 import me.jessyan.autosize.utils.AutoSizeUtils
 import me.jessyan.autosize.utils.ScreenUtils
-import com.smallraw.foretime.app.base.BaseDialogView as BaseDialogView1
 
 abstract class BaseDialogView : Dialog {
     private var mWindowManager: WindowManager? = null
@@ -29,7 +43,11 @@ abstract class BaseDialogView : Dialog {
         init()
     }
 
-    constructor(context: Context, cancelable: Boolean, cancelListener: DialogInterface.OnCancelListener) : super(context, cancelable, cancelListener) {
+    constructor(
+        context: Context,
+        cancelable: Boolean,
+        cancelListener: DialogInterface.OnCancelListener
+    ) : super(context, cancelable, cancelListener) {
         init()
     }
 
@@ -45,7 +63,8 @@ abstract class BaseDialogView : Dialog {
         val patentView = findViewById<LinearLayout>(R.id.patent_view)
 
         mBuilder?.let {
-            patentView.layoutParams = FrameLayout.LayoutParams(it.parentWidth, patentView.layoutParams.height)
+            patentView.layoutParams =
+                FrameLayout.LayoutParams(it.parentWidth, patentView.layoutParams.height)
         }
         val rootView = findViewById<FrameLayout>(R.id.root_view)
         rootView.addView(setRootView())
@@ -71,6 +90,7 @@ abstract class BaseDialogView : Dialog {
         var atView: View? = null
         var atViewPadding: Int = 0
         var parentWidth: Int = 0
+
         /**
          * 三角显示方向 0：向上 1：向下 2：auto
          */
@@ -131,7 +151,6 @@ abstract class BaseDialogView : Dialog {
         abstract fun build(): com.smallraw.foretime.app.base.BaseDialogView
     }
 
-
     private fun showAtView(parentView: ViewGroup, view: View, padding: Int, isUp: Boolean) {
         val location = IntArray(2)
         view.getLocationOnScreen(location)
@@ -159,7 +178,6 @@ abstract class BaseDialogView : Dialog {
             marginParams = ViewGroup.MarginLayoutParams(layoutParams)
         }
 
-
         val dm = DisplayMetrics()
         mWindowManager!!.defaultDisplay.getMetrics(dm)
         val screenWidth = dm.widthPixels
@@ -171,7 +189,6 @@ abstract class BaseDialogView : Dialog {
         marginParams.setMargins(viewX - windowViewX + viewWidthHalf - arrowWidthHalf, 0, 0, 0)
 
         arrow.layoutParams = marginParams
-
 
         if (isUp) {
             val screenHeight = dm.heightPixels - viewY
@@ -192,6 +209,4 @@ abstract class BaseDialogView : Dialog {
         wl.gravity = gravity
         window.attributes = wl
     }
-
-
 }

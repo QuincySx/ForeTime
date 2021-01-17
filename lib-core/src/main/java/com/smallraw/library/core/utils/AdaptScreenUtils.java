@@ -1,19 +1,32 @@
+/*
+ * Copyright 2021 Smallraw Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.smallraw.library.core.utils;
+
+import java.lang.reflect.Field;
 
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
 import android.util.Log;
-
-import java.lang.reflect.Field;
 
 public final class AdaptScreenUtils {
 
     private static boolean isInitMiui = false;
     private static Field mTmpMetricsField;
 
-    /**
-     * Adapt for the horizontal screen, and call it in [android.app.Activity.getResources].
-     */
+    /** Adapt for the horizontal screen, and call it in [android.app.Activity.getResources]. */
     public static Resources adaptWidth(Resources resources, int designWidth) {
         DisplayMetrics dm = getDisplayMetrics(resources);
         float newXdpi = dm.xdpi = (dm.widthPixels * 72f) / designWidth;
@@ -21,9 +34,7 @@ public final class AdaptScreenUtils {
         return resources;
     }
 
-    /**
-     * Adapt for the vertical screen, and call it in [android.app.Activity.getResources].
-     */
+    /** Adapt for the vertical screen, and call it in [android.app.Activity.getResources]. */
     public static Resources adaptHeight(Resources resources, int designHeight) {
         DisplayMetrics dm = getDisplayMetrics(resources);
         float newXdpi = dm.xdpi = (dm.heightPixels * 72f) / designHeight;

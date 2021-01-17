@@ -1,17 +1,19 @@
+/*
+ * Copyright 2021 Smallraw Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.smallraw.library.core.utils;
-
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.wifi.WifiManager;
-import android.os.Build;
-import android.telephony.TelephonyManager;
-import android.text.format.Formatter;
-import android.util.Log;
-
-import androidx.annotation.RequiresPermission;
 
 import java.lang.reflect.Method;
 import java.net.InetAddress;
@@ -23,6 +25,18 @@ import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
+import android.os.Build;
+import android.telephony.TelephonyManager;
+import android.text.format.Formatter;
+import android.util.Log;
+import androidx.annotation.RequiresPermission;
+
 import static android.Manifest.permission.ACCESS_NETWORK_STATE;
 import static android.Manifest.permission.ACCESS_WIFI_STATE;
 import static android.Manifest.permission.CHANGE_WIFI_STATE;
@@ -31,6 +45,8 @@ import static android.Manifest.permission.MODIFY_PHONE_STATE;
 import static android.content.Context.WIFI_SERVICE;
 
 /**
+ *
+ *
  * <pre>
  *     author: Blankj
  *     blog  : http://blankj.com
@@ -44,21 +60,22 @@ public final class NetworkUtils {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
 
-    /**
-     * Open the settings of wireless.
-     */
+    /** Open the settings of wireless. */
     public static void openWirelessSettings() {
-        AppUtils.getApp().startActivity(
-                new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS)
-                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        );
+        AppUtils.getApp()
+                .startActivity(
+                        new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS)
+                                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
     /**
      * Return whether network is connected.
-     * <p>Must hold {@code <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />}</p>
      *
-     * @return {@code true}: connected<br>{@code false}: disconnected
+     * <p>Must hold {@code <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"
+     * />}
+     *
+     * @return {@code true}: connected<br>
+     *     {@code false}: disconnected
      */
     @RequiresPermission(ACCESS_NETWORK_STATE)
     public static boolean isConnected() {
@@ -68,10 +85,13 @@ public final class NetworkUtils {
 
     /**
      * Return whether network is available using ping.
-     * <p>Must hold {@code <uses-permission android:name="android.permission.INTERNET" />}</p>
-     * <p>The default ping ip: 223.5.5.5</p>
      *
-     * @return {@code true}: yes<br>{@code false}: no
+     * <p>Must hold {@code <uses-permission android:name="android.permission.INTERNET" />}
+     *
+     * <p>The default ping ip: 223.5.5.5
+     *
+     * @return {@code true}: yes<br>
+     *     {@code false}: no
      */
     @RequiresPermission(INTERNET)
     public static boolean isAvailableByPing() {
@@ -80,10 +100,12 @@ public final class NetworkUtils {
 
     /**
      * Return whether network is available using ping.
-     * <p>Must hold {@code <uses-permission android:name="android.permission.INTERNET" />}</p>
+     *
+     * <p>Must hold {@code <uses-permission android:name="android.permission.INTERNET" />}
      *
      * @param ip The ip address.
-     * @return {@code true}: yes<br>{@code false}: no
+     * @return {@code true}: yes<br>
+     *     {@code false}: no
      */
     @RequiresPermission(INTERNET)
     public static boolean isAvailableByPing(String ip) {
@@ -91,7 +113,8 @@ public final class NetworkUtils {
             // default ping ip
             ip = "223.5.5.5";
         }
-        ShellUtils.CommandResult result = ShellUtils.execCmd(String.format("ping -c 1 %s", ip), false);
+        ShellUtils.CommandResult result =
+                ShellUtils.execCmd(String.format("ping -c 1 %s", ip), false);
         boolean ret = result.result == 0;
         if (result.errorMsg != null) {
             Log.d("NetworkUtils", "isAvailableByPing() called" + result.errorMsg);
@@ -103,19 +126,20 @@ public final class NetworkUtils {
     }
 
     @RequiresPermission(INTERNET)
-    public static void isAvailableByDns(String ip) {
-    }
+    public static void isAvailableByDns(String ip) {}
 
     /**
      * Return whether mobile data is enabled.
      *
-     * @return {@code true}: enabled<br>{@code false}: disabled
+     * @return {@code true}: enabled<br>
+     *     {@code false}: disabled
      */
     @SuppressLint("MissingPermission")
     public static boolean getMobileDataEnabled() {
         try {
             TelephonyManager tm =
-                    (TelephonyManager) AppUtils.getApp().getSystemService(Context.TELEPHONY_SERVICE);
+                    (TelephonyManager)
+                            AppUtils.getApp().getSystemService(Context.TELEPHONY_SERVICE);
             if (tm == null) {
                 return false;
             }
@@ -123,8 +147,7 @@ public final class NetworkUtils {
                 return tm.isDataEnabled();
             }
             @SuppressLint("PrivateApi")
-            Method getMobileDataEnabledMethod =
-                    tm.getClass().getDeclaredMethod("getDataEnabled");
+            Method getMobileDataEnabledMethod = tm.getClass().getDeclaredMethod("getDataEnabled");
             if (null != getMobileDataEnabledMethod) {
                 return (boolean) getMobileDataEnabledMethod.invoke(tm);
             }
@@ -136,17 +159,20 @@ public final class NetworkUtils {
 
     /**
      * Enable or disable mobile data.
-     * <p>Must hold {@code android:sharedUserId="android.uid.system"},
-     * {@code <uses-permission android:name="android.permission.MODIFY_PHONE_STATE" />}</p>
+     *
+     * <p>Must hold {@code android:sharedUserId="android.uid.system"}, {@code <uses-permission
+     * android:name="android.permission.MODIFY_PHONE_STATE" />}
      *
      * @param enabled True to enabled, false otherwise.
-     * @return {@code true}: success<br>{@code false}: fail
+     * @return {@code true}: success<br>
+     *     {@code false}: fail
      */
     @RequiresPermission(MODIFY_PHONE_STATE)
     public static boolean setMobileDataEnabled(final boolean enabled) {
         try {
             TelephonyManager tm =
-                    (TelephonyManager) AppUtils.getApp().getSystemService(Context.TELEPHONY_SERVICE);
+                    (TelephonyManager)
+                            AppUtils.getApp().getSystemService(Context.TELEPHONY_SERVICE);
             if (tm == null) {
                 return false;
             }
@@ -168,9 +194,12 @@ public final class NetworkUtils {
 
     /**
      * Return whether using mobile data.
-     * <p>Must hold {@code <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />}</p>
      *
-     * @return {@code true}: yes<br>{@code false}: no
+     * <p>Must hold {@code <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"
+     * />}
+     *
+     * @return {@code true}: yes<br>
+     *     {@code false}: no
      */
     @RequiresPermission(ACCESS_NETWORK_STATE)
     public static boolean isMobileData() {
@@ -182,9 +211,12 @@ public final class NetworkUtils {
 
     /**
      * Return whether using 4G.
-     * <p>Must hold {@code <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />}</p>
      *
-     * @return {@code true}: yes<br>{@code false}: no
+     * <p>Must hold {@code <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"
+     * />}
+     *
+     * @return {@code true}: yes<br>
+     *     {@code false}: no
      */
     @RequiresPermission(ACCESS_NETWORK_STATE)
     public static boolean is4G() {
@@ -196,9 +228,11 @@ public final class NetworkUtils {
 
     /**
      * Return whether wifi is enabled.
-     * <p>Must hold {@code <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />}</p>
      *
-     * @return {@code true}: enabled<br>{@code false}: disabled
+     * <p>Must hold {@code <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />}
+     *
+     * @return {@code true}: enabled<br>
+     *     {@code false}: disabled
      */
     @RequiresPermission(ACCESS_WIFI_STATE)
     public static boolean getWifiEnabled() {
@@ -212,7 +246,8 @@ public final class NetworkUtils {
 
     /**
      * Enable or disable wifi.
-     * <p>Must hold {@code <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />}</p>
+     *
+     * <p>Must hold {@code <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />}
      *
      * @param enabled True to enabled, false otherwise.
      */
@@ -231,14 +266,18 @@ public final class NetworkUtils {
 
     /**
      * Return whether wifi is connected.
-     * <p>Must hold {@code <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />}</p>
      *
-     * @return {@code true}: connected<br>{@code false}: disconnected
+     * <p>Must hold {@code <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"
+     * />}
+     *
+     * @return {@code true}: connected<br>
+     *     {@code false}: disconnected
      */
     @RequiresPermission(ACCESS_NETWORK_STATE)
     public static boolean isWifiConnected() {
         ConnectivityManager cm =
-                (ConnectivityManager) AppUtils.getApp().getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager)
+                        AppUtils.getApp().getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cm == null) {
             return false;
         }
@@ -248,10 +287,12 @@ public final class NetworkUtils {
 
     /**
      * Return whether wifi is available.
-     * <p>Must hold {@code <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />},
-     * {@code <uses-permission android:name="android.permission.INTERNET" />}</p>
      *
-     * @return {@code true}: available<br>{@code false}: unavailable
+     * <p>Must hold {@code <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />},
+     * {@code <uses-permission android:name="android.permission.INTERNET" />}
+     *
+     * @return {@code true}: available<br>
+     *     {@code false}: unavailable
      */
     @RequiresPermission(allOf = {ACCESS_WIFI_STATE, INTERNET})
     public static boolean isWifiAvailable() {
@@ -274,18 +315,20 @@ public final class NetworkUtils {
 
     /**
      * Return type of network.
-     * <p>Must hold {@code <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />}</p>
+     *
+     * <p>Must hold {@code <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"
+     * />}
      *
      * @return type of network
-     * <ul>
-     * <li>{@link NetworkUtils.NetworkType#NETWORK_ETHERNET} </li>
-     * <li>{@link NetworkUtils.NetworkType#NETWORK_WIFI    } </li>
-     * <li>{@link NetworkUtils.NetworkType#NETWORK_4G      } </li>
-     * <li>{@link NetworkUtils.NetworkType#NETWORK_3G      } </li>
-     * <li>{@link NetworkUtils.NetworkType#NETWORK_2G      } </li>
-     * <li>{@link NetworkUtils.NetworkType#NETWORK_UNKNOWN } </li>
-     * <li>{@link NetworkUtils.NetworkType#NETWORK_NO      } </li>
-     * </ul>
+     *     <ul>
+     *       <li>{@link NetworkUtils.NetworkType#NETWORK_ETHERNET}
+     *       <li>{@link NetworkUtils.NetworkType#NETWORK_WIFI }
+     *       <li>{@link NetworkUtils.NetworkType#NETWORK_4G }
+     *       <li>{@link NetworkUtils.NetworkType#NETWORK_3G }
+     *       <li>{@link NetworkUtils.NetworkType#NETWORK_2G }
+     *       <li>{@link NetworkUtils.NetworkType#NETWORK_UNKNOWN }
+     *       <li>{@link NetworkUtils.NetworkType#NETWORK_NO }
+     *     </ul>
      */
     @RequiresPermission(ACCESS_NETWORK_STATE)
     public static NetworkType getNetworkType() {
@@ -337,15 +380,18 @@ public final class NetworkUtils {
 
     /**
      * Return whether using ethernet.
-     * <p>Must hold
-     * {@code <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />}</p>
      *
-     * @return {@code true}: yes<br>{@code false}: no
+     * <p>Must hold {@code <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"
+     * />}
+     *
+     * @return {@code true}: yes<br>
+     *     {@code false}: no
      */
     @RequiresPermission(ACCESS_NETWORK_STATE)
     private static boolean isEthernet() {
         final ConnectivityManager cm =
-                (ConnectivityManager) AppUtils.getApp().getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager)
+                        AppUtils.getApp().getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cm == null) {
             return false;
         }
@@ -363,7 +409,8 @@ public final class NetworkUtils {
     @RequiresPermission(ACCESS_NETWORK_STATE)
     private static NetworkInfo getActiveNetworkInfo() {
         ConnectivityManager cm =
-                (ConnectivityManager) AppUtils.getApp().getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager)
+                        AppUtils.getApp().getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cm == null) {
             return null;
         }
@@ -372,7 +419,8 @@ public final class NetworkUtils {
 
     /**
      * Return the ip address.
-     * <p>Must hold {@code <uses-permission android:name="android.permission.INTERNET" />}</p>
+     *
+     * <p>Must hold {@code <uses-permission android:name="android.permission.INTERNET" />}
      *
      * @param useIPv4 True to use ipv4, false otherwise.
      * @return the ip address
@@ -448,7 +496,8 @@ public final class NetworkUtils {
 
     /**
      * Return the domain address.
-     * <p>Must hold {@code <uses-permission android:name="android.permission.INTERNET" />}</p>
+     *
+     * <p>Must hold {@code <uses-permission android:name="android.permission.INTERNET" />}
      *
      * @param domain The name of domain.
      * @return the domain address

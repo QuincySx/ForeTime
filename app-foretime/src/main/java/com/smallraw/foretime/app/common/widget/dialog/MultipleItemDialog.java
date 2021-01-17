@@ -1,18 +1,33 @@
+/*
+ * Copyright 2021 Smallraw Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.smallraw.foretime.app.common.widget.dialog;
 
+import java.util.List;
+
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.smallraw.foretime.app.R;
 import com.smallraw.foretime.app.base.BaseDialogView;
-
-import java.util.List;
 
 public class MultipleItemDialog extends BaseDialogView {
     private RecyclerView mRecyclerView;
@@ -22,12 +37,15 @@ public class MultipleItemDialog extends BaseDialogView {
     private MultipleItemDialog(Builder builder) {
         super(builder);
         mOnChangeSelectListener = builder.mOnChangeSelectListener;
-        mMyAdapter = new MyAdapter(builder.list, new OnChangeSelectListener() {
-            @Override
-            public void onChange(int index) {
-                mOnChangeSelectListener.onChange(MultipleItemDialog.this, index);
-            }
-        });
+        mMyAdapter =
+                new MyAdapter(
+                        builder.list,
+                        new OnChangeSelectListener() {
+                            @Override
+                            public void onChange(int index) {
+                                mOnChangeSelectListener.onChange(MultipleItemDialog.this, index);
+                            }
+                        });
         mMyAdapter.mCurrentSelect = builder.mSelectItem;
         mRecyclerView.setAdapter(mMyAdapter);
     }
@@ -65,7 +83,8 @@ public class MultipleItemDialog extends BaseDialogView {
             return this;
         }
 
-        public MultipleItemDialog.Builder setSelectItem(OnDialogChangeSelectListener onChangeSelectListener) {
+        public MultipleItemDialog.Builder setSelectItem(
+                OnDialogChangeSelectListener onChangeSelectListener) {
             this.mOnChangeSelectListener = onChangeSelectListener;
             return this;
         }
@@ -97,7 +116,9 @@ public class MultipleItemDialog extends BaseDialogView {
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_multipele_select, viewGroup, false);
+            View view =
+                    LayoutInflater.from(viewGroup.getContext())
+                            .inflate(R.layout.item_multipele_select, viewGroup, false);
             return new ViewHolder(view);
         }
 
@@ -109,18 +130,19 @@ public class MultipleItemDialog extends BaseDialogView {
                 viewHolder.mTextView.setSelected(false);
             }
             viewHolder.mTextView.setText(list.get(i));
-            viewHolder.mTextView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int temp = mCurrentSelect;
-                    mCurrentSelect = viewHolder.getAdapterPosition();
-                    notifyItemChanged(temp);
-                    notifyItemChanged(mCurrentSelect);
-                    if (mOnChangeSelectListener != null) {
-                        mOnChangeSelectListener.onChange(viewHolder.getAdapterPosition());
-                    }
-                }
-            });
+            viewHolder.mTextView.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            int temp = mCurrentSelect;
+                            mCurrentSelect = viewHolder.getAdapterPosition();
+                            notifyItemChanged(temp);
+                            notifyItemChanged(mCurrentSelect);
+                            if (mOnChangeSelectListener != null) {
+                                mOnChangeSelectListener.onChange(viewHolder.getAdapterPosition());
+                            }
+                        }
+                    });
         }
 
         @Override

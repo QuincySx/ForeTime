@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Smallraw Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.smallraw.foretime.app.ui.main.calendar
 
 import android.content.Context
@@ -11,12 +26,12 @@ import com.smallraw.foretime.app.base.BaseDialogView
 import com.smallraw.foretime.app.constant.TaskTypeConsts
 import com.smallraw.foretime.app.ui.calendarSetting.CalendarSettingActivity
 import com.smallraw.foretime.app.ui.decoration.SpacesItemDecoration
-import me.jessyan.autosize.utils.AutoSizeUtils
 import java.util.*
+import me.jessyan.autosize.utils.AutoSizeUtils
 
 class CalendarSettingDialog : BaseDialogView {
 
-    private var mLayoutMoreDetting: View? = null
+    private var mLayoutMoreSetting: View? = null
 
     private var mCalendarHint: TextView? = null
     private var mCalendarText: TextView? = null
@@ -47,27 +62,37 @@ class CalendarSettingDialog : BaseDialogView {
     }
 
     override fun initView() {
-        mLayoutMoreDetting = findViewById(R.id.layout_more_setting)
+        mLayoutMoreSetting = findViewById(R.id.layout_more_setting)
         mCalendarArrow = findViewById(R.id.iv_calendar_arrow)
         mCalendarHint = findViewById(R.id.tv_calendar_hint)
         mCalendarText = findViewById(R.id.tv_calendar_text)
         mCalendarType = findViewById(R.id.recycler_calendar_type)
-        mCalendarType!!.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false)
+        mCalendarType!!.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(
+            context,
+            androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL,
+            false
+        )
         mCalendarType!!.addItemDecoration(SpacesItemDecoration(AutoSizeUtils.dp2px(context, 50f)))
 
-        mMyAdapter = MyAdapter(mArrayShowTypeText, object : MyAdapter.OnItemClickListener {
-            override fun onItemClick(view: View, type: String, position: Int) {
-                mSelectType = position
-                mMyAdapter!!.select(position)
-                mCalendarText!!.text = mArrayShowTypeText[position]
-                mCalendarHint!!.visibility = View.VISIBLE
-                mCalendarText!!.visibility = View.VISIBLE
-                mCalendarArrow!!.visibility = View.VISIBLE
-                mCalendarType!!.visibility = View.GONE
-                isShowType = false
-                mOnShowTypeListener?.onChange(this@CalendarSettingDialog, mArrayShowType.get(position))
+        mMyAdapter = MyAdapter(
+            mArrayShowTypeText,
+            object : MyAdapter.OnItemClickListener {
+                override fun onItemClick(view: View, type: String, position: Int) {
+                    mSelectType = position
+                    mMyAdapter!!.select(position)
+                    mCalendarText!!.text = mArrayShowTypeText[position]
+                    mCalendarHint!!.visibility = View.VISIBLE
+                    mCalendarText!!.visibility = View.VISIBLE
+                    mCalendarArrow!!.visibility = View.VISIBLE
+                    mCalendarType!!.visibility = View.GONE
+                    isShowType = false
+                    mOnShowTypeListener?.onChange(
+                        this@CalendarSettingDialog,
+                        mArrayShowType.get(position)
+                    )
+                }
             }
-        })
+        )
         mCalendarType!!.adapter = mMyAdapter
 
         mMyAdapter!!.select(mSelectType)
@@ -80,7 +105,7 @@ class CalendarSettingDialog : BaseDialogView {
             isShowType = true
         }
 
-        mLayoutMoreDetting!!.setOnClickListener {
+        mLayoutMoreSetting!!.setOnClickListener {
             val intent = Intent(context, CalendarSettingActivity::class.java)
             context.startActivity(intent)
             dismiss()
@@ -110,7 +135,10 @@ class CalendarSettingDialog : BaseDialogView {
         }
     }
 
-    private class MyAdapter(private val arrayShowType: Array<String>, private val mOnItemClickListener: MyAdapter.OnItemClickListener?) : androidx.recyclerview.widget.RecyclerView.Adapter<ViewHolder>() {
+    private class MyAdapter(
+        private val arrayShowType: Array<String>,
+        private val mOnItemClickListener: MyAdapter.OnItemClickListener?
+    ) : androidx.recyclerview.widget.RecyclerView.Adapter<ViewHolder>() {
         private var mSelectPosition = -1
 
         fun select(position: Int) {
@@ -146,7 +174,8 @@ class CalendarSettingDialog : BaseDialogView {
         }
     }
 
-    private class ViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
+    private class ViewHolder(itemView: View) :
+        androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         val mContent: TextView = itemView.findViewById(R.id.tv_time_content)
     }
 

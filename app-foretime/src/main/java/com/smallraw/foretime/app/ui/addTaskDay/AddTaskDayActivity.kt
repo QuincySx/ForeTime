@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Smallraw Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.smallraw.foretime.app.ui.addTaskDay
 
 import android.annotation.SuppressLint
@@ -13,15 +28,15 @@ import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.base.BaseTitleBarActivity
 import com.smallraw.foretime.app.base.databinding.DataBindingConfig
+import com.smallraw.foretime.app.common.event.TaskChangeEvent
 import com.smallraw.foretime.app.common.widget.dialog.MultipleItemDialog
 import com.smallraw.foretime.app.common.widget.dialog.SelectDateDialog
 import com.smallraw.foretime.app.constant.TaskTypeConsts
 import com.smallraw.foretime.app.databinding.ActivityAddCountdownDayBinding
-import com.smallraw.foretime.app.common.event.TaskChangeEvent
 import com.smallraw.foretime.app.repository.database.entity.MemorialDO
-import org.greenrobot.eventbus.EventBus
 import java.text.SimpleDateFormat
 import java.util.*
+import org.greenrobot.eventbus.EventBus
 
 class AddTaskDayActivity : BaseTitleBarActivity() {
 
@@ -130,7 +145,7 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
                 mCalendar.timeInMillis = System.currentTimeMillis()
                 mBinding.tvTargetDate.text =
                     "${mCalendar.get(Calendar.YEAR)}-${mCalendar.get(Calendar.MONTH) + 1}-${
-                        mCalendar.get(Calendar.DAY_OF_MONTH)
+                    mCalendar.get(Calendar.DAY_OF_MONTH)
                     }"
             }
             OptionTypeEdit -> {
@@ -264,7 +279,7 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
         mCalendar.timeInMillis = task.targetTime!!.time
         mBinding.tvTargetDate.text =
             "${mCalendar.get(Calendar.YEAR)}-${mCalendar.get(Calendar.MONTH) + 1}-${
-                mCalendar.get(Calendar.DAY_OF_MONTH)
+            mCalendar.get(Calendar.DAY_OF_MONTH)
             }"
 
         mBinding.titleName.setText(task.name)
@@ -301,5 +316,4 @@ class AddTaskDayActivity : BaseTitleBarActivity() {
             }
         }
     }
-
 }

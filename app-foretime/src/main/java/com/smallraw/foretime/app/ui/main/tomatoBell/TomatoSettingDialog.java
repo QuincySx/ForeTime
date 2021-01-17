@@ -1,15 +1,35 @@
+/*
+ * Copyright 2021 Smallraw Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.smallraw.foretime.app.ui.main.tomatoBell;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import me.jessyan.autosize.utils.AutoSizeUtils;
+import org.jetbrains.annotations.NotNull;
 
 import com.smallraw.foretime.app.App;
 import com.smallraw.foretime.app.R;
@@ -20,16 +40,7 @@ import com.smallraw.foretime.app.ui.harvestToday.HarvestTodayActivity;
 import com.smallraw.foretime.app.ui.tomatoSetting.TomatoSettingActivity;
 import com.smallraw.support.switchcompat.SwitchButton;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import me.jessyan.autosize.utils.AutoSizeUtils;
-
-/**
- * 固定时间选择器
- */
+/** 固定时间选择器 */
 public class TomatoSettingDialog extends BaseDialogView {
     private ConstraintLayout mLayoutTime;
     private TextView mTvTimeText;
@@ -58,7 +69,8 @@ public class TomatoSettingDialog extends BaseDialogView {
 
     @Override
     protected View setRootView() {
-        View inflate = getLayoutInflater().inflate(R.layout.dialog_tomato_timer_setting, null, false);
+        View inflate =
+                getLayoutInflater().inflate(R.layout.dialog_tomato_timer_setting, null, false);
         return inflate;
     }
 
@@ -80,22 +92,28 @@ public class TomatoSettingDialog extends BaseDialogView {
         mIvTimeArrow = findViewById(R.id.iv_time_arrow);
         mLayoutMoreSetting = findViewById(R.id.layout_more_setting);
         mRvTime = findViewById(R.id.recycler_view_time);
-        mRvTime.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        mRvTime.setLayoutManager(
+                new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         mRvTime.addItemDecoration(new SpacesItemDecoration(AutoSizeUtils.dp2px(getContext(), 27)));
-        mMyAdapter = new MyAdapter(mTimeList, new MyAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int time, int position) {
-                mMyAdapter.select(position);
-                App.getInstance().getCalendarConfig().setFocusTime(time * 60 * 1000L);
-                mTvTimeText.setText(time + " 分钟");
-                mTvTimeText.setVisibility(View.VISIBLE);
-                mTvTimeHint.setVisibility(View.VISIBLE);
-                mIvTimeArrow.setVisibility(View.VISIBLE);
-                mRvTime.setVisibility(View.GONE);
-                isShowTime = false;
-                onChangeListener.onFocusTimeChange();
-            }
-        });
+        mMyAdapter =
+                new MyAdapter(
+                        mTimeList,
+                        new MyAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int time, int position) {
+                                mMyAdapter.select(position);
+                                App.getInstance()
+                                        .getCalendarConfig()
+                                        .setFocusTime(time * 60 * 1000L);
+                                mTvTimeText.setText(time + " 分钟");
+                                mTvTimeText.setVisibility(View.VISIBLE);
+                                mTvTimeHint.setVisibility(View.VISIBLE);
+                                mIvTimeArrow.setVisibility(View.VISIBLE);
+                                mRvTime.setVisibility(View.GONE);
+                                isShowTime = false;
+                                onChangeListener.onFocusTimeChange();
+                            }
+                        });
         mRvTime.setAdapter(mMyAdapter);
 
         Double l = App.getInstance().getCalendarConfig().getFocusTime() / 1000 / 60 / 10.0 - 1;
@@ -103,53 +121,61 @@ public class TomatoSettingDialog extends BaseDialogView {
             mMyAdapter.select(l.intValue());
         }
 
-        mTvTimeText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mTvTimeText.setVisibility(View.GONE);
-                mTvTimeHint.setVisibility(View.GONE);
-                mIvTimeArrow.setVisibility(View.GONE);
-                mRvTime.setVisibility(View.VISIBLE);
-                isShowTime = true;
-            }
-        });
+        mTvTimeText.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mTvTimeText.setVisibility(View.GONE);
+                        mTvTimeHint.setVisibility(View.GONE);
+                        mIvTimeArrow.setVisibility(View.GONE);
+                        mRvTime.setVisibility(View.VISIBLE);
+                        isShowTime = true;
+                    }
+                });
 
-        mLayoutMoreSetting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), TomatoSettingActivity.class);
-                getContext().startActivity(intent);
-                dismiss();
-            }
-        });
+        mLayoutMoreSetting.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getContext(), TomatoSettingActivity.class);
+                        getContext().startActivity(intent);
+                        dismiss();
+                    }
+                });
 
-        mLayoutShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), HarvestTodayActivity.class);
-                getContext().startActivity(intent);
-                dismiss();
-            }
-        });
-        mTvTimeText.setText((App.getInstance().getCalendarConfig().getFocusTime() / 1000 / 60) + " 分钟");
+        mLayoutShare.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getContext(), HarvestTodayActivity.class);
+                        getContext().startActivity(intent);
+                        dismiss();
+                    }
+                });
+        mTvTimeText.setText(
+                (App.getInstance().getCalendarConfig().getFocusTime() / 1000 / 60) + " 分钟");
 
         swbMusic.setChecked(App.getInstance().getMusicConfig().getPlayMusic());
         swbImmerse.setChecked(App.getInstance().getCalendarConfig().getAutomatic());
 
-        swbMusic.setOnCheckedChangeListener((buttonView, isChecked) ->
-                App.getInstance().getMusicConfig().setPlayMusic(isChecked)
-        );
-        swbImmerse.setOnCheckedChangeListener((buttonView, isChecked) ->
-                App.getInstance().getCalendarConfig().setAutomatic(isChecked)
-        );
+        swbMusic.setOnCheckedChangeListener(
+                (buttonView, isChecked) ->
+                        App.getInstance().getMusicConfig().setPlayMusic(isChecked));
+        swbImmerse.setOnCheckedChangeListener(
+                (buttonView, isChecked) ->
+                        App.getInstance().getCalendarConfig().setAutomatic(isChecked));
     }
 
     @Override
     public void dismiss() {
-        App.getInstance().getAppExecutors().diskIO().execute(() -> {
-            ConfigManagerKt.saveConfig(App.getInstance().getCalendarConfig());
-            ConfigManagerKt.saveConfig(App.getInstance().getMusicConfig());
-        });
+        App.getInstance()
+                .getAppExecutors()
+                .diskIO()
+                .execute(
+                        () -> {
+                            ConfigManagerKt.saveConfig(App.getInstance().getCalendarConfig());
+                            ConfigManagerKt.saveConfig(App.getInstance().getMusicConfig());
+                        });
         super.dismiss();
     }
 
@@ -174,14 +200,18 @@ public class TomatoSettingDialog extends BaseDialogView {
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
             View view = View.inflate(viewGroup.getContext(), R.layout.item_select_time, null);
             ViewHolder viewHolder = new ViewHolder(view);
-            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mOnItemClickListener != null) {
-                        mOnItemClickListener.onItemClick(v, mTimeList.get(viewHolder.getAdapterPosition()), viewHolder.getAdapterPosition());
-                    }
-                }
-            });
+            viewHolder.itemView.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (mOnItemClickListener != null) {
+                                mOnItemClickListener.onItemClick(
+                                        v,
+                                        mTimeList.get(viewHolder.getAdapterPosition()),
+                                        viewHolder.getAdapterPosition());
+                            }
+                        }
+                    });
             return viewHolder;
         }
 

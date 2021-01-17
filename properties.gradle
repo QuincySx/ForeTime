@@ -1,0 +1,24 @@
+def readProperties(filePath) {
+    File propFile = file(filePath)
+    if (propFile.exists()) {
+        Properties props = new Properties()
+        props.load(new FileInputStream(propFile))
+        return props
+    } else {
+        return "No File"
+    }
+}
+
+def writeProperties(filePath, props) {
+    File propFile = file(filePath)
+    if (!propFile.exists()) {
+        propFile.createNewFile()
+    }
+    propFile.setWritable(true)
+    props.store(new FileOutputStream(propFile), "")
+}
+
+ext {
+    readProperties = this.&readProperties
+    writeProperties = this.&writeProperties
+}

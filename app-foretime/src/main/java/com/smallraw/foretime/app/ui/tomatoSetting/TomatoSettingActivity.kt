@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Smallraw Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.smallraw.foretime.app.ui.tomatoSetting
 
 import android.annotation.SuppressLint
@@ -55,29 +70,29 @@ class TomatoSettingActivity : BaseTitleBarActivity() {
         when (view.id) {
             R.id.tvLongTimeAbsorbed -> {
                 SelectLongTimeDialog.Builder(this)
-                        .setTitle("专注时间")
-                        .setUnit("Min")
-                        .select((App.getInstance().getCalendarConfig().focusTime / 60 / 1000).toInt())
-                        .setOnWheelCallback {
-                            mBinding.tvLongTimeAbsorbed.text = "$it 分钟"
-                            App.getInstance().getCalendarConfig().focusTime = it.toInt() * 60 * 1000L
-                        }
-                        .atViewAuto(mBinding.tvLongTimeAbsorbed)
-                        .build()
-                        .show()
+                    .setTitle("专注时间")
+                    .setUnit("Min")
+                    .select((App.getInstance().getCalendarConfig().focusTime / 60 / 1000).toInt())
+                    .setOnWheelCallback {
+                        mBinding.tvLongTimeAbsorbed.text = "$it 分钟"
+                        App.getInstance().getCalendarConfig().focusTime = it.toInt() * 60 * 1000L
+                    }
+                    .atViewAuto(mBinding.tvLongTimeAbsorbed)
+                    .build()
+                    .show()
             }
             R.id.tvLongTimeRest -> {
                 SelectLongTimeDialog.Builder(this)
-                        .setTitle("休息时长")
-                        .setUnit("Min")
-                        .select((App.getInstance().getCalendarConfig().restTime / 60 / 1000).toInt())
-                        .setOnWheelCallback {
-                            mBinding.tvLongTimeRest.text = "$it 分钟"
-                            App.getInstance().getCalendarConfig().restTime = it.toInt() * 60 * 1000L
-                        }
-                        .atViewAuto(mBinding.tvLongTimeAbsorbed)
-                        .build()
-                        .show()
+                    .setTitle("休息时长")
+                    .setUnit("Min")
+                    .select((App.getInstance().getCalendarConfig().restTime / 60 / 1000).toInt())
+                    .setOnWheelCallback {
+                        mBinding.tvLongTimeRest.text = "$it 分钟"
+                        App.getInstance().getCalendarConfig().restTime = it.toInt() * 60 * 1000L
+                    }
+                    .atViewAuto(mBinding.tvLongTimeAbsorbed)
+                    .build()
+                    .show()
             }
             else -> {
             }
@@ -91,5 +106,4 @@ class TomatoSettingActivity : BaseTitleBarActivity() {
         }
         super.onDestroy()
     }
-
 }

@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Smallraw Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.smallraw.foretime.app.common.widget
 
 import android.content.Context
@@ -9,7 +24,11 @@ import android.view.View
 import androidx.annotation.ColorInt
 import me.jessyan.autosize.utils.AutoSizeUtils
 
-class TimeProgressView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : View(context, attrs, defStyleAttr) {
+class TimeProgressView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : View(context, attrs, defStyleAttr) {
 
     private var mWidth: Int = 0
     private var mHeight: Int = 0
@@ -59,13 +78,21 @@ class TimeProgressView @JvmOverloads constructor(context: Context, attrs: Attrib
     }
 
     override fun onDraw(canvas: Canvas) {
-        canvas.drawLine(0f, mProgressLowerHeight, mWidth.toFloat(), mProgressLowerHeight, mProgressLowerPaint)
+        canvas.drawLine(
+            0f,
+            mProgressLowerHeight,
+            mWidth.toFloat(),
+            mProgressLowerHeight,
+            mProgressLowerPaint
+        )
         canvas.drawLine(0f, mProgressHeight, mWidth * mProgress, mProgressHeight, mProgressPaint)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        setMeasuredDimension(measureWidth(widthMeasureSpec),
-                measureHeight(heightMeasureSpec))
+        setMeasuredDimension(
+            measureWidth(widthMeasureSpec),
+            measureHeight(heightMeasureSpec)
+        )
     }
 
     private fun measureHeight(measureSpec: Int): Int {

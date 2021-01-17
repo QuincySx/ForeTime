@@ -1,17 +1,19 @@
+/*
+ * Copyright 2021 Smallraw Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.smallraw.library.core.utils;
-
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.ActivityManager;
-import android.app.Application;
-import android.app.Application.ActivityLifecycleCallbacks;
-import android.content.Context;
-import android.os.Bundle;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-
-import androidx.annotation.NonNull;
-import androidx.core.content.FileProvider;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -23,7 +25,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.Application;
+import android.app.Application.ActivityLifecycleCallbacks;
+import android.content.Context;
+import android.os.Bundle;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
+
 /**
+ *
+ *
  * <pre>
  *     author:
  *                                      ___           ___           ___         ___
@@ -58,7 +74,8 @@ public final class AppUtils {
 
     /**
      * Init utils.
-     * <p>Init it in the class of Application.</p>
+     *
+     * <p>Init it in the class of Application.
      *
      * @param context context
      */
@@ -72,7 +89,8 @@ public final class AppUtils {
 
     /**
      * Init utils.
-     * <p>Init it in the class of Application.</p>
+     *
+     * <p>Init it in the class of Application.
      *
      * @param app application
      */
@@ -118,7 +136,10 @@ public final class AppUtils {
                 throw new NullPointerException("u should init first");
             }
             return (Application) app;
-        } catch (NoSuchMethodException | IllegalAccessException | ClassNotFoundException | InvocationTargetException e) {
+        } catch (NoSuchMethodException
+                | IllegalAccessException
+                | ClassNotFoundException
+                | InvocationTargetException e) {
             e.printStackTrace();
         }
         throw new NullPointerException("u should init first");
@@ -142,7 +163,8 @@ public final class AppUtils {
     }
 
     static boolean isAppForeground() {
-        ActivityManager am = (ActivityManager) AppUtils.getApp().getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager am =
+                (ActivityManager) AppUtils.getApp().getSystemService(Context.ACTIVITY_SERVICE);
         if (am == null) {
             return false;
         }
@@ -176,7 +198,8 @@ public final class AppUtils {
 
         final LinkedList<Activity> mActivityList = new LinkedList<>();
         final Map<Object, OnAppStatusChangedListener> mStatusListenerMap = new HashMap<>();
-        final Map<Activity, Set<OnActivityDestroyedListener>> mDestroyedListenerMap = new HashMap<>();
+        final Map<Activity, Set<OnActivityDestroyedListener>> mDestroyedListenerMap =
+                new HashMap<>();
 
         private int mForegroundCount = 0;
         private int mConfigCount = 0;
@@ -187,11 +210,13 @@ public final class AppUtils {
                 return;
             }
             InputMethodManager imm =
-                    (InputMethodManager) AppUtils.getApp().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    (InputMethodManager)
+                            AppUtils.getApp().getSystemService(Context.INPUT_METHOD_SERVICE);
             if (imm == null) {
                 return;
             }
-            String[] leakViews = new String[]{"mLastSrvView", "mCurRootView", "mServedView", "mNextServedView"};
+            String[] leakViews =
+                    new String[] {"mLastSrvView", "mCurRootView", "mServedView", "mNextServedView"};
             for (String leakView : leakViews) {
                 try {
                     Field leakViewField = InputMethodManager.class.getDeclaredField(leakView);
@@ -209,7 +234,9 @@ public final class AppUtils {
                     if (view.getRootView() == activity.getWindow().getDecorView().getRootView()) {
                         leakViewField.set(imm, null);
                     }
-                } catch (Throwable ignore) { /**/ }
+                } catch (Throwable ignore) {
+                    /**/
+                }
             }
         }
 
@@ -240,8 +267,8 @@ public final class AppUtils {
         }
 
         @Override
-        public void onActivityPaused(@NonNull Activity activity) {/**/
-
+        public void onActivityPaused(@NonNull Activity activity) {
+            /**/
         }
 
         @Override
@@ -258,7 +285,10 @@ public final class AppUtils {
         }
 
         @Override
-        public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {/**/}
+        public void onActivitySaveInstanceState(
+                @NonNull Activity activity, @NonNull Bundle outState) {
+            /**/
+        }
 
         @Override
         public void onActivityDestroyed(@NonNull Activity activity) {
@@ -295,8 +325,8 @@ public final class AppUtils {
             }
         }
 
-        void addOnAppStatusChangedListener(final Object object,
-                                           final OnAppStatusChangedListener listener) {
+        void addOnAppStatusChangedListener(
+                final Object object, final OnAppStatusChangedListener listener) {
             mStatusListenerMap.put(object, listener);
         }
 
@@ -311,8 +341,8 @@ public final class AppUtils {
             mDestroyedListenerMap.remove(activity);
         }
 
-        void addOnActivityDestroyedListener(final Activity activity,
-                                            final OnActivityDestroyedListener listener) {
+        void addOnActivityDestroyedListener(
+                final Activity activity, final OnActivityDestroyedListener listener) {
             if (activity == null || listener == null) {
                 return;
             }
@@ -333,7 +363,8 @@ public final class AppUtils {
             if (mStatusListenerMap.isEmpty()) {
                 return;
             }
-            for (OnAppStatusChangedListener onAppStatusChangedListener : mStatusListenerMap.values()) {
+            for (OnAppStatusChangedListener onAppStatusChangedListener :
+                    mStatusListenerMap.values()) {
                 if (onAppStatusChangedListener == null) {
                     return;
                 }
@@ -346,8 +377,8 @@ public final class AppUtils {
         }
 
         private void consumeOnActivityDestroyedListener(Activity activity) {
-            Iterator<Map.Entry<Activity, Set<OnActivityDestroyedListener>>> iterator
-                    = mDestroyedListenerMap.entrySet().iterator();
+            Iterator<Map.Entry<Activity, Set<OnActivityDestroyedListener>>> iterator =
+                    mDestroyedListenerMap.entrySet().iterator();
             while (iterator.hasNext()) {
                 Map.Entry<Activity, Set<OnActivityDestroyedListener>> entry = iterator.next();
                 if (entry.getKey() == activity) {
@@ -364,7 +395,8 @@ public final class AppUtils {
             try {
                 @SuppressLint("PrivateApi")
                 Class<?> activityThreadClass = Class.forName("android.app.ActivityThread");
-                Object currentActivityThreadMethod = activityThreadClass.getMethod("currentActivityThread").invoke(null);
+                Object currentActivityThreadMethod =
+                        activityThreadClass.getMethod("currentActivityThread").invoke(null);
                 Field mActivityListField = activityThreadClass.getDeclaredField("mActivityList");
                 mActivityListField.setAccessible(true);
                 Map activities = (Map) mActivityListField.get(currentActivityThreadMethod);
@@ -381,7 +413,11 @@ public final class AppUtils {
                         return (Activity) activityField.get(activityRecord);
                     }
                 }
-            } catch (ClassNotFoundException | NoSuchFieldException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            } catch (ClassNotFoundException
+                    | NoSuchFieldException
+                    | NoSuchMethodException
+                    | InvocationTargetException
+                    | IllegalAccessException e) {
                 e.printStackTrace();
             }
             return null;

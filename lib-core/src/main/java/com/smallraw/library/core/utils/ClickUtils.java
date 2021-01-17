@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Smallraw Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.smallraw.library.core.utils;
 
 import android.content.res.Resources;
@@ -9,12 +24,13 @@ import android.graphics.drawable.StateListDrawable;
 import android.util.StateSet;
 import android.view.MotionEvent;
 import android.view.View;
-
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
 
 /**
+ *
+ *
  * <pre>
  *     author: Blankj
  *     blog  : http://blankj.com
@@ -56,7 +72,7 @@ public class ClickUtils {
     /**
      * Apply scale animation for the views' click.
      *
-     * @param views        The views.
+     * @param views The views.
      * @param scaleFactors The factors of scale for the views.
      */
     public static void applyPressedViewScale(final View[] views, final float[] scaleFactors) {
@@ -75,7 +91,7 @@ public class ClickUtils {
     /**
      * Apply scale animation for the views' click.
      *
-     * @param view        The view.
+     * @param view The view.
      * @param scaleFactor The factor of scale for the view.
      */
     public static void applyPressedViewScale(final View view, final float scaleFactor) {
@@ -99,7 +115,7 @@ public class ClickUtils {
     /**
      * Apply alpha for the views' click.
      *
-     * @param views  The views.
+     * @param views The views.
      * @param alphas The alphas for the views.
      */
     public static void applyPressedViewAlpha(final View[] views, final float[] alphas) {
@@ -115,11 +131,10 @@ public class ClickUtils {
         }
     }
 
-
     /**
      * Apply scale animation for the views' click.
      *
-     * @param view  The view.
+     * @param view The view.
      * @param alpha The alpha for the view.
      */
     public static void applyPressedViewAlpha(final View view, final float alpha) {
@@ -144,7 +159,7 @@ public class ClickUtils {
     /**
      * Apply alpha for the view's background.
      *
-     * @param view  The views.
+     * @param view The views.
      * @param alpha The alpha.
      */
     public static void applyPressedBgAlpha(View view, float alpha) {
@@ -163,7 +178,7 @@ public class ClickUtils {
     /**
      * Apply alpha of dark for the view's background.
      *
-     * @param view      The views.
+     * @param view The views.
      * @param darkAlpha The alpha of dark.
      */
     public static void applyPressedBgDark(View view, float darkAlpha) {
@@ -203,8 +218,8 @@ public class ClickUtils {
         Drawable disable = createAlphaDrawable(pressed, 0.5f);
 
         StateListDrawable drawable = new StateListDrawable();
-        drawable.addState(new int[]{android.R.attr.state_pressed}, pressed);
-        drawable.addState(new int[]{-android.R.attr.state_enabled}, disable);
+        drawable.addState(new int[] {android.R.attr.state_pressed}, pressed);
+        drawable.addState(new int[] {-android.R.attr.state_enabled}, disable);
         drawable.addState(StateSet.WILD_CARD, src);
         return drawable;
     }
@@ -220,109 +235,117 @@ public class ClickUtils {
     }
 
     private static ColorMatrixColorFilter getDarkColorFilter(float darkAlpha) {
-        return new ColorMatrixColorFilter(new ColorMatrix(new float[]{
-                darkAlpha, 0, 0, 0, 0,
-                0, darkAlpha, 0, 0, 0,
-                0, 0, darkAlpha, 0, 0,
-                0, 0, 0, 2, 0
-        }));
+        return new ColorMatrixColorFilter(
+                new ColorMatrix(
+                        new float[] {
+                            darkAlpha, 0, 0, 0, 0, 0, darkAlpha, 0, 0, 0, 0, 0, darkAlpha, 0, 0, 0,
+                            0, 0, 2, 0
+                        }));
     }
 
     /**
      * Apply single debouncing for the view's click.
      *
-     * @param view     The view.
+     * @param view The view.
      * @param listener The listener.
      */
     public static void applySingleDebouncing(final View view, final View.OnClickListener listener) {
-        applySingleDebouncing(new View[]{view}, listener);
+        applySingleDebouncing(new View[] {view}, listener);
     }
 
     /**
      * Apply single debouncing for the view's click.
      *
-     * @param view     The view.
+     * @param view The view.
      * @param duration The duration of debouncing.
      * @param listener The listener.
      */
-    public static void applySingleDebouncing(final View view, @IntRange(from = 0) long duration,
-                                             final View.OnClickListener listener) {
-        applySingleDebouncing(new View[]{view}, duration, listener);
+    public static void applySingleDebouncing(
+            final View view,
+            @IntRange(from = 0) long duration,
+            final View.OnClickListener listener) {
+        applySingleDebouncing(new View[] {view}, duration, listener);
     }
 
     /**
      * Apply single debouncing for the views' click.
      *
-     * @param views    The views.
+     * @param views The views.
      * @param listener The listener.
      */
-    public static void applySingleDebouncing(final View[] views, final View.OnClickListener listener) {
+    public static void applySingleDebouncing(
+            final View[] views, final View.OnClickListener listener) {
         applySingleDebouncing(views, DEBOUNCING_DEFAULT_VALUE, listener);
     }
 
     /**
      * Apply single debouncing for the views' click.
      *
-     * @param views    The views.
+     * @param views The views.
      * @param duration The duration of debouncing.
      * @param listener The listener.
      */
-    public static void applySingleDebouncing(final View[] views,
-                                             @IntRange(from = 0) long duration,
-                                             final View.OnClickListener listener) {
+    public static void applySingleDebouncing(
+            final View[] views,
+            @IntRange(from = 0) long duration,
+            final View.OnClickListener listener) {
         applyDebouncing(views, false, duration, listener);
     }
 
     /**
      * Apply global debouncing for the view's click.
      *
-     * @param view     The view.
+     * @param view The view.
      * @param listener The listener.
      */
     public static void applyGlobalDebouncing(final View view, final View.OnClickListener listener) {
-        applyGlobalDebouncing(new View[]{view}, listener);
+        applyGlobalDebouncing(new View[] {view}, listener);
     }
 
     /**
      * Apply global debouncing for the view's click.
      *
-     * @param view     The view.
+     * @param view The view.
      * @param duration The duration of debouncing.
      * @param listener The listener.
      */
-    public static void applyGlobalDebouncing(final View view, @IntRange(from = 0) long duration,
-                                             final View.OnClickListener listener) {
-        applyGlobalDebouncing(new View[]{view}, duration, listener);
+    public static void applyGlobalDebouncing(
+            final View view,
+            @IntRange(from = 0) long duration,
+            final View.OnClickListener listener) {
+        applyGlobalDebouncing(new View[] {view}, duration, listener);
     }
-
 
     /**
      * Apply global debouncing for the views' click.
      *
-     * @param views    The views.
+     * @param views The views.
      * @param listener The listener.
      */
-    public static void applyGlobalDebouncing(final View[] views, final View.OnClickListener listener) {
+    public static void applyGlobalDebouncing(
+            final View[] views, final View.OnClickListener listener) {
         applyGlobalDebouncing(views, DEBOUNCING_DEFAULT_VALUE, listener);
     }
 
     /**
      * Apply global debouncing for the views' click.
      *
-     * @param views    The views.
+     * @param views The views.
      * @param duration The duration of debouncing.
      * @param listener The listener.
      */
-    public static void applyGlobalDebouncing(final View[] views,
-                                             @IntRange(from = 0) long duration,
-                                             final View.OnClickListener listener) {
+    public static void applyGlobalDebouncing(
+            final View[] views,
+            @IntRange(from = 0) long duration,
+            final View.OnClickListener listener) {
         applyDebouncing(views, true, duration, listener);
     }
 
-    private static void applyDebouncing(final View[] views,
-                                        final boolean isGlobal,
-                                        @IntRange(from = 0) long duration,
-                                        final View.OnClickListener listener) {
+    private static void applyDebouncing(
+            final View[] views,
+            final boolean isGlobal,
+            @IntRange(from = 0) long duration,
+            final View.OnClickListener listener) {
         if (views == null || views.length == 0 || listener == null) {
             return;
         }
@@ -330,12 +353,13 @@ public class ClickUtils {
             if (view == null) {
                 continue;
             }
-            view.setOnClickListener(new OnDebouncingClickListener(isGlobal, duration) {
-                @Override
-                public void onDebouncingClick(View v) {
-                    listener.onClick(v);
-                }
-            });
+            view.setOnClickListener(
+                    new OnDebouncingClickListener(isGlobal, duration) {
+                        @Override
+                        public void onDebouncingClick(View v) {
+                            listener.onClick(v);
+                        }
+                    });
         }
     }
 
@@ -344,7 +368,7 @@ public class ClickUtils {
         return (int) (dpValue * scale + 0.5f);
     }
 
-    public static abstract class OnDebouncingClickListener implements View.OnClickListener {
+    public abstract static class OnDebouncingClickListener implements View.OnClickListener {
 
         private static boolean mEnabled = true;
 
@@ -402,7 +426,7 @@ public class ClickUtils {
         }
     }
 
-    public static abstract class OnMultiClickListener implements View.OnClickListener {
+    public abstract static class OnMultiClickListener implements View.OnClickListener {
 
         private static final long INTERVAL_DEFAULT_VALUE = 666;
 
@@ -453,7 +477,9 @@ public class ClickUtils {
 
     private static class OnUtilsTouchListener implements View.OnTouchListener {
 
-        private OnUtilsTouchListener() {/**/}
+        private OnUtilsTouchListener() {
+            /**/
+        }
 
         public static OnUtilsTouchListener getInstance() {
             return LazyHolder.INSTANCE;
@@ -465,8 +491,7 @@ public class ClickUtils {
             if (action == MotionEvent.ACTION_DOWN) {
                 processScale(v, true);
                 processAlpha(v, true);
-            } else if (action == MotionEvent.ACTION_UP
-                    || action == MotionEvent.ACTION_CANCEL) {
+            } else if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
                 processScale(v, false);
                 processAlpha(v, false);
             }
@@ -479,11 +504,7 @@ public class ClickUtils {
                 return;
             }
             float value = isDown ? 1 + (Float) tag : 1;
-            view.animate()
-                    .scaleX(value)
-                    .scaleY(value)
-                    .setDuration(200)
-                    .start();
+            view.animate().scaleX(value).scaleY(value).setDuration(200).start();
         }
 
         private void processAlpha(final View view, boolean isDown) {

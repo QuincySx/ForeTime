@@ -1,13 +1,27 @@
+/*
+ * Copyright 2021 Smallraw Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.smallraw.foretime.app.common;
 
 import android.content.Context;
+import android.util.Log;
+import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
-
 import me.jessyan.autosize.utils.AutoSizeUtils;
-import me.jessyan.autosize.utils.LogUtils;
 
 public class CardScaleHelper {
     private RecyclerView mRecyclerView;
@@ -15,7 +29,7 @@ public class CardScaleHelper {
 
     private float mScale = 0.9f; // 两边视图scale
     private int mPagePadding = 15; // 卡片的padding, 卡片间的距离等于2倍的mPagePadding
-    private int mShowLeftCardWidth = 15;   // 左边卡片显示大小
+    private int mShowLeftCardWidth = 15; // 左边卡片显示大小
 
     private int mCardWidth; // 卡片宽度
     private int mOnePageWidth; // 滑动一页的距离
@@ -30,47 +44,57 @@ public class CardScaleHelper {
         // 开启log会影响滑动体验, 调试时才开启
         this.mRecyclerView = mRecyclerView;
         mContext = mRecyclerView.getContext();
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    mLinearSnapHelper.mNoNeedToScroll = mCurrentItemOffset == 0 || mCurrentItemOffset == getDestItemOffset(mRecyclerView.getAdapter().getItemCount() - 1);
-                } else {
-                    mLinearSnapHelper.mNoNeedToScroll = false;
-                }
-            }
+        mRecyclerView.addOnScrollListener(
+                new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                        super.onScrollStateChanged(recyclerView, newState);
+                        if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                            mLinearSnapHelper.mNoNeedToScroll =
+                                    mCurrentItemOffset == 0
+                                            || mCurrentItemOffset
+                                                    == getDestItemOffset(
+                                                            mRecyclerView
+                                                                            .getAdapter()
+                                                                            .getItemCount()
+                                                                    - 1);
+                        } else {
+                            mLinearSnapHelper.mNoNeedToScroll = false;
+                        }
+                    }
 
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                // dx>0则表示右滑, dx<0表示左滑, dy<0表示上滑, dy>0表示下滑
-                if(dx != 0){//去掉奇怪的内存疯涨问题
-                    mCurrentItemOffset += dx;
-                    computeCurrentItemPos();
-                    onScrolledChangedCallback();
-                }
-            }
-        });
+                    @Override
+                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+                        // dx>0则表示右滑, dx<0表示左滑, dy<0表示上滑, dy>0表示下滑
+                        if (dx != 0) { // 去掉奇怪的内存疯涨问题
+                            mCurrentItemOffset += dx;
+                            computeCurrentItemPos();
+                            onScrolledChangedCallback();
+                        }
+                    }
+                });
 
         initWidth();
         mLinearSnapHelper.attachToRecyclerView(mRecyclerView);
     }
 
-    /**
-     * 初始化卡片宽度
-     */
+    /** 初始化卡片宽度 */
     private void initWidth() {
-        mRecyclerView.post(new Runnable() {
-            @Override
-            public void run() {
-                mCardGalleryWidth = mRecyclerView.getWidth();
-                mCardWidth = mCardGalleryWidth - AutoSizeUtils.dp2px(mContext, 2 * (mPagePadding + mShowLeftCardWidth));
-                mOnePageWidth = mCardWidth;
-                mRecyclerView.smoothScrollToPosition(mCurrentItemPos);
-                onScrolledChangedCallback();
-            }
-        });
+        mRecyclerView.post(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        mCardGalleryWidth = mRecyclerView.getWidth();
+                        mCardWidth =
+                                mCardGalleryWidth
+                                        - AutoSizeUtils.dp2px(
+                                                mContext, 2 * (mPagePadding + mShowLeftCardWidth));
+                        mOnePageWidth = mCardWidth;
+                        mRecyclerView.smoothScrollToPosition(mCurrentItemPos);
+                        onScrolledChangedCallback();
+                    }
+                });
     }
 
     public void setCurrentItemPos(int currentItemPos) {
@@ -85,9 +109,7 @@ public class CardScaleHelper {
         return mOnePageWidth * destPos;
     }
 
-    /**
-     * 计算mCurrentItemOffset
-     */
+    /** 计算mCurrentItemOffset */
     private void computeCurrentItemPos() {
         if (mOnePageWidth <= 0) return;
         boolean pageChanged = false;
@@ -99,18 +121,20 @@ public class CardScaleHelper {
             int tempPos = mCurrentItemPos;
 
             mCurrentItemPos = mCurrentItemOffset / mOnePageWidth;
-            LogUtils.d(String.format("=======onCurrentItemPos Changed======= tempPos=%s, mCurrentItemPos=%s", tempPos, mCurrentItemPos));
+            Log.d(
+                    "CardScaleHelper",
+                    String.format(
+                            "=======onCurrentItemPos Changed======= tempPos=%s, mCurrentItemPos=%s",
+                            tempPos, mCurrentItemPos));
         }
     }
 
-    /**
-     * RecyclerView位移事件监听, view大小随位移事件变化
-     */
+    /** RecyclerView位移事件监听, view大小随位移事件变化 */
     private void onScrolledChangedCallback() {
         int offset = mCurrentItemOffset - mCurrentItemPos * mOnePageWidth;
         float percent = (float) Math.max(Math.abs(offset) * 1.0 / mOnePageWidth, 0.0001);
 
-        LogUtils.d(String.format("offset=%s, percent=%s", offset, percent));
+        Log.d("CardScaleHelper", String.format("offset=%s, percent=%s", offset, percent));
         View leftView = null;
         View currentView;
         View rightView = null;
@@ -152,13 +176,13 @@ public class CardScaleHelper {
         public boolean mNoNeedToScroll = false;
 
         @Override
-        public int[] calculateDistanceToFinalSnap(@NonNull RecyclerView.LayoutManager layoutManager, @NonNull View targetView) {
+        public int[] calculateDistanceToFinalSnap(
+                @NonNull RecyclerView.LayoutManager layoutManager, @NonNull View targetView) {
             if (mNoNeedToScroll) {
-                return new int[]{0, 0};
+                return new int[] {0, 0};
             } else {
                 return super.calculateDistanceToFinalSnap(layoutManager, targetView);
             }
         }
-
     }
 }

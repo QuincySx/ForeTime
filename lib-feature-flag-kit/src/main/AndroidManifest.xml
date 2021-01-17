@@ -3,7 +3,6 @@
     package="com.smallraw.lib.featureflag.kit">
 
     <application>
-        <activity android:name=".MainActivity"></activity>
         <activity
             android:name=".TestSettingsActivity"
             android:icon="@mipmap/ic_testlauncher"

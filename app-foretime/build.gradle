@@ -100,11 +100,9 @@ dependencies {
     // AndroidX lifecycle see https://developer.android.com/jetpack/docs/guide
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.androidxLifecycle}"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.androidxLifecycle}"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.androidxLifecycle}"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.androidxLifecycle}"
-    implementation "androidx.lifecycle:lifecycle-extensions:${Versions.androidxLifecycle}"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.androidxLifecycle}"
-//    kapt "androidx.lifecycle:lifecycle-compiler:${Versions.androidxLifecycle}"
+    implementation "androidx.lifecycle:lifecycle-extensions:${Versions.androidxLifecycleExtensions}"
+    // kapt "androidx.lifecycle:lifecycle-compiler:${Versions.androidxLifecycle}"
     kapt "androidx.lifecycle:lifecycle-common:${Versions.androidxLifecycle}"
 
     // Android优化的集合

@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Smallraw Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.smallraw.lib.featureflag
 
 /**
@@ -23,10 +38,10 @@ interface Feature {
  * [key] Shared between Android and iOS featureflag backend
  */
 enum class FeatureFlag(
-        override val key: String,
-        override val title: String,
-        override val explanation: String,
-        override val defaultValue: Boolean = true
+    override val key: String,
+    override val title: String,
+    override val explanation: String,
+    override val defaultValue: Boolean = true
 ) : Feature {
     DARK_MODE("feature.darkmode", "Dark theme", "Enabled dark mode")
 }
@@ -38,16 +53,39 @@ enum class FeatureFlag(
  * Test settings must never be exposed via our remote feature flag tool.
  */
 enum class TestSetting(
-        override val key: String,
-        override val title: String,
-        override val explanation: String,
-        override val defaultValue: Boolean = false
+    override val key: String,
+    override val title: String,
+    override val explanation: String,
+    override val defaultValue: Boolean = false
 ) : Feature {
-    USE_DEVELOP_PORTAL("testsetting.usedevelopportal", "Development portal", "Use developer REST endpoint"),
-    IDLING_RESOURCES("testsetting.idlingresources", "Idling resources", "Enable idling resources for Espresso"),
+    USE_DEVELOP_PORTAL(
+        "testsetting.usedevelopportal",
+        "Development portal",
+        "Use developer REST endpoint"
+    ),
+    IDLING_RESOURCES(
+        "testsetting.idlingresources",
+        "Idling resources",
+        "Enable idling resources for Espresso"
+    ),
     LEAK_CANARY("testsetting.leakcanary", "Leak Canary", "Enable leak canary"),
-    DEBUG_LOGGING("testsetting.debuglogging", "Enable logging", "Print all app logging to console", defaultValue = true),
-    STRICT_MODE("testsetting.strictmode", "Enable strict mode", "Detect IO operations accidentally performed on the main Thread", defaultValue = true),
+    DEBUG_LOGGING(
+        "testsetting.debuglogging",
+        "Enable logging",
+        "Print all app logging to console",
+        defaultValue = true
+    ),
+    STRICT_MODE(
+        "testsetting.strictmode",
+        "Enable strict mode",
+        "Detect IO operations accidentally performed on the main Thread",
+        defaultValue = true
+    ),
     CRASH_APP("testsetting.crashapp", "Crash app", "Force java crash next app startup"),
-    DEBUG_FIREBASE("testsetting.debugfirebase", "Enable Firebase remote config (DEBUG Builds)", "Enable reading feature flag from Firebase on debug builds", false)
+    DEBUG_FIREBASE(
+        "testsetting.debugfirebase",
+        "Enable Firebase remote config (DEBUG Builds)",
+        "Enable reading feature flag from Firebase on debug builds",
+        false
+    )
 }

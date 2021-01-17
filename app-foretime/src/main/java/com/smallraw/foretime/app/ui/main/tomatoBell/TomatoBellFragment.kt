@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Smallraw Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.smallraw.foretime.app.ui.main.tomatoBell
 
 import android.content.ComponentName
@@ -93,8 +108,16 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
 
         mTomatoBellKit.getType().observe(viewLifecycleOwner) {
             val color = when (it) {
-                CountDownType.WORKING -> ResourcesCompat.getColor(resources, R.color.WorkingProgessColor, null)
-                CountDownType.REPOSE -> ResourcesCompat.getColor(resources, R.color.RestProgessColor, null)
+                CountDownType.WORKING -> ResourcesCompat.getColor(
+                    resources,
+                    R.color.WorkingProgessColor,
+                    null
+                )
+                CountDownType.REPOSE -> ResourcesCompat.getColor(
+                    resources,
+                    R.color.RestProgessColor,
+                    null
+                )
                 else -> ResourcesCompat.getColor(resources, R.color.RestProgessColor, null)
             }
             mTomatoBellViewModel.progressColor.set(color)
@@ -172,54 +195,55 @@ class TomatoBellFragment : BaseFragment(), ServiceConnection {
      */
     private fun onLongClickListener() {
         onMainTomatoBellFragmentCallback?.setOnLongClickListener { true }
-        onMainTomatoBellFragmentCallback?.setOnTouchEventListener(object : OnClickProgressListener() {
-            override fun onStart() {
-                val type = mTomatoBellKit.getType().value
-                val status = mTomatoBellKit.getStatus().value
+        onMainTomatoBellFragmentCallback?.setOnTouchEventListener(object :
+                OnClickProgressListener() {
+                override fun onStart() {
+                    val type = mTomatoBellKit.getType().value
+                    val status = mTomatoBellKit.getStatus().value
 
-                if (null == type || null == status) {
-                    return
-                }
+                    if (null == type || null == status) {
+                        return
+                    }
 
-                var isLongClick = false
-                when (type) {
-                    CountDownType.WORKING -> {
-                        when (status) {
-                            CountDownStatus.PAUSE -> {
-                                isLongClick = true
+                    var isLongClick = false
+                    when (type) {
+                        CountDownType.WORKING -> {
+                            when (status) {
+                                CountDownStatus.PAUSE -> {
+                                    isLongClick = true
+                                }
+                                CountDownStatus.RUNNING -> {
+                                    isLongClick = true
+                                }
                             }
-                            CountDownStatus.RUNNING -> {
-                                isLongClick = true
+                        }
+                        CountDownType.REPOSE -> {
+                            when (status) {
+                                CountDownStatus.RUNNING -> {
+                                    isLongClick = true
+                                }
                             }
                         }
                     }
-                    CountDownType.REPOSE -> {
-                        when (status) {
-                            CountDownStatus.RUNNING -> {
-                                isLongClick = true
-                            }
-                        }
+                    if (isLongClick) {
+                        mTomatoBellViewModel.touchTimeProgress.set(0F)
+                        mTomatoBellViewModel.touchTimeProgressVisibility.set(true)
                     }
                 }
-                if (isLongClick) {
-                    mTomatoBellViewModel.touchTimeProgress.set(0F)
-                    mTomatoBellViewModel.touchTimeProgressVisibility.set(true)
+
+                override fun onProgress(progress: Double) {
+                    mTomatoBellViewModel.touchTimeProgress.set(progress.toFloat())
                 }
-            }
 
-            override fun onProgress(progress: Double) {
-                mTomatoBellViewModel.touchTimeProgress.set(progress.toFloat())
-            }
+                override fun onSuccess() {
+                    mTomatoBellViewModel.touchTimeProgressVisibility.set(false)
+                    responseEvent()
+                }
 
-            override fun onSuccess() {
-                mTomatoBellViewModel.touchTimeProgressVisibility.set(false)
-                responseEvent()
-            }
-
-            override fun onCancel() {
-                mTomatoBellViewModel.touchTimeProgressVisibility.set(false)
-            }
-        })
+                override fun onCancel() {
+                    mTomatoBellViewModel.touchTimeProgressVisibility.set(false)
+                }
+            })
     }
 
     /**

@@ -1,45 +1,51 @@
+/*
+ * Copyright 2021 Smallraw Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.smallraw.foretime.app.common.executors
 
 import android.os.Handler
 import android.os.Looper
-import java.util.concurrent.*
+import java.util.concurrent.Executor
+import java.util.concurrent.Executors
+import java.util.concurrent.SynchronousQueue
+import java.util.concurrent.ThreadPoolExecutor
+import java.util.concurrent.TimeUnit
 
-
-public class AppExecutors {
-    private val mDiskIO: Executor;
-
-    private val mNetworkIO: Executor;
-
-    private val mMainThread: Executor;
-
-    constructor(diskIO: Executor, networkIO: Executor, mainThread: Executor) {
-        this.mDiskIO = diskIO
-        this.mNetworkIO = networkIO
-        this.mMainThread = mainThread
-    }
-
-    constructor () : this(
-        Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()),
-        ThreadPoolExecutor(
-            Runtime.getRuntime().availableProcessors() * 2,
-            64,
-            60L,
-            TimeUnit.SECONDS,
-            SynchronousQueue<Runnable>(),
-        ),
-        MainThreadExecutor()
-    )
-
+class AppExecutors @JvmOverloads constructor(
+    private val diskIO: Executor = Executors.newFixedThreadPool(
+        Runtime.getRuntime().availableProcessors()
+    ),
+    private val networkIO: Executor = ThreadPoolExecutor(
+        Runtime.getRuntime().availableProcessors() * 2,
+        64,
+        60L,
+        TimeUnit.SECONDS,
+        SynchronousQueue(),
+    ),
+    private val mainThread: Executor = MainThreadExecutor()
+) {
     fun diskIO(): Executor {
-        return mDiskIO
+        return diskIO
     }
 
     fun networkIO(): Executor {
-        return mNetworkIO
+        return networkIO
     }
 
     fun mainThread(): Executor {
-        return mMainThread
+        return mainThread
     }
 
     private class MainThreadExecutor : Executor {
@@ -50,4 +56,3 @@ public class AppExecutors {
         }
     }
 }
-

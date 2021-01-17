@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Smallraw Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.smallraw.foretime.app.ui.taskInfo
 
 import android.app.Activity
@@ -11,15 +26,14 @@ import com.smallraw.foretime.app.App
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.base.BaseTitleBarActivity
 import com.smallraw.foretime.app.base.databinding.DataBindingConfig
-import com.smallraw.foretime.app.databinding.ActivityTaskInfoBinding
 import com.smallraw.foretime.app.common.event.TaskChangeEvent
+import com.smallraw.foretime.app.databinding.ActivityTaskInfoBinding
 import com.smallraw.foretime.app.repository.database.entity.MemorialDO
 import com.smallraw.foretime.app.ui.addTaskDay.AddTaskDayActivity
 import me.jessyan.autosize.utils.AutoSizeUtils
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-
 
 class TaskInfoActivity : BaseTitleBarActivity() {
     companion object {
@@ -54,13 +68,21 @@ class TaskInfoActivity : BaseTitleBarActivity() {
         setTitleBarLeftImage(R.drawable.ic_back_black)
         EventBus.getDefault().register(this)
 
-        addRightView(newEditView(View.OnClickListener {
-            //编辑
-            AddTaskDayActivity.startEdit(this, mTask!!.id!!, mTask!!.type)
-        }))
-        addRightView(newShareView(View.OnClickListener {
-            //分享
-        }))
+        addRightView(
+            newEditView(
+                View.OnClickListener {
+                    // 编辑
+                    AddTaskDayActivity.startEdit(this, mTask!!.id!!, mTask!!.type)
+                }
+            )
+        )
+        addRightView(
+            newShareView(
+                View.OnClickListener {
+                    // 分享
+                }
+            )
+        )
 
         val taskIDExtra = intent.getLongExtra(EXT_TASK_ID, -1L)
 
@@ -83,7 +105,7 @@ class TaskInfoActivity : BaseTitleBarActivity() {
     private fun refreshTask(taskId: Long) {
         App.getInstance().getAppExecutors().diskIO().execute {
             val tempTask: MemorialDO = App.getInstance().getRepository().getTask(taskId)
-                    ?: return@execute
+                ?: return@execute
             mTask = tempTask
             App.getInstance().getAppExecutors().mainThread().execute {
                 taskInfoAdapter?.setData(mTask!!)
@@ -123,9 +145,10 @@ class TaskInfoActivity : BaseTitleBarActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: TaskChangeEvent) {
-        if (event.changeType == TaskChangeEvent.UPDATE
-                && mTask != null
-                && event.taskID == mTask!!.id) {
+        if (event.changeType == TaskChangeEvent.UPDATE &&
+            mTask != null &&
+            event.taskID == mTask!!.id
+        ) {
             refreshTask(mTask!!.id!!)
         }
     }

@@ -1,8 +1,24 @@
+/*
+ * Copyright 2021 Smallraw Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.smallraw.foretime.app
 
 import android.app.Application
 import com.smallraw.foretime.app.base.AppViewModelStore
 import com.smallraw.foretime.app.base.IViewModelStoreApp
+import com.smallraw.foretime.app.common.executors.AppExecutors
 import com.smallraw.foretime.app.config.getCalendarSettingConfig
 import com.smallraw.foretime.app.config.getMusicSettingConfig
 import com.smallraw.foretime.app.config.getTaskSettingConfig
@@ -10,7 +26,6 @@ import com.smallraw.foretime.app.config.saveConfig
 import com.smallraw.foretime.app.entity.CalendarConfigInfo
 import com.smallraw.foretime.app.entity.MusicConfigInfo
 import com.smallraw.foretime.app.entity.TaskConfigInfo
-import com.smallraw.foretime.app.common.executors.AppExecutors
 import com.smallraw.foretime.app.repository.DataRepository
 import com.smallraw.foretime.app.repository.database.AppDatabase
 import com.smallraw.foretime.app.tomatoBell.TomatoBellKit
@@ -27,7 +42,6 @@ class App : Application(), IViewModelStoreApp {
         fun getInstance(): App {
             return mApp
         }
-
     }
 
     private lateinit var mAppExecutors: AppExecutors

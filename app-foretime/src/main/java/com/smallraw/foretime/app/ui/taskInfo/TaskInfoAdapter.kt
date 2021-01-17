@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Smallraw Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.smallraw.foretime.app.ui.taskInfo
 
 import android.graphics.Color
@@ -5,19 +20,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-
+import androidx.recyclerview.widget.RecyclerView
 import com.smallraw.foretime.app.R
 import com.smallraw.foretime.app.repository.database.entity.MemorialDO
 import com.smallraw.foretime.app.utils.dateFormat
 import com.smallraw.foretime.app.utils.dateParse
 import com.smallraw.foretime.app.utils.differentDays
-import java.util.*
+import java.util.Date
 
-class TaskInfoAdapter(private var item: MemorialDO, private val mColors: List<String>?) : androidx.recyclerview.widget.RecyclerView.Adapter<TaskInfoAdapter.ViewHolder>() {
+class TaskInfoAdapter(private var item: MemorialDO, private val mColors: List<String>?) :
+    RecyclerView.Adapter<TaskInfoAdapter.ViewHolder>() {
     private val mCurrentDate = dateParse(dateFormat(Date()))
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
-        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.item_task_info, viewGroup, false)
+        val view = LayoutInflater.from(viewGroup.context)
+            .inflate(R.layout.item_task_info, viewGroup, false)
         return ViewHolder(view)
     }
 
@@ -62,7 +79,8 @@ class TaskInfoAdapter(private var item: MemorialDO, private val mColors: List<St
         return mColors?.size ?: 0
     }
 
-    class ViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View) :
+        androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         var layoutInfo = itemView.findViewById<View>(R.id.layoutInfo)!!
         var tvShortState = itemView.findViewById<TextView>(R.id.tvShortState)!!
         var tvTaskName = itemView.findViewById<TextView>(R.id.tvTaskName)!!

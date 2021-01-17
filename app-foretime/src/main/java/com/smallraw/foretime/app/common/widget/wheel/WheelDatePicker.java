@@ -1,4 +1,25 @@
+/*
+ * Copyright 2021 Smallraw Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.smallraw.foretime.app.common.widget.wheel;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -9,15 +30,13 @@ import android.widget.TextView;
 
 import com.smallraw.foretime.app.R;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
-public class WheelDatePicker extends LinearLayout implements WheelPicker.OnItemSelectedListener,
-        IWheelPicker, IWheelDatePicker, IWheelYearPicker, IWheelMonthPicker,
-        IWheelDayPicker {
+public class WheelDatePicker extends LinearLayout
+        implements WheelPicker.OnItemSelectedListener,
+                IWheelPicker,
+                IWheelDatePicker,
+                IWheelYearPicker,
+                IWheelMonthPicker,
+                IWheelDayPicker {
     private static final SimpleDateFormat SDF =
             new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
 
@@ -58,8 +77,7 @@ public class WheelDatePicker extends LinearLayout implements WheelPicker.OnItemS
         List years = mPickerYear.getData();
         String lastYear = String.valueOf(years.get(years.size() - 1));
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < lastYear.length(); i++)
-            sb.append("0");
+        for (int i = 0; i < lastYear.length(); i++) sb.append("0");
         mPickerYear.setMaximumWidthText(sb.toString());
     }
 
@@ -74,11 +92,12 @@ public class WheelDatePicker extends LinearLayout implements WheelPicker.OnItemS
         }
         mDay = mPickerDay.getCurrentDay();
         String date = mYear + "-" + mMonth + "-" + mDay;
-        if (null != mListener) try {
-            mListener.onDateSelected(this, SDF.parse(date));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        if (null != mListener)
+            try {
+                mListener.onDateSelected(this, SDF.parse(date));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
     }
 
     public void setDebug(boolean isDebug) {
@@ -89,11 +108,11 @@ public class WheelDatePicker extends LinearLayout implements WheelPicker.OnItemS
 
     @Override
     public int getVisibleItemCount() {
-        if (mPickerYear.getVisibleItemCount() == mPickerMonth.getVisibleItemCount() &&
-                mPickerMonth.getVisibleItemCount() == mPickerDay.getVisibleItemCount())
+        if (mPickerYear.getVisibleItemCount() == mPickerMonth.getVisibleItemCount()
+                && mPickerMonth.getVisibleItemCount() == mPickerDay.getVisibleItemCount())
             return mPickerYear.getVisibleItemCount();
-        throw new ArithmeticException("Can not get visible item count correctly from" +
-                "WheelDatePicker!");
+        throw new ArithmeticException(
+                "Can not get visible item count correctly from" + "WheelDatePicker!");
     }
 
     @Override
@@ -118,29 +137,29 @@ public class WheelDatePicker extends LinearLayout implements WheelPicker.OnItemS
     @Deprecated
     @Override
     public void setOnItemSelectedListener(WheelPicker.OnItemSelectedListener listener) {
-        throw new UnsupportedOperationException("You can not set OnItemSelectedListener for" +
-                "WheelDatePicker");
+        throw new UnsupportedOperationException(
+                "You can not set OnItemSelectedListener for" + "WheelDatePicker");
     }
 
     @Deprecated
     @Override
     public int getSelectedItemPosition() {
-        throw new UnsupportedOperationException("You can not get position of selected item from" +
-                "WheelDatePicker");
+        throw new UnsupportedOperationException(
+                "You can not get position of selected item from" + "WheelDatePicker");
     }
 
     @Deprecated
     @Override
     public void setSelectedItemPosition(int position) {
-        throw new UnsupportedOperationException("You can not set position of selected item for" +
-                "WheelDatePicker");
+        throw new UnsupportedOperationException(
+                "You can not set position of selected item for" + "WheelDatePicker");
     }
 
     @Deprecated
     @Override
     public int getCurrentItemPosition() {
-        throw new UnsupportedOperationException("You can not get position of current item from" +
-                "WheelDatePicker");
+        throw new UnsupportedOperationException(
+                "You can not get position of current item from" + "WheelDatePicker");
     }
 
     @Deprecated
@@ -152,66 +171,66 @@ public class WheelDatePicker extends LinearLayout implements WheelPicker.OnItemS
     @Deprecated
     @Override
     public void setData(List data) {
-        throw new UnsupportedOperationException("You don't need to set data source for" +
-                "WheelDatePicker");
+        throw new UnsupportedOperationException(
+                "You don't need to set data source for" + "WheelDatePicker");
     }
 
     @Deprecated
     @Override
     public void setSameWidth(boolean hasSameSize) {
-        throw new UnsupportedOperationException("You don't need to set same width for" +
-                "WheelDatePicker");
+        throw new UnsupportedOperationException(
+                "You don't need to set same width for" + "WheelDatePicker");
     }
 
     @Deprecated
     @Override
     public boolean hasSameWidth() {
-        throw new UnsupportedOperationException("You don't need to set same width for" +
-                "WheelDatePicker");
+        throw new UnsupportedOperationException(
+                "You don't need to set same width for" + "WheelDatePicker");
     }
 
     @Deprecated
     @Override
     public void setOnWheelChangeListener(WheelPicker.OnWheelChangeListener listener) {
-        throw new UnsupportedOperationException("WheelDatePicker unsupport set" +
-                "OnWheelChangeListener");
+        throw new UnsupportedOperationException(
+                "WheelDatePicker unsupport set" + "OnWheelChangeListener");
     }
 
     @Deprecated
     @Override
     public String getMaximumWidthText() {
-        throw new UnsupportedOperationException("You can not get maximum width text from" +
-                "WheelDatePicker");
+        throw new UnsupportedOperationException(
+                "You can not get maximum width text from" + "WheelDatePicker");
     }
 
     @Deprecated
     @Override
     public void setMaximumWidthText(String text) {
-        throw new UnsupportedOperationException("You don't need to set maximum width text for" +
-                "WheelDatePicker");
+        throw new UnsupportedOperationException(
+                "You don't need to set maximum width text for" + "WheelDatePicker");
     }
 
     @Deprecated
     @Override
     public int getMaximumWidthTextPosition() {
-        throw new UnsupportedOperationException("You can not get maximum width text position" +
-                "from WheelDatePicker");
+        throw new UnsupportedOperationException(
+                "You can not get maximum width text position" + "from WheelDatePicker");
     }
 
     @Deprecated
     @Override
     public void setMaximumWidthTextPosition(int position) {
-        throw new UnsupportedOperationException("You don't need to set maximum width text" +
-                "position for WheelDatePicker");
+        throw new UnsupportedOperationException(
+                "You don't need to set maximum width text" + "position for WheelDatePicker");
     }
 
     @Override
     public int getSelectedItemTextColor() {
-        if (mPickerYear.getSelectedItemTextColor() == mPickerMonth.getSelectedItemTextColor() &&
-                mPickerMonth.getSelectedItemTextColor() == mPickerDay.getSelectedItemTextColor())
+        if (mPickerYear.getSelectedItemTextColor() == mPickerMonth.getSelectedItemTextColor()
+                && mPickerMonth.getSelectedItemTextColor() == mPickerDay.getSelectedItemTextColor())
             return mPickerYear.getSelectedItemTextColor();
-        throw new RuntimeException("Can not get color of selected item text correctly from" +
-                "WheelDatePicker!");
+        throw new RuntimeException(
+                "Can not get color of selected item text correctly from" + "WheelDatePicker!");
     }
 
     @Override
@@ -223,11 +242,11 @@ public class WheelDatePicker extends LinearLayout implements WheelPicker.OnItemS
 
     @Override
     public int getItemTextColor() {
-        if (mPickerYear.getItemTextColor() == mPickerMonth.getItemTextColor() &&
-                mPickerMonth.getItemTextColor() == mPickerDay.getItemTextColor())
+        if (mPickerYear.getItemTextColor() == mPickerMonth.getItemTextColor()
+                && mPickerMonth.getItemTextColor() == mPickerDay.getItemTextColor())
             return mPickerYear.getItemTextColor();
-        throw new RuntimeException("Can not get color of item text correctly from" +
-                "WheelDatePicker!");
+        throw new RuntimeException(
+                "Can not get color of item text correctly from" + "WheelDatePicker!");
     }
 
     @Override
@@ -239,11 +258,11 @@ public class WheelDatePicker extends LinearLayout implements WheelPicker.OnItemS
 
     @Override
     public int getItemTextSize() {
-        if (mPickerYear.getItemTextSize() == mPickerMonth.getItemTextSize() &&
-                mPickerMonth.getItemTextSize() == mPickerDay.getItemTextSize())
+        if (mPickerYear.getItemTextSize() == mPickerMonth.getItemTextSize()
+                && mPickerMonth.getItemTextSize() == mPickerDay.getItemTextSize())
             return mPickerYear.getItemTextSize();
-        throw new RuntimeException("Can not get size of item text correctly from" +
-                "WheelDatePicker!");
+        throw new RuntimeException(
+                "Can not get size of item text correctly from" + "WheelDatePicker!");
     }
 
     @Override
@@ -255,8 +274,8 @@ public class WheelDatePicker extends LinearLayout implements WheelPicker.OnItemS
 
     @Override
     public int getItemSpace() {
-        if (mPickerYear.getItemSpace() == mPickerMonth.getItemSpace() &&
-                mPickerMonth.getItemSpace() == mPickerDay.getItemSpace())
+        if (mPickerYear.getItemSpace() == mPickerMonth.getItemSpace()
+                && mPickerMonth.getItemSpace() == mPickerDay.getItemSpace())
             return mPickerYear.getItemSpace();
         throw new RuntimeException("Can not get item space correctly from WheelDatePicker!");
     }
@@ -277,14 +296,15 @@ public class WheelDatePicker extends LinearLayout implements WheelPicker.OnItemS
 
     @Override
     public boolean hasIndicator() {
-        return mPickerYear.hasIndicator() && mPickerMonth.hasIndicator() &&
-                mPickerDay.hasIndicator();
+        return mPickerYear.hasIndicator()
+                && mPickerMonth.hasIndicator()
+                && mPickerDay.hasIndicator();
     }
 
     @Override
     public int getIndicatorSize() {
-        if (mPickerYear.getIndicatorSize() == mPickerMonth.getIndicatorSize() &&
-                mPickerMonth.getIndicatorSize() == mPickerDay.getIndicatorSize())
+        if (mPickerYear.getIndicatorSize() == mPickerMonth.getIndicatorSize()
+                && mPickerMonth.getIndicatorSize() == mPickerDay.getIndicatorSize())
             return mPickerYear.getIndicatorSize();
         throw new RuntimeException("Can not get indicator size correctly from WheelDatePicker!");
     }
@@ -298,8 +318,8 @@ public class WheelDatePicker extends LinearLayout implements WheelPicker.OnItemS
 
     @Override
     public int getIndicatorColor() {
-        if (mPickerYear.getCurtainColor() == mPickerMonth.getCurtainColor() &&
-                mPickerMonth.getCurtainColor() == mPickerDay.getCurtainColor())
+        if (mPickerYear.getCurtainColor() == mPickerMonth.getCurtainColor()
+                && mPickerMonth.getCurtainColor() == mPickerDay.getCurtainColor())
             return mPickerYear.getCurtainColor();
         throw new RuntimeException("Can not get indicator color correctly from WheelDatePicker!");
     }
@@ -320,14 +340,13 @@ public class WheelDatePicker extends LinearLayout implements WheelPicker.OnItemS
 
     @Override
     public boolean hasCurtain() {
-        return mPickerYear.hasCurtain() && mPickerMonth.hasCurtain() &&
-                mPickerDay.hasCurtain();
+        return mPickerYear.hasCurtain() && mPickerMonth.hasCurtain() && mPickerDay.hasCurtain();
     }
 
     @Override
     public int getCurtainColor() {
-        if (mPickerYear.getCurtainColor() == mPickerMonth.getCurtainColor() &&
-                mPickerMonth.getCurtainColor() == mPickerDay.getCurtainColor())
+        if (mPickerYear.getCurtainColor() == mPickerMonth.getCurtainColor()
+                && mPickerMonth.getCurtainColor() == mPickerDay.getCurtainColor())
             return mPickerYear.getCurtainColor();
         throw new RuntimeException("Can not get curtain color correctly from WheelDatePicker!");
     }
@@ -348,8 +367,9 @@ public class WheelDatePicker extends LinearLayout implements WheelPicker.OnItemS
 
     @Override
     public boolean hasAtmospheric() {
-        return mPickerYear.hasAtmospheric() && mPickerMonth.hasAtmospheric() &&
-                mPickerDay.hasAtmospheric();
+        return mPickerYear.hasAtmospheric()
+                && mPickerMonth.hasAtmospheric()
+                && mPickerDay.hasAtmospheric();
     }
 
     @Override
@@ -373,14 +393,14 @@ public class WheelDatePicker extends LinearLayout implements WheelPicker.OnItemS
     @Deprecated
     @Override
     public void setItemAlign(int align) {
-        throw new UnsupportedOperationException("You don't need to set item align for" +
-                "WheelDatePicker");
+        throw new UnsupportedOperationException(
+                "You don't need to set item align for" + "WheelDatePicker");
     }
 
     @Override
     public Typeface getTypeface() {
-        if (mPickerYear.getTypeface().equals(mPickerMonth.getTypeface()) &&
-                mPickerMonth.getTypeface().equals(mPickerDay.getTypeface()))
+        if (mPickerYear.getTypeface().equals(mPickerMonth.getTypeface())
+                && mPickerMonth.getTypeface().equals(mPickerDay.getTypeface()))
             return mPickerYear.getTypeface();
         throw new RuntimeException("Can not get typeface correctly from WheelDatePicker!");
     }
@@ -455,19 +475,19 @@ public class WheelDatePicker extends LinearLayout implements WheelPicker.OnItemS
 
     @Override
     public TextView getTextViewYear() {
-//        return mTVYear;
+        //        return mTVYear;
         return new TextView(getContext());
     }
 
     @Override
     public TextView getTextViewMonth() {
-//        return mTVMonth;
+        //        return mTVMonth;
         return new TextView(getContext());
     }
 
     @Override
     public TextView getTextViewDay() {
-//        return mTVDay;
+        //        return mTVDay;
         return new TextView(getContext());
     }
 

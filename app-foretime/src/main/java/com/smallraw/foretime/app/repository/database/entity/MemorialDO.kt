@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Smallraw Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.smallraw.foretime.app.repository.database.entity
 
 import android.os.Parcel
@@ -18,7 +33,7 @@ class MemorialDO : Parcelable {
     var name: String? = null
     @ColumnInfo(name = "description")
     var description: String? = null
-    @ColumnInfo(name = "type")//0 累计日  1 倒数日
+    @ColumnInfo(name = "type") // 0 累计日  1 倒数日
     var type: Int = 0
     @ColumnInfo(name = "color")
     var color: String? = null
@@ -45,8 +60,15 @@ class MemorialDO : Parcelable {
     constructor() {}
 
     @Ignore
-    constructor(name: String, description: String, type: Int, color: String,
-                targetTime: Date, repeatTime: String?, createTime: Date) {
+    constructor(
+        name: String,
+        description: String,
+        type: Int,
+        color: String,
+        targetTime: Date,
+        repeatTime: String?,
+        createTime: Date
+    ) {
         this.name = name
         this.description = description
         this.type = type
@@ -58,18 +80,17 @@ class MemorialDO : Parcelable {
 
     override fun toString(): String {
         return "MemorialDO{" +
-                "id=" + id +
-                ", name='" + name + '\''.toString() +
-                ", description='" + description + '\''.toString() +
-                ", type=" + type +
-                ", color='" + color + '\''.toString() +
-                ", targetTime=" + targetTime +
-                ", createTime=" + createTime +
-                ", strike=" + isStrike +
-                ", archive=" + isArchive +
-                '}'.toString()
+            "id=" + id +
+            ", name='" + name + '\''.toString() +
+            ", description='" + description + '\''.toString() +
+            ", type=" + type +
+            ", color='" + color + '\''.toString() +
+            ", targetTime=" + targetTime +
+            ", createTime=" + createTime +
+            ", strike=" + isStrike +
+            ", archive=" + isArchive +
+            '}'.toString()
     }
-
 
     override fun describeContents(): Int {
         return 0

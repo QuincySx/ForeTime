@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Smallraw Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.smallraw.library.core.utils;
 
 import android.annotation.SuppressLint;
@@ -14,7 +29,6 @@ import android.view.Surface;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresPermission;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +36,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import static android.Manifest.permission.WRITE_SETTINGS;
 
 /**
+ *
+ *
  * <pre>
  *     author: Blankj
  *     blog  : http://blankj.com
@@ -41,7 +57,8 @@ public final class ScreenUtils {
      * @return the width of screen, in pixel
      */
     public static int getScreenWidth() {
-        WindowManager wm = (WindowManager) AppUtils.getApp().getSystemService(Context.WINDOW_SERVICE);
+        WindowManager wm =
+                (WindowManager) AppUtils.getApp().getSystemService(Context.WINDOW_SERVICE);
         Point point = new Point();
         wm.getDefaultDisplay().getRealSize(point);
         return point.x;
@@ -53,7 +70,8 @@ public final class ScreenUtils {
      * @return the height of screen, in pixel
      */
     public static int getScreenHeight() {
-        WindowManager wm = (WindowManager) AppUtils.getApp().getSystemService(Context.WINDOW_SERVICE);
+        WindowManager wm =
+                (WindowManager) AppUtils.getApp().getSystemService(Context.WINDOW_SERVICE);
         Point point = new Point();
         wm.getDefaultDisplay().getRealSize(point);
         return point.y;
@@ -104,11 +122,13 @@ public final class ScreenUtils {
         int fullScreenFlag = WindowManager.LayoutParams.FLAG_FULLSCREEN;
         Window window = activity.getWindow();
         if ((window.getAttributes().flags & fullScreenFlag) == fullScreenFlag) {
-            window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN
-                    | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+            window.clearFlags(
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN
+                            | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         } else {
-            window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN
-                    | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+            window.addFlags(
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN
+                            | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
     }
 
@@ -116,7 +136,8 @@ public final class ScreenUtils {
      * Return whether screen is full.
      *
      * @param activity The activity.
-     * @return {@code true}: yes<br>{@code false}: no
+     * @return {@code true}: yes<br>
+     *     {@code false}: no
      */
     public static boolean isFullScreen(@NonNull final AppCompatActivity activity) {
         int fullScreenFlag = WindowManager.LayoutParams.FLAG_FULLSCREEN;
@@ -126,7 +147,8 @@ public final class ScreenUtils {
     /**
      * Return whether screen is landscape.
      *
-     * @return {@code true}: yes<br>{@code false}: no
+     * @return {@code true}: yes<br>
+     *     {@code false}: no
      */
     public static boolean isLandscape() {
         return AppUtils.getApp().getResources().getConfiguration().orientation
@@ -145,7 +167,8 @@ public final class ScreenUtils {
     /**
      * Return whether screen is portrait.
      *
-     * @return {@code true}: yes<br>{@code false}: no
+     * @return {@code true}: yes<br>
+     *     {@code false}: no
      */
     public static boolean isPortrait() {
         return AppUtils.getApp().getResources().getConfiguration().orientation
@@ -194,11 +217,12 @@ public final class ScreenUtils {
     /**
      * Return the bitmap of screen.
      *
-     * @param activity          The activity.
+     * @param activity The activity.
      * @param isDeleteStatusBar True to delete status bar, false otherwise.
      * @return the bitmap of screen
      */
-    public static Bitmap screenShot(@NonNull final AppCompatActivity activity, boolean isDeleteStatusBar) {
+    public static Bitmap screenShot(
+            @NonNull final AppCompatActivity activity, boolean isDeleteStatusBar) {
         View decorView = activity.getWindow().getDecorView();
         decorView.setDrawingCacheEnabled(true);
         decorView.setWillNotCacheDrawing(false);
@@ -213,13 +237,13 @@ public final class ScreenUtils {
             Resources resources = activity.getResources();
             int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
             int statusBarHeight = resources.getDimensionPixelSize(resourceId);
-            ret = Bitmap.createBitmap(
-                    bmp,
-                    0,
-                    statusBarHeight,
-                    dm.widthPixels,
-                    dm.heightPixels - statusBarHeight
-            );
+            ret =
+                    Bitmap.createBitmap(
+                            bmp,
+                            0,
+                            statusBarHeight,
+                            dm.widthPixels,
+                            dm.heightPixels - statusBarHeight);
         } else {
             ret = Bitmap.createBitmap(bmp, 0, 0, dm.widthPixels, dm.heightPixels);
         }
@@ -230,7 +254,8 @@ public final class ScreenUtils {
     /**
      * Return whether screen is locked.
      *
-     * @return {@code true}: yes<br>{@code false}: no
+     * @return {@code true}: yes<br>
+     *     {@code false}: no
      */
     public static boolean isScreenLock() {
         KeyguardManager km =
@@ -246,9 +271,7 @@ public final class ScreenUtils {
     public static int getSleepDuration() {
         try {
             return Settings.System.getInt(
-                    AppUtils.getApp().getContentResolver(),
-                    Settings.System.SCREEN_OFF_TIMEOUT
-            );
+                    AppUtils.getApp().getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT);
         } catch (Settings.SettingNotFoundException e) {
             e.printStackTrace();
             return -123;
@@ -257,7 +280,8 @@ public final class ScreenUtils {
 
     /**
      * Set the duration of sleep.
-     * <p>Must hold {@code <uses-permission android:name="android.permission.WRITE_SETTINGS" />}</p>
+     *
+     * <p>Must hold {@code <uses-permission android:name="android.permission.WRITE_SETTINGS" />}
      *
      * @param duration The duration.
      */
@@ -266,18 +290,18 @@ public final class ScreenUtils {
         Settings.System.putInt(
                 AppUtils.getApp().getContentResolver(),
                 Settings.System.SCREEN_OFF_TIMEOUT,
-                duration
-        );
+                duration);
     }
 
     /**
      * Return whether device is tablet.
      *
-     * @return {@code true}: yes<br>{@code false}: no
+     * @return {@code true}: yes<br>
+     *     {@code false}: no
      */
     public static boolean isTablet() {
         return (AppUtils.getApp().getResources().getConfiguration().screenLayout
-                & Configuration.SCREENLAYOUT_SIZE_MASK)
+                        & Configuration.SCREENLAYOUT_SIZE_MASK)
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 }

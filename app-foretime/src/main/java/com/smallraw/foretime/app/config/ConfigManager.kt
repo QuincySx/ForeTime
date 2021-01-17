@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Smallraw Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.smallraw.foretime.app.config
 
 import android.util.Log
@@ -11,7 +26,6 @@ import com.smallraw.foretime.app.entity.CalendarConfigInfo
 import com.smallraw.foretime.app.entity.MusicConfigInfo
 import com.smallraw.foretime.app.entity.TaskConfigInfo
 import com.smallraw.foretime.app.repository.database.entity.ConfigDO
-import kotlin.reflect.full.memberProperties
 import kotlin.system.measureTimeMillis
 
 @StringDef(TaskConfig, CalendarConfig, MusicConfig)
@@ -43,8 +57,8 @@ private fun <T> getConfig(@ConfigName configName: String): T {
     val measureTimeMillis = measureTimeMillis {
         clazz.declaredFields
             .filter {
-                it.name != "\$change"
-                        && it.name != "serialVersionUID"
+                it.name != "\$change" &&
+                    it.name != "serialVersionUID"
             }
             .forEach {
                 val findByKey = configDao.value.findByKey(it.name)
@@ -92,8 +106,8 @@ private fun save(configInfo: Any) {
         val fields = configInfo.javaClass
             .declaredFields
             .filter {
-                it.name != "\$change"
-                        && it.name != "serialVersionUID"
+                it.name != "\$change" &&
+                    it.name != "serialVersionUID"
             }
         val configDOList = ArrayList<ConfigDO>(fields.size)
         fields.forEachIndexed { index, field ->

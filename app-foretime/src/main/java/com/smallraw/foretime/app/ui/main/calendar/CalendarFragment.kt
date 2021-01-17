@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Smallraw Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.smallraw.foretime.app.ui.main.calendar
 
 import android.annotation.SuppressLint
@@ -26,9 +41,8 @@ import com.smallraw.foretime.app.utils.monthDayFormat
 import com.smallraw.time.model.BaseCallback
 import com.smallraw.time.model.WeatherModel
 import com.smallraw.time.utils.getWeekOfDate
-import me.jessyan.autosize.utils.AutoSizeUtils
 import java.util.*
-
+import me.jessyan.autosize.utils.AutoSizeUtils
 
 class CalendarFragment : BaseFragment() {
     companion object {
@@ -58,7 +72,7 @@ class CalendarFragment : BaseFragment() {
             p1: androidx.recyclerview.widget.RecyclerView.ViewHolder
         ): Int {
             val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN or
-                    ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+                ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
             val swipeFlags = 0
             return makeMovementFlags(dragFlags, swipeFlags)
         }
@@ -69,7 +83,7 @@ class CalendarFragment : BaseFragment() {
             target: androidx.recyclerview.widget.RecyclerView.ViewHolder
         ): Boolean {
             val fromPosition = viewHolder.adapterPosition
-            //拿到当前拖拽到的item的viewHolder
+            // 拿到当前拖拽到的item的viewHolder
             val toPosition = target.adapterPosition
             if (fromPosition < toPosition) {
                 for (i in toPosition..fromPosition) {
@@ -98,7 +112,6 @@ class CalendarFragment : BaseFragment() {
             super.clearView(recyclerView, viewHolder)
             viewHolder.itemView.visibility = View.VISIBLE
         }
-
     })
 
     override fun initViewModel() {
@@ -122,12 +135,15 @@ class CalendarFragment : BaseFragment() {
         mMainScreenViewModel.calendarSuspensionRes.set(R.drawable.ic_tab_suspension_add)
 
         initView()
-        mCalendarVewModel.mActiveTaskListLiveData.observe(viewLifecycleOwner, {
-            Log.e("LiveData", "任务卡列表收到变化")
-            mCalendarList.clear()
-            mCalendarList.addAll(it!!.distinct())
-            mCalendarAdapter.notifyDataSetChanged()
-        })
+        mCalendarVewModel.mActiveTaskListLiveData.observe(
+            viewLifecycleOwner,
+            {
+                Log.e("LiveData", "任务卡列表收到变化")
+                mCalendarList.clear()
+                mCalendarList.addAll(it!!.distinct())
+                mCalendarAdapter.notifyDataSetChanged()
+            }
+        )
         mCalendarVewModel.queryActiveTask(-1, 0)
         mCalendarAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onClick(view: View, position: Int) {
@@ -237,6 +253,5 @@ class CalendarFragment : BaseFragment() {
     }
 
     fun hiddenViewAction() {
-
     }
 }
