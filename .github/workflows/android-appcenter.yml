@@ -28,9 +28,9 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew build -PspotlessEnable=false
     - name: App Center CLI
       uses: avocaddo/AppCenter-Github-Action@v1.0.2
       with:
-        command: appcenter distribute release --app SmallRaw/ForeTime --file app-foretime/build/outputs/apk/debug/app-foretime-debug.apk --group "Testers"
+        command: appcenter distribute release --app SmallRaw/ForeTime --file app-foretime/build/outputs/apk/debug/app-foretime-debug.apk --group Testers
         token: ${{secrets.APPCENTER_TOKEN}}

@@ -34,8 +34,8 @@ ext {
     }
 
     enableSpotless = true
-    if (System.env['ENABLE_SPOTLESS']) {
-        enableSpotless = System.env['ENABLE_SPOTLESS']
+    if (project.hasProperty("spotlessEnable")) {
+        enableSpotless = project.spotlessEnable
     } else if (pros.containsKey('enableSpotless')) {
         enableSpotless = pros.getProperty('enableSpotless')
     }
@@ -57,7 +57,7 @@ subprojects {
         }
     }
 
-    if (rootProject.enableSpotless && !ignoreSpotlessPath) {
+    if (rootProject.enableSpotless == true && !ignoreSpotlessPath) {
         println "Spotless works at : " + projectDir.path
         apply plugin: 'com.diffplug.spotless'
         spotless {
@@ -68,7 +68,6 @@ subprojects {
                     exclude '**/.gradle/**'
                     exclude '**/generated/**'
                     exclude '**/build/install/**'
-                    exclude 'ThirdParty/**'
                 }
                 removeUnusedImports()
                 googleJavaFormat("1.7").aosp()
@@ -83,7 +82,6 @@ subprojects {
                     include('**/*.kt')
                     exclude '**/.gradle/**'
                     exclude '**/build/install/**'
-                    exclude 'ThirdParty/**'
                 }
 
                 // see https://github.com/shyiko/ktlint#standard-rules
