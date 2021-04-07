@@ -37,7 +37,7 @@ jobs:
     - name: Upload Android Release to Play Store
       uses: r0adkll/upload-google-play@v1.0.15
       with:
-        serviceAccountJsonPlainText: ${{ SERVER_ACCOUNT_JSON }}
+        serviceAccountJsonPlainText: ${{ secrets.SERVER_ACCOUNT_JSON }}
         # The package name, or Application Id, of the app you are uploading
         packageName: com.smallraw.foretime.app 
         # The Android release file to upload (.apk or .aab)
