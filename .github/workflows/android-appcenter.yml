@@ -34,3 +34,14 @@ jobs:
       with:
         command: appcenter distribute release --app SmallRaw/ForeTime --file app-foretime/build/outputs/apk/debug/app-foretime-debug.apk --group Testers
         token: ${{secrets.APPCENTER_TOKEN}}
+    - name: Upload Android Release to Play Store
+      uses: r0adkll/upload-google-play@v1.0.15
+      with:
+        serviceAccountJsonPlainText: ${{ secrets.SERVER_ACCOUNT_JSON }}
+        # The package name, or Application Id, of the app you are uploading
+        packageName: com.smallraw.foretime.app 
+        # The Android release file to upload (.apk or .aab)
+        releaseFile: app-foretime/build/outputs/apk/debug/app-foretime-debug.apk
+        # The track in which you want to assign the uploaded app.
+        track: alpha # default is production Values: alpha, beta, internal, production, internalsharing
+        
