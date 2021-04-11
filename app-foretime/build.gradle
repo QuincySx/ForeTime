@@ -26,13 +26,39 @@ android {
         viewBinding true
     }
 
+    signingConfigs {
+        debug {
+            storeFile file("../debug.keystore")
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+            storePassword "android"
+
+            // Optional, specify signing versions used
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+
+        release {
+            storeFile file(System.getenv("RELEASE_STORE_FILE") ?: "../debug.keystore")
+            keyAlias System.getenv("RELEASE_KEY_ALIAS") ?: "androiddebugkey"
+            storePassword System.getenv("RELEASE_STORE_PASSWORD") ?: "android"
+            keyPassword System.getenv("RELEASE_KEY_PASSWORD") ?: "android"
+
+            // Optional, specify signing versions used
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
         debug {
             ext.alwaysUpdateBuildId = false
+            signingConfig signingConfigs.debug
         }
     }
 
