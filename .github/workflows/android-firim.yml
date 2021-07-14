@@ -5,7 +5,8 @@ on:
     inputs:
       rc_number:
         description: 'RC 编号'
-        required: true
+        required: false
+        
 jobs:
   build:
 
