@@ -1,9 +1,11 @@
 name: Android CI Push Firim
 
 on:
-  pull_request:
-    branches: [ master ]
-
+  workflow_dispatch:
+    inputs:
+      rc_number:
+        description: 'RC 编号'
+        required: true
 jobs:
   build:
 
