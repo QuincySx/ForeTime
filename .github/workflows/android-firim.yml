@@ -42,4 +42,3 @@ jobs:
     - name: Upload to Fir.im
       run: fir login ${{ secrets.FIRTOKEN }}
     - run: fir publish app-foretime/build/outputs/apk/debug/app-foretime-debug.apk
-    - run: echo egrep '(Published succeed: )\S+' grep_text.txt | egrep -o '(https?):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]'
